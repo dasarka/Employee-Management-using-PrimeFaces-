@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+</h:head>
+<h:body>
+	<center>
+		<div class="card" style="width: 50%">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+						Employee Name:</div>
+					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+						<h:outputText value="#{empMain.usersBean.empName}" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+						Designation:</div>
+					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+						<h:outputText value="#{empMain.usersBean.empDesg}" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+						Username:</div>
+					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+						<h:outputText value="#{empMain.usersBean.username}" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+						Access:</div>
+					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+						<h:outputText value="#{empMain.usersBean.accessVal}" />
+					</div>
+				</div>
+				<hr />
+				<div class="row">
+					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+					</div>
+					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+						<p:commandButton value="Change Password" type="button"
+							onclick="PF('dlg1').show();" />
+
+					</div>
+				</div>
+				<p:dialog header="Update Password" widgetVar="dlg1"
+					showEffect="explode" hideEffect="bounce" height="175" width="600">
+					<div>
+						<div class="row">
+							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+								Old Password:</div>
+							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+								<p:keyboard id="oldPassword" password="true"
+									value="#{empMain.usersBean.oldPassword}" />
+							</div>
+
+						</div>
+						<div class="row">
+							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+								New Password:</div>
+							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+								<p:keyboard id="newPassword" password="true"
+									value="#{empMain.usersBean.newPassword}" />
+							</div>
+						</div>
+						<div class="row">
+
+							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<center>
+									<hr />
+									<h:commandButton id="btnUpdate" value="Update Password"
+										action="#{empMain.UpdatePassword}"
+										styleClass="btn btn-success"></h:commandButton>
+								</center>
+							</div>
+						</div>
+					</div>
+				</p:dialog>
+
+			</div>
+		</div>
+
+	</center>
+</h:body>
+</html>

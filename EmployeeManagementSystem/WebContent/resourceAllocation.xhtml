@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+	<title>Employee Management</title>
+
+</h:head>
+<h:body class="bg-white content">
+	<div class="content-wrapper">
+		<ui:include src="WEB-MASTER-PAGES/EmpMaster.xhtml"></ui:include>
+		<p:breadCrumb>
+			<p:menuitem value="Dashboard" url="dashboard.xhtml" />
+			<p:menuitem value="Resource Allocation" url="#" />
+		</p:breadCrumb>
+		<div class="page-body">
+			<h:form id="resourceAlloc">
+				<h:outputText value="#{hr.loadData}" />
+				<h:outputText value="#{hr.loadFormData}" />
+				<div class="row">
+
+					<div class="col-xl-11 col-lg-11 col-md-11 com-sm-11 col-xs-11"
+						style="margin-left: 4%">
+						<div class="card">
+							<div class="card-header">
+								<h4>
+									<strong>Project List</strong>
+								</h4>
+							</div>
+							<div class="card-body">
+								<p:tabView dynamic="true" cache="true" effect="fold"
+									id="projTab">
+
+									<p:tab title="Current Project" id="currProj">
+										<p:dataTable var="cProj"
+											value="#{hr.projListBean.currentProj}">
+											<p:column headerText="Project Id">
+
+												<a href="projectDetails.xhtml?pid=#{cProj.projectId}"> <h:outputText
+														value="#{cProj.projectId}" /></a>
+											</p:column>
+											<p:column headerText="Project Name">
+												<h:outputText value="#{cProj.projectName}" />
+											</p:column>
+											<p:column headerText="Start Date">
+												<h:outputText value="#{cProj.startDate}" />
+											</p:column>
+											<p:column headerText="End Date">
+												<h:outputText value="#{cProj.endDate}" />
+											</p:column>
+											<p:column headerText="Resource No.">
+												<h:outputText value="#{cProj.resources}" />
+											</p:column>
+											<p:column headerText="Total Budget(in $)">
+												<h:outputText value="#{cProj.budget}" />
+											</p:column>
+
+										</p:dataTable>
+									</p:tab>
+									<p:tab title="Upcoming Project" id="upcProj">
+										<p:dataTable var="uProj"
+											value="#{hr.projListBean.upcomingProj}">
+											<p:column headerText="Project Id">
+												<a href="projectDetails.xhtml?pid=#{uProj.projectId}"> <h:outputText
+														value="#{uProj.projectId}" /></a>
+											</p:column>
+											<p:column headerText="Project Name">
+												<h:outputText value="#{uProj.projectName}" />
+											</p:column>
+											<p:column headerText="Start Date">
+												<h:outputText value="#{uProj.startDate}" />
+											</p:column>
+											<p:column headerText="End Date">
+												<h:outputText value="#{uProj.endDate}" />
+											</p:column>
+											<p:column headerText="Resource No.">
+												<h:outputText value="#{uProj.resources}" />
+											</p:column>
+											<p:column headerText="Total Budget(in $)">
+												<h:outputText value="#{uProj.budget}" />
+											</p:column>
+										</p:dataTable>
+									</p:tab>
+									<p:tab title="Completed Project" id="oldProj">
+										<p:dataTable var="oProj"
+											value="#{hr.projListBean.completeProj}">
+											<p:column headerText="Project Id">
+												<a href="projectDetails.xhtml?pid=#{oProj.projectId}"> <h:outputText
+														value="#{oProj.projectId}" /></a>
+											</p:column>
+											<p:column headerText="Project Name">
+												<h:outputText value="#{oProj.projectName}" />
+											</p:column>
+											<p:column headerText="Start Date">
+												<h:outputText value="#{oProj.startDate}" />
+											</p:column>
+											<p:column headerText="End Date">
+												<h:outputText value="#{oProj.endDate}" />
+											</p:column>
+											<p:column headerText="Resource No.">
+												<h:outputText value="#{oProj.resources}" />
+											</p:column>
+											<p:column headerText="Total Budget(in $)">
+												<h:outputText value="#{oProj.budget}" />
+											</p:column>
+										</p:dataTable>
+									</p:tab>
+								</p:tabView>
+							</div>
+							<div class="card-footer"></div>
+						</div>
+					</div>
+				</div>
+				<br />
+				<div class="row">
+
+					<div class="col-xl-11 col-lg-11 col-md-11 com-sm-11 col-xs-11"
+						style="margin-left: 4%">
+						<div class="card">
+							<div class="card-header">
+								<h4>
+									<strong>Allocate Resource</strong>
+								</h4>
+							</div>
+							<div class="card-body">
+								<div class="row rowdiff">
+									<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+										Select Upcoming/Current Project:<span class="red">*</span>
+									</div>
+									<div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-xs-9">
+										<p:selectOneMenu class="width-75"
+											value="#{hr.resourceBean.selectedProjectId}">
+											<f:selectItem itemValue="0" itemLabel="--Select--"
+												itemDisabled="true" />
+											<f:selectItems value="#{hr.resourceBean.projectList}"
+												var="proj" itemValue="#{proj.projectId}"
+												itemLabel="#{proj.projectName}"></f:selectItems>
+											<p:ajax event="change" listener="#{hr.UpdateProject}"
+												update="view_proj select_om select_m select_l select_1 select_2 select_3"></p:ajax>
+										</p:selectOneMenu>
+
+									</div>
+								</div>
+								<div class="row rowdiff">
+									<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+										Allocate Onsite Manager:<span class="red">*</span>
+									</div>
+									<div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-xs-9">
+										<div class="row">
+											<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+												<p:selectOneMenu class="width-75" id="select_om"
+													disabled="#{hr.resourceBean.selectedProjectId eq 0}"
+													value="#{hr.resourceBean.selectedOnsiteManagerId}">
+													<f:selectItem itemValue="0" itemLabel="--Select--"
+														itemDisabled="true" />
+													<f:selectItems value="#{hr.resourceBean.onsiteManager}"
+														var="om" itemValue="#{om.userId}"
+														itemLabel="#{om.empName}"></f:selectItems>
+													<p:ajax event="change" listener="#{hr.UpdateOnsiteManager}"
+														update="wh_om view_om_1 view_om_2 view_om_3"></p:ajax>
+												</p:selectOneMenu>
+											</div>
+											<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+												Working Hours:<span class="red">*</span>&nbsp;
+												<p:spinner 
+													disabled="#{hr.resourceBean.selectedOnsiteManagerId eq 0}"
+													max="#{hr.maxValUI.max_hours_om}" min="2" id="wh_om"
+													value="#{hr.resourceBean.hours_om}">
+													<p:ajax event="change" listener="#{hr.UpdateOnsiteManager}"
+														update="wh_om view_om_1 view_om_2 view_om_3"></p:ajax>
+												</p:spinner>
+											</div>
+										</div>
+
+									</div>
+								</div>
+								<div class="row rowdiff">
+									<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+										Allocate Manager:<span class="red">*</span>
+									</div>
+									<div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-xs-9">
+										<div class="row">
+											<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+												<p:selectOneMenu class="width-75" id="select_m"
+													disabled="#{hr.resourceBean.selectedProjectId eq 0}"
+													value="#{hr.resourceBean.selectedManagerId}">
+													<f:selectItem itemValue="0" itemLabel="--Select--"
+														itemDisabled="true" />
+													<f:selectItems value="#{hr.resourceBean.manager}" var="m"
+														itemValue="#{m.userId}" itemLabel="#{m.empName}"></f:selectItems>
+													<p:ajax event="change" listener="#{hr.UpdateManager}"
+														update="wh_m view_m_1 view_m_2 view_m_3"></p:ajax>
+												</p:selectOneMenu>
+											</div>
+											<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+												Working Hours:<span class="red">*</span>&nbsp;
+												<p:spinner 
+													disabled="#{hr.resourceBean.selectedManagerId eq 0}"
+													max="#{hr.maxValUI.max_hours_m}" min="2" id="wh_m"
+													value="#{hr.resourceBean.hours_m}">
+													<p:ajax event="change" listener="#{hr.UpdateManager}"
+														update="wh_m view_m_1 view_m_2 view_m_3"></p:ajax>
+												</p:spinner>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row rowdiff">
+									<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+										Allocate Lead:<span class="red">*</span>
+									</div>
+									<div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-xs-9">
+										<div class="row">
+											<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+												<p:selectOneMenu class="width-75" id="select_l"
+													disabled="#{hr.resourceBean.selectedProjectId eq 0}"
+													value="#{hr.resourceBean.selectedLeadId}">
+													<f:selectItem itemValue="0" itemLabel="--Select--"
+														itemDisabled="true" />
+													<f:selectItems value="#{hr.resourceBean.lead}" var="l"
+														itemValue="#{l.userId}" itemLabel="#{l.empName}"></f:selectItems>
+													<p:ajax event="change" listener="#{hr.UpdateLead}"
+														update=" wh_l view_l_1 view_l_2 view_l_3"></p:ajax>
+												</p:selectOneMenu>
+											</div>
+											<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+												Working Hours:<span class="red">*</span>&nbsp;
+												<p:spinner disabled="#{hr.resourceBean.selectedLeadId eq 0}"
+													max="#{hr.maxValUI.max_hours_l}" min="2" id="wh_l"
+													value="#{hr.resourceBean.hours_l}">
+													<p:ajax event="change" listener="#{hr.UpdateLead}"
+														update="wh_l view_l_1 view_l_2 view_l_3"></p:ajax>
+												</p:spinner>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row rowdiff">
+									<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+										Allocate Developer:</div>
+									<div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-xs-9">
+										<div class="row">
+											<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+												<p:selectOneMenu class="width-75" id="select_1"
+													disabled="#{hr.resourceBean.selectedProjectId eq 0}"
+													value="#{hr.resourceBean.selectedDeveloperId}">
+													<f:selectItem itemValue='0' itemLabel="--Select--" />
+													<f:selectItems value="#{hr.resourceBean.developer}" var="d"
+														itemValue="#{d.userId}" itemLabel="#{d.empName}"></f:selectItems>
+													<p:ajax event="change"
+														listener="#{hr.UpdateSelectDeveloper}"
+														update="wh_1 select_1"></p:ajax>
+												</p:selectOneMenu>
+											</div>
+											<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+												Working Hours:<span class="red">*</span>&nbsp;
+												<p:spinner 
+													disabled="#{hr.resourceBean.selectedDeveloperId eq 0}"
+													max="#{hr.maxValUI.max_hours_d}" min="2" id="wh_1"
+													value="#{hr.resourceBean.hours_d}">
+													<p:ajax event="change"
+														listener="#{hr.UpdateSelectDeveloper}"
+														update="wh_1 select_1"></p:ajax>
+												</p:spinner>
+												&nbsp;
+												<h:commandButton type="button" value="Update"
+													class="btn btn-sm btn-primary">
+													<p:ajax event="click" listener="#{hr.UpdateDeveloper}"
+														update="wh_1 view_d"></p:ajax>
+												</h:commandButton>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row rowdiff">
+									<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+										Allocate Performance Tester:</div>
+									<div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-xs-9">
+										<div class="row">
+											<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+												<p:selectOneMenu class="width-75" id="select_2"
+													disabled="#{hr.resourceBean.selectedProjectId eq 0}"
+													value="#{hr.resourceBean.selectedPerfTesterId}">
+													<f:selectItem itemValue="0" itemLabel="--Select--" />
+													<f:selectItems value="#{hr.resourceBean.perfTester}"
+														var="pt" itemValue="#{pt.userId}"
+														itemLabel="#{pt.empName}"></f:selectItems>
+													<p:ajax event="change"
+														listener="#{hr.UpdateSelectPerfTester}"
+														update="wh_2 select_2"></p:ajax>
+												</p:selectOneMenu>
+											</div>
+											<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+												Working Hours:<span class="red">*</span>&nbsp;
+												<p:spinner
+													disabled="#{hr.resourceBean.selectedPerfTesterId eq 0}"
+													 max="#{hr.maxValUI.max_hours_pt}" min="2" id="wh_2"
+													value="#{hr.resourceBean.hours_pt}">
+													<p:ajax event="change"
+														listener="#{hr.UpdateSelectPerfTester}"
+														update="wh_2 select_2"></p:ajax>
+												</p:spinner>
+												&nbsp;
+												<h:commandButton type="button"
+													class="btn btn-sm btn-primary" value="Update">
+													<p:ajax event="click" listener="#{hr.UpdatePerfTester}"
+														update="wh_2 view_pt"></p:ajax>
+												</h:commandButton>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row rowdiff">
+									<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+										Allocate Tester:</div>
+									<div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-xs-9">
+										<div class="row">
+											<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+												<p:selectOneMenu class="width-75" id="select_3"
+													disabled="#{hr.resourceBean.selectedProjectId eq 0}"
+													value="#{hr.resourceBean.selectedTesterId}">
+													<f:selectItem itemValue="0" itemLabel="--Select--" />
+													<f:selectItems value="#{hr.resourceBean.tester}" var="t"
+														itemValue="#{t.userId}" itemLabel="#{t.empName}"></f:selectItems>
+													<p:ajax event="change" listener="#{hr.UpdateSelectTester}"
+														update="wh_3 select_3"></p:ajax>
+												</p:selectOneMenu>
+											</div>
+											<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+												Working Hours:<span class="red">*</span>&nbsp;
+												<p:spinner 
+													disabled="#{hr.resourceBean.selectedTesterId eq 0}"
+													max="#{hr.maxValUI.max_hours_t}" min="2" id="wh_3"
+													value="#{hr.resourceBean.hours_t}">
+													<p:ajax event="change" listener="#{hr.UpdateSelectTester}"
+														update="wh_3 select_3"></p:ajax>
+												</p:spinner>
+												&nbsp;
+												<h:commandButton type="button"
+													class="btn btn-sm btn-primary" value="Update">
+													<p:ajax event="click" listener="#{hr.UpdateTester}"
+														update="wh_3 view_t"></p:ajax>
+												</h:commandButton>
+											</div>
+										</div>
+									</div>
+								</div>
+								<p:dialog header="Allocation" widgetVar="dlg1"
+									showEffect="explode" hideEffect="bounce" height="400"
+									width="800">
+									<div class="modal-body">
+										<div class="row">
+											<h:outputLabel value="Project:" />
+											&nbsp;&nbsp;
+											<h:outputText id="view_proj"
+												value="#{hr.resourceBean.selectedProjectName}"></h:outputText>
+										</div>
+										<div class="row">
+											<div class="col-xl-4 col-lg-4 col-md-4 col-xs-4 col-sm-4">
+												<h:outputLabel value="Onsite Manager:" />
+												&nbsp;&nbsp;
+												<h:outputText id="view_om_1"
+													value="#{hr.resourceBean.selectedOnsiteManagerName}"></h:outputText>
+											</div>
+											<div class="col-xl-4 col-lg-4 col-md-4 col-xs-4 col-sm-4">
+												<h:outputLabel value="Designation" />
+												&nbsp;&nbsp;
+												<h:outputText id="view_om_2"
+													value="#{hr.resourceBean.selectedOnsiteManagerDesg}"></h:outputText>
+											</div>
+											<div class="col-xl-4 col-lg-4 col-md-4 col-xs-4 col-sm-4">
+												<h:outputLabel value="Working Hours:" />
+												&nbsp;&nbsp;
+												<h:outputText id="view_om_3"
+													value="#{hr.resourceBean.hours_om}"></h:outputText>
+											</div>
+
+										</div>
+										<div class="row">
+											<div class="col-xl-4 col-lg-4 col-md-4 col-xs-4 col-sm-4">
+												<h:outputLabel value="Manager:" />
+												&nbsp;&nbsp;
+												<h:outputText id="view_m_1"
+													value="#{hr.resourceBean.selectedManagerName}"></h:outputText>
+											</div>
+											<div class="col-xl-4 col-lg-4 col-md-4 col-xs-4 col-sm-4">
+												<h:outputLabel value="Designation" />
+												&nbsp;&nbsp;
+												<h:outputText id="view_m_2"
+													value="#{hr.resourceBean.selectedManagerDesg}"></h:outputText>
+
+											</div>
+											<div class="col-xl-4 col-lg-4 col-md-4 col-xs-4 col-sm-4">
+												<h:outputLabel value="Working Hours:" />
+												&nbsp;&nbsp;
+												<h:outputText id="view_m_3"
+													value="#{hr.resourceBean.hours_m}"></h:outputText>
+											</div>
+
+										</div>
+										<div class="row">
+											<div class="col-xl-4 col-lg-4 col-md-4 col-xs-4 col-sm-4">
+												<h:outputLabel value="Lead:" />
+												&nbsp;&nbsp;
+												<h:outputText id="view_l_1"
+													value="#{hr.resourceBean.selectedLeadName}"></h:outputText>
+											</div>
+											<div class="col-xl-4 col-lg-4 col-md-4 col-xs-4 col-sm-4">
+												<h:outputLabel value="Designation" />
+												&nbsp;&nbsp;
+												<h:outputText id="view_l_2"
+													value="#{hr.resourceBean.selectedLeadDesg}"></h:outputText>
+											</div>
+											<div class="col-xl-4 col-lg-4 col-md-4 col-xs-4 col-sm-4">
+												<h:outputLabel value="Working Hours:" />
+												&nbsp;&nbsp;
+												<h:outputText id="view_l_3"
+													value="#{hr.resourceBean.hours_l}"></h:outputText>
+											</div>
+
+										</div>
+										<div class="row">
+											<h:outputLabel value="Developers:" />
+											<br />
+											<p:dataTable var="data" id="view_d"
+												value="#{hr.resourceBean.selectedDevelopers}">
+												<p:column headerText="Name">
+													<h:outputText value="#{data.value.value1}"></h:outputText>
+												</p:column>
+												<p:column headerText="Designation">
+													<h:outputText value="#{data.value.value2}"></h:outputText>
+												</p:column>
+												<p:column headerText="Working Hours">
+													<h:outputText value="#{data.value.value3}"></h:outputText>
+												</p:column>
+											</p:dataTable>
+										</div>
+										<div class="row">
+											<h:outputLabel value="Performance Tester:" />
+											<br />
+											<p:dataTable var="data" id="view_pt"
+												value="#{hr.resourceBean.selectedPerfTesters}">
+												<p:column headerText="Name">
+													<h:outputText value="#{data.value.value1}"></h:outputText>
+												</p:column>
+												<p:column headerText="Designation">
+													<h:outputText value="#{data.value.value2}"></h:outputText>
+												</p:column>
+												<p:column headerText="Working Hours">
+													<h:outputText value="#{data.value.value3}"></h:outputText>
+												</p:column>
+											</p:dataTable>
+										</div>
+										<div class="row">
+											<h:outputLabel value="Tester:" />
+											<br />
+											<p:dataTable var="data" id="view_t"
+												value="#{hr.resourceBean.selectedTesters}">
+												<p:column headerText="Name">
+													<h:outputText value="#{data.value.value1}"></h:outputText>
+												</p:column>
+												<p:column headerText="Designation">
+													<h:outputText value="#{data.value.value2}"></h:outputText>
+												</p:column>
+												<p:column headerText="Working Hours">
+													<h:outputText value="#{data.value.value3}"></h:outputText>
+												</p:column>
+											</p:dataTable>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<h:commandButton value="Allocate Now" 
+										action="#{hr.NewAllocation}"
+										class="btn btn-success"></h:commandButton>
+									</div>
+								</p:dialog>
+							</div>
+							<div class="card-footer">
+								<h:commandButton value="Save &amp; View Allocation"
+									type="button" onclick="PF('dlg1').show();"
+									class="btn btn-primary ">
+
+								</h:commandButton>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				<br />
+				<br />
+				<br />
+				<br />
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>

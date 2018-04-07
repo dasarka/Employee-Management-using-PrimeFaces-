@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+</h:head>
+<h:body>
+	<h:outputText value="#{projRep.initCharts}" />
+	<div class="card-body" style="overflow-y: scroll; max-height: 400px">
+
+		<div class="row">
+			<!-- Pie -->
+			<div class="col-xl-6 col-lg-6 col-md-6 com-sm-12 col-xs-12">
+				<p:chart type="pie" model="#{projRep.projReport.pieModel}"
+					style="width:400px;height:300px" />
+			</div>
+			<!-- Area  -->
+			<div class="col-xl-6 col-lg-6 col-md-6 com-sm-12 col-xs-12">
+				
+			</div>
+		</div>
+		<div class="row">
+			<!-- Linear chart(muliaxis) -->
+			<div class="col-xl-6 col-lg-6 col-md-6 com-sm-12 col-xs-12">
+				<p:chart type="line" model="#{projRep.projReport.multiAxisModel}"
+					style="width:400px;height:300px" />
+			</div>
+			<!--Date  -->
+			<div class="col-xl-6 col-lg-6 col-md-6 com-sm-12 col-xs-12">
+				<p:chart type="line" model="#{projRep.projReport.dateModel}"
+					style="width:400px;height:300px" />
+			</div>
+		</div>
+
+		<div class="row">
+			<!-- Bar chart -->
+			<div class="col-xl-6 col-lg-6 col-md-6 com-sm-12 col-xs-12">
+				<p:chart type="bar" model="#{projRep.projReport.barModel}"
+					style="width:400px;height:300px" />
+			</div>
+			<!-- Horizontal and stacked -->
+			<div class="col-xl-6 col-lg-6 col-md-6 com-sm-12 col-xs-12">
+				<p:chart type="bar" model="#{projRep.projReport.horizontalBarModel}"
+					style="width:400px;height:300px" />
+			</div>
+		</div>
+		<div class="row">
+			<!-- Bubble  -->
+			<div class="col-xl-6 col-lg-6 col-md-6 com-sm-12 col-xs-12">
+				<p:chart type="bubble" model="#{projRep.projReport.bubbleModel}"
+					style="width:400px;height:300px" />
+			</div>
+			<!-- Meter gauge -->
+			<div class="col-xl-6 col-lg-6 col-md-6 com-sm-12 col-xs-12">
+				<p:chart type="metergauge"
+					model="#{projRep.projReport.meterGaugeModel}"
+					style="width:400px;height:250px" />
+
+
+			</div>
+		</div>
+
+
+	</div>
+</h:body>
+</html>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+
+
+	<!-- Bootstrap Core CSS -->
+	<link href="PROJECT-TEMPLATE/css/bootstrap.min.css" rel="stylesheet" />
+
+	<!-- Timeline CSS -->
+	<link href="PROJECT-TEMPLATE/css/timeline.css" rel="stylesheet" />
+
+	<!-- Custom CSS -->
+	<link href="PROJECT-TEMPLATE/css/startmin.css" rel="stylesheet" />
+
+	<!-- Custom Fonts -->
+	<link href="PROJECT-TEMPLATE/css/font-awesome.min.css" rel="stylesheet"
+		type="text/css" />
+
+
+	<!-- Custom Colors Css -->
+	<link href="Styles/colors.css" rel="stylesheet" type="text/css" />
+
+	<!-- Custom Page Css -->
+	<link href="Styles/pageStyles.css" rel="stylesheet" type="text/css" />
+
+	<style>
+.ui-tabs-nav {
+	height: 355px !important
+}
+</style>
+</h:head>
+<h:body>
+	<h:outputText value="Welcome #{empMain.sessionData}"></h:outputText>
+	<div class="modal-header">
+		<nav class=" navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="navbar-header">
+			<a href="dashboard.xhtml"><img src="Images/logoNew.jpg"
+				style="height: 35px; margin-top: 10px; margin-left: 10px;"></img></a>
+
+		</div>
+		<div class="white">
+			<center>
+
+				<h:outputText value="Welcome #{empMain.usersBean.empName}"
+					style="font-size: 30px; margin-top: 5px;"></h:outputText>
+				<h:link id="btnLogout" outcome="index.xhtml"
+					value="Logout" class="pull-right btn btn-link"></h:link>
+
+			</center>
+
+		</div>
+
+		</nav>
+	</div>
+
+	<div class="modal-footer navbar-fixed-bottom navbar navbar-text" style="z-index:101;background-color:grey; color:#fff;margin:0px!important">
+		<center>CopyRight©2018,Created by ARKA DAS</center>
+	</div>
+
+</h:body>
+</html>

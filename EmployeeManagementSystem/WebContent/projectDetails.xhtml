@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+	<title>Employee Management</title>
+
+</h:head>
+<h:body class="bg-white content">
+	<div class="content-wrapper">
+		<ui:include src="WEB-MASTER-PAGES/EmpMaster.xhtml"></ui:include>
+		<p:breadCrumb>
+			<p:menuitem value="Dashboard" url="dashboard.xhtml" />
+			<p:menuitem value="Project Timeline" url="projectTimeline.xhtml" />
+			<p:menuitem value="Project Details" url="#" />
+		</p:breadCrumb>
+		<div class="page-body">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12 com-sm-12 col-xs-12">
+					<h:form id="empProject">
+						<h:outputText value="#{empMain.fetchProjectDetails}" />
+						<h:outputText value="#{projRep.fetchProjectDetails}" />
+						<div class="row" style="margin-top: -35px;">
+							<div class="col-xl-12 col-lg-12 col-md-12 com-sm-12 col-xs-12">
+								<p:tabView dynamic="true" cache="true" effect="fold"
+									orientation="left" id="projTab">
+									<p:tab title="View/Update Task" id="viewTask">
+										<ui:include src="WEB-CONTENT-PAGES/ProjectDetails/ViewTaskTab.xhtml"></ui:include>
+									</p:tab>
+									<p:tab title="Create New Task" id="newTask"
+										disabled="#{empMain.projectType eq 0 ||empMain.usersBean.accessVal eq 'Manager' || empMain.usersBean.accessVal eq 'Onsite Manager'}">
+										<ui:include src="WEB-CONTENT-PAGES/ProjectDetails/CreateNewTaskTab.xhtml"></ui:include>
+									</p:tab>
+									<p:tab title="Resources" id="resources">
+										<ui:include src="WEB-CONTENT-PAGES/ProjectDetails/ResourcesTab.xhtml"></ui:include>
+									</p:tab>
+									<p:tab title="Pending Task" id="deliver">
+										<ui:include src="WEB-CONTENT-PAGES/ProjectDetails/PendingTaskTab.xhtml"></ui:include>
+									</p:tab>
+									<p:tab title="Project Report" id="report">
+										<ui:include src="WEB-CONTENT-PAGES/ProjectDetails/ProjectReportTab.xhtml"></ui:include>
+									</p:tab>
+								</p:tabView>
+							</div>
+						</div>
+					</h:form>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</h:body>
+</html>

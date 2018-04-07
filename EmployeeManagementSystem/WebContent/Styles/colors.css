@@ -1,0 +1,20 @@
+/*font color*/
+.white{
+	color:white;
+}
+.red{
+	color:red;
+}
+/*background color*/
+.bg-white{
+	background-color:white;
+}
+.bg-red{
+	background-color:red;
+}
+.border-gray-1{
+	border:1px solid #DDD;
+}
+.bg-gray{
+	background-color:#DDD;
+}

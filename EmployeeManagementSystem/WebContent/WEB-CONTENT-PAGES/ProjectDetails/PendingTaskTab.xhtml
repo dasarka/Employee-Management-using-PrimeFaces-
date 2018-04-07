@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+</h:head>
+<h:body>
+	<h:outputText value="#{empMain.loadTaskDetails}" />
+	<div class="card-body" style="overflow-y: scroll; max-height: 400px">
+		<p:dataTable var="data" value="#{empMain.updateTaskBean.tasksList}"
+			rowKey="#{data.taskId}">
+			<f:facet name="header">
+											            Pending Task Details
+											        </f:facet>
+
+			<p:column headerText="Task Name" rendered="#{data.taskStatus ne 10}">
+				<h:outputText value="#{data.taskName}" />
+			</p:column>
+			<p:column headerText="Assign To" rendered="#{data.taskStatus ne 10}">
+				<h:outputText value="#{data.resourceName}" />
+			</p:column>
+			<p:column headerText="Description"
+				rendered="#{data.taskStatus ne 10}">
+				<h:outputText value="#{data.description}"></h:outputText>
+			</p:column>
+			<p:column headerText="End Date" rendered="#{data.taskStatus ne 10}">
+				<h:outputText value="#{data.endDate}" />
+			</p:column>
+
+			<f:facet name="footer">
+
+			</f:facet>
+		</p:dataTable>
+	</div>
+</h:body>
+</html>

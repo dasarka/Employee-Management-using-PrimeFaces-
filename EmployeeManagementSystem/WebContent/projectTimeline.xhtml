@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+	<title>Employee Management</title>
+
+</h:head>
+<h:body class="bg-white content">
+	<div class="content-wrapper">
+		<ui:include src="WEB-MASTER-PAGES/EmpMaster.xhtml"></ui:include>
+		<p:breadCrumb>
+			<p:menuitem value="Dashboard" url="dashboard.xhtml" />
+			<p:menuitem value="Project Timeline" url="#" />
+		</p:breadCrumb>
+		<div class="page-body">
+
+			<h:form id="projTimeline">
+				<h:outputText value="#{empMain.loadProjectData}" />
+				<div class="row">
+					<div class="col-xl-11 col-lg-11 col-md-11 com-sm-11 col-xs-11"
+						style="margin-left: 4%">
+
+						<div class="card">
+							<div class="card-header">
+								<h4>
+									<strong>Project List</strong>
+								</h4>
+							</div>
+							<div class="card-body">
+								<p:tabView dynamic="true" cache="true" effect="fold"
+									id="projTab">
+
+									<p:tab title="Current Project" id="currProj">
+										<p:dataTable var="cProj"
+											value="#{empMain.empProjListBean.currentProj}">
+											<p:column headerText="Project Id">
+												<a
+													href="projectDetails.xhtml?pid=#{cProj.projectId}&amp;flag=1">
+													<h:outputText value="#{cProj.projectId}" />
+												</a>
+											</p:column>
+											<p:column headerText="Project Name">
+												<h:outputText value="#{cProj.projectName}" />
+											</p:column>
+											<p:column headerText="Start Date">
+												<h:outputText value="#{cProj.startDate}" />
+											</p:column>
+											<p:column headerText="End Date">
+												<h:outputText value="#{cProj.endDate}" />
+											</p:column>
+											<p:column headerText="Onsite Manager">
+												<h:outputText value="#{cProj.onsiteManagerName}" />
+											</p:column>
+											<p:column headerText="Client">
+												<h:outputText value="#{cProj.clientName}" />
+											</p:column>
+											<p:column headerText="Progress">
+												<div style="height: 20px">
+													<p:progressBar value="#{cProj.progress}"
+														labelTemplate="{value}%" displayOnly="true" />
+												</div>
+											</p:column>
+										</p:dataTable>
+									</p:tab>
+									<p:tab title="Upcoming Project" id="upcProj">
+										<p:dataTable var="uProj"
+											value="#{empMain.empProjListBean.upcomingProj}">
+											<p:column headerText="Project Id">
+												<h:outputText value="#{uProj.projectId}" />
+											</p:column>
+											<p:column headerText="Project Name">
+												<h:outputText value="#{uProj.projectName}" />
+											</p:column>
+											<p:column headerText="Start Date">
+												<h:outputText value="#{uProj.startDate}" />
+											</p:column>
+											<p:column headerText="End Date">
+												<h:outputText value="#{uProj.endDate}" />
+											</p:column>
+											<p:column headerText="Onsite Manager">
+												<h:outputText value="#{uProj.onsiteManagerName}" />
+											</p:column>
+											<p:column headerText="Client">
+												<h:outputText value="#{uProj.clientName}" />
+											</p:column>
+										</p:dataTable>
+									</p:tab>
+									<p:tab title="Completed Project" id="oldProj">
+										<p:dataTable var="oProj"
+											value="#{empMain.empProjListBean.completeProj}">
+											<p:column headerText="Project Id">
+												<a
+													href="projectDetails.xhtml?pid=#{oProj.projectId}&amp;flag=0">
+													<h:outputText value="#{oProj.projectId}" />
+												</a>
+											</p:column>
+											<p:column headerText="Project Name">
+												<h:outputText value="#{oProj.projectName}" />
+											</p:column>
+											<p:column headerText="Start Date">
+												<h:outputText value="#{oProj.startDate}" />
+											</p:column>
+											<p:column headerText="End Date">
+												<h:outputText value="#{oProj.endDate}" />
+											</p:column>
+											<p:column headerText="Onsite Manager">
+												<h:outputText value="#{oProj.onsiteManagerName}" />
+											</p:column>
+											<p:column headerText="Client">
+												<h:outputText value="#{oProj.clientName}" />
+											</p:column>
+										</p:dataTable>
+									</p:tab>
+								</p:tabView>
+							</div>
+							<div class="card-footer"></div>
+						</div>
+					</div>
+				</div>
+				<br />
+				<br />
+				<br />
+				<br />
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+</h:head>
+<h:body>
+	<h:outputText value="#{empMain.loadTaskDetails}" />
+	
+	<div class="card-body" style="overflow-y: scroll; max-height: 400px">
+	<p:dataTable var="data" value="#{empMain.updateTaskBean.tasksList}"
+		rowKey="#{data.taskId}">
+		<f:facet name="header">
+											            Task Details
+											        </f:facet>
+		<p:column headerText="Task Name">
+			<h:outputText value="#{data.taskName}" />
+		</p:column>
+		<p:column headerText="Assign To">
+			<h:outputText value="#{data.resourceName}" />
+		</p:column>
+		<p:column headerText="Description">
+			<h:outputText value="#{data.description}"></h:outputText>
+		</p:column>
+		<p:column headerText="End Date">
+			<h:outputText value="#{data.endDate}" />
+		</p:column>
+		<p:column headerText="Task Status" style="Width:25%!important">
+			<p:selectOneMenu class="width-75" value="#{data.taskStatus}">
+				<f:selectItem itemValue="0" itemLabel="Initiated"></f:selectItem>
+				<f:selectItem itemValue="2" itemLabel="Started"></f:selectItem>
+				<f:selectItem itemValue="4" itemLabel="PhaseI Completed"></f:selectItem>
+				<f:selectItem itemValue="6" itemLabel="PhaseII Completed"></f:selectItem>
+				<f:selectItem itemValue="8" itemLabel="PhaseIII Completed"></f:selectItem>
+				<f:selectItem itemValue="10" itemLabel="Completed"></f:selectItem>
+			</p:selectOneMenu>
+		</p:column>
+		<f:facet name="footer">
+			<h:commandButton value="Update"
+				disabled="#{empMain.projectType eq 0}"
+				action="#{empMain.UpdateTask}" class="btn-xs btn btn-primary"></h:commandButton>
+		</f:facet>
+	</p:dataTable>
+	</div>
+</h:body>
+</html>

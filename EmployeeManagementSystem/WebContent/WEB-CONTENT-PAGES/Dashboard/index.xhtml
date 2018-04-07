@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+</h:head>
+<h:body>
+	<div class="row pull-right">
+
+		<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 com-xs-6">
+			<a
+				href="#{empMain.usersBean.accessVal eq 'HR' ? '/EmployeeManagementSystem/createResource.xhtml' : '/EmployeeManagementSystem/permissionDeny.xhtml'}">Add
+				Resource</a>
+		</div>
+		<div class="col-xl-2 col-lg-2 col-md-2col-sm-6 com-xs-6">
+			<a
+				href="#{empMain.usersBean.accessVal eq 'Admin' ? '/EmployeeManagementSystem/provideAccess.xhtml' : '/EmployeeManagementSystem/permissionDeny.xhtml'}">Provide
+				Access</a>
+		</div>
+		<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 com-xs-6">
+			<a
+				href="#{empMain.usersBean.accessVal eq 'Client' ? '/EmployeeManagementSystem/newProject.xhtml' : '/EmployeeManagementSystem/permissionDeny.xhtml'}">Add
+				Project</a>
+
+		</div>
+		<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 com-xs-6">
+			<a
+				href="#{empMain.usersBean.accessVal eq 'HR'? '/EmployeeManagementSystem/resourceAllocation.xhtml' : '/EmployeeManagementSystem/permissionDeny.xhtml'}">Resource
+				Allocation</a>
+
+		</div>
+		<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 com-xs-6">
+			<a
+				href="#{empMain.usersBean.accessVal eq 'HR'  ? '/EmployeeManagementSystem/hrWorkspace.xhtml' : '/EmployeeManagementSystem/permissionDeny.xhtml'}">HR
+				Workspace</a>
+		</div>
+		<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 com-xs-6">
+			<a
+				href="#{empMain.usersBean.accessVal eq 'Onsite Manager' or empMain.usersBean.accessVal eq 'Manager' or empMain.usersBean.accessVal eq 'Lead'? '/EmployeeManagementSystem/projectTimeline.xhtml' : '/EmployeeManagementSystem/permissionDeny.xhtml'}">Project
+				Timeline</a>
+
+
+		</div>
+	</div>
+	<br />
+	<br />
+	<hr />
+	<h:panelGrid columns="2" cellpadding="10" id="panel1">
+
+		<h:outputText value="Coming Soon!!!" />
+	</h:panelGrid>
+</h:body>
+</html>
