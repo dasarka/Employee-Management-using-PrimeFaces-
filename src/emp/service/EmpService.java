@@ -34,4 +34,7 @@ public interface EmpService {
 
 	boolean UpdateTaskService(UpdateTaskBean updateTaskBean)throws SQLException;
 
+	EmpProjListBean LoadInternalProjectDataService(int userId)
+			throws SQLException;
+
 }

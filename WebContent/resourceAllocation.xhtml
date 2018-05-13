@@ -43,8 +43,8 @@
 											value="#{hr.projListBean.currentProj}">
 											<p:column headerText="Project Id">
 
-												<a href="projectDetails.xhtml?pid=#{cProj.projectId}"> <h:outputText
-														value="#{cProj.projectId}" /></a>
+												<h:outputText
+														value="#{cProj.projectId}" />
 											</p:column>
 											<p:column headerText="Project Name">
 												<h:outputText value="#{cProj.projectName}" />
@@ -68,8 +68,8 @@
 										<p:dataTable var="uProj"
 											value="#{hr.projListBean.upcomingProj}">
 											<p:column headerText="Project Id">
-												<a href="projectDetails.xhtml?pid=#{uProj.projectId}"> <h:outputText
-														value="#{uProj.projectId}" /></a>
+												<h:outputText
+														value="#{uProj.projectId}" />
 											</p:column>
 											<p:column headerText="Project Name">
 												<h:outputText value="#{uProj.projectName}" />
@@ -92,8 +92,8 @@
 										<p:dataTable var="oProj"
 											value="#{hr.projListBean.completeProj}">
 											<p:column headerText="Project Id">
-												<a href="projectDetails.xhtml?pid=#{oProj.projectId}"> <h:outputText
-														value="#{oProj.projectId}" /></a>
+												<h:outputText
+														value="#{oProj.projectId}" />
 											</p:column>
 											<p:column headerText="Project Name">
 												<h:outputText value="#{oProj.projectName}" />

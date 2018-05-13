@@ -4,11 +4,14 @@ import java.sql.SQLException;
 
 import emp.model.ClientProjListBean;
 import emp.model.ClientProjViewBean;
+import emp.model.UsersBean;
 
 public interface ClientService {
 
-	boolean CreateProjectService(ClientProjViewBean projViewBean,String username) throws SQLException;
 
 	ClientProjListBean LoadDataService(String username) throws SQLException;
+
+	boolean CreateProjectService(ClientProjViewBean projViewBean,
+			UsersBean usersbean) throws SQLException;
 
 }

@@ -12,6 +12,7 @@ import emp.connection.SQLConnection;
 import emp.dao.ClientDao;
 import emp.model.ClientProjListBean;
 import emp.model.ClientProjViewBean;
+import emp.model.UsersBean;
 
 public class ClientDaoImpl implements ClientDao {
 	private static SQLConnection connection = null;
@@ -21,8 +22,7 @@ public class ClientDaoImpl implements ClientDao {
 	}
 
 	@Override
-	public boolean CreateProjectDao(ClientProjViewBean projViewBean,
-			String username) throws SQLException {
+	public boolean CreateProjectDao(ClientProjViewBean projViewBean,UsersBean usersbean) throws SQLException {
 		boolean flag = false;
 		System.out.println("client dao create new " + projViewBean);
 		char projectType = 0;
@@ -65,13 +65,60 @@ public class ClientDaoImpl implements ClientDao {
 				+ projViewBean.getBudget()
 				* projViewBean.getResources()
 				+ ""
-				+ ",'" + username + "'" + ",'" + projectType + "' );";
+				+ ",'" + usersbean.getEmpName() + "'" + ",'" + projectType + "' );";
 		System.out.println("query " + query);
-
+		String queryProjId="SELECT project_id FROM emp_project order by project_id DESC";
+		
+		int projectId = 0;
 		if (connection.getICDM(query) > 0) {
 			flag = true;
+		}else{
+			flag=false;
 		}
+		rs = null;
+		rs = connection.getResultSet(queryProjId);
+		if (rs.next() == false) {
 
+		} else {
+			rs.absolute(1);
+			projectId=(Integer) rs.getObject("project_id");
+		}
+		System.out.println("projectId "+projectId);
+		String query1="INSERT INTO emp_project_allocation(user_id,project_id) VALUES ("
+				+usersbean.getUserId()
+				+","+projectId+")";
+		String query2="INSERT INTO emp_project_allocation(user_id,project_id) VALUES ("
+				+"AD_EMP_ADMIN_HR_USERID"
+				+","+projectId+")";
+		String queryUserId="SELECT user_id FROM empmanagement.emp_authentication where emp_access= 2 or emp_access=6";
+		if(usersbean.getAccessVal().equals("HR")){
+			rs = null;
+			rs = connection.getResultSet(queryUserId);
+			if (rs.next() == false) {
+
+			} else {
+				rs.absolute(1);
+				do{
+					String update_query2=query2.replace("AD_EMP_ADMIN_HR_USERID",
+							String.valueOf((Integer) rs.getObject("user_id")));
+					System.out.println("update_query2 "+update_query2);
+					if (connection.getICDM(update_query2) > 0) {
+						flag = true;
+					}else{
+						flag=false;
+					}
+				}while(rs.next());
+			}
+		}else if(usersbean.getAccessVal().equals("Client")){
+			if (connection.getICDM(query1) > 0) {
+				flag = true;
+			}else{
+				flag=false;
+			}
+		}else{
+			flag=false;
+		}
+		
 		return flag;
 	}
 

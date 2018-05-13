@@ -287,8 +287,14 @@ public class EmpController {
 	public String getLoadProjectData() {
 		EmpService empService = new EmpServiceImpl();
 		try {
+			System.out.println("usersBean.getAccessVal() "+usersBean.getAccessVal());
+			if(usersBean.getAccessVal().equals("Admin") || usersBean.getAccessVal().equals("HR")){
+				empProjListBean = empService.LoadInternalProjectDataService(usersBean
+						.getUserId());
+			}else{
 			empProjListBean = empService.LoadProjectDataService(usersBean
 					.getUserId());
+			}
 			System.out.println("projListBean " + empProjListBean);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

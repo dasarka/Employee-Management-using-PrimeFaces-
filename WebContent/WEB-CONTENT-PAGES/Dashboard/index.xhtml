@@ -26,7 +26,7 @@
 		</div>
 		<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 com-xs-6">
 			<a
-				href="#{empMain.usersBean.accessVal eq 'Client' ? '/EmployeeManagementSystem/newProject.xhtml' : '/EmployeeManagementSystem/permissionDeny.xhtml'}">Add
+				href="#{empMain.usersBean.accessVal eq 'Client' or empMain.usersBean.accessVal eq 'HR' ? '/EmployeeManagementSystem/newProject.xhtml' : '/EmployeeManagementSystem/permissionDeny.xhtml'}">Add
 				Project</a>
 
 		</div>
@@ -43,7 +43,7 @@
 		</div>
 		<div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 com-xs-6">
 			<a
-				href="#{empMain.usersBean.accessVal eq 'Onsite Manager' or empMain.usersBean.accessVal eq 'Manager' or empMain.usersBean.accessVal eq 'Lead'? '/EmployeeManagementSystem/projectTimeline.xhtml' : '/EmployeeManagementSystem/permissionDeny.xhtml'}">Project
+				href="#{empMain.usersBean.accessVal eq 'Client' or empMain.usersBean.accessVal eq 'Onsite Manager' or empMain.usersBean.accessVal eq 'Manager' or empMain.usersBean.accessVal eq 'Lead'? '/EmployeeManagementSystem/projectTimeline.xhtml' : '/EmployeeManagementSystem/permissionDeny.xhtml'}">Project
 				Timeline</a>
 
 

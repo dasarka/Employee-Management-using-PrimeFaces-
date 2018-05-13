@@ -44,7 +44,7 @@
 		</p:column>
 		<f:facet name="footer">
 			<h:commandButton value="Update"
-				disabled="#{empMain.projectType eq 0}"
+				disabled="#{empMain.projectType eq 0 || empMain.usersBean.accessVal eq 'Client'}"
 				action="#{empMain.UpdateTask}" class="btn-xs btn btn-primary"></h:commandButton>
 		</f:facet>
 	</p:dataTable>

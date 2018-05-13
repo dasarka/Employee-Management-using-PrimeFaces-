@@ -39,6 +39,7 @@
 									</div>
 									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 										<p:inputText id="projName"
+											disabled="#{empMain.usersBean.accessVal eq 'HR'}"
 											value="#{client.projViewBean.projectName}"></p:inputText>
 									</div>
 								</div>
@@ -71,6 +72,7 @@
 									</div>
 									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 										<p:spinner id="resource"
+										disabled="#{empMain.usersBean.accessVal eq 'HR'}"
 											value="#{client.projViewBean.resources}"></p:spinner>
 									</div>
 								</div>
@@ -80,6 +82,7 @@
 									</div>
 									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 										<p:spinner prefix="$" value="#{client.projViewBean.budget}"
+										disabled="#{empMain.usersBean.accessVal eq 'HR'}"
 											min="0" id="budget" />
 									</div>
 								</div>

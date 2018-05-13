@@ -19,7 +19,7 @@
 				<p:dataTable var="data" id="resourceTable"
 					value="#{empMain.empResourceBean.resourceDetails}"
 					selection="#{dtSelectionView.selectedUsers}"
-					disabledSelection="#{empMain.projectType eq 0 ||((data.accessVal eq 'Manager' || data.accessVal eq 'Onsite Manager' || data.accessVal eq 'Lead') &amp;&amp; empMain.usersBean.accessVal == 'Lead') || ((data.accessVal eq 'Manager' || data.accessVal eq 'Onsite Manager') &amp;&amp; empMain.usersBean.accessVal == 'Manager')|| ((data.accessVal eq 'Onsite Manager') &amp;&amp; empMain.usersBean.accessVal == 'Onsite Manager') }"
+					disabledSelection="#{empMain.usersBean.accessVal eq 'Client' || empMain.projectType eq 0 ||((data.accessVal eq 'Manager' || data.accessVal eq 'Onsite Manager' || data.accessVal eq 'Lead') &amp;&amp; empMain.usersBean.accessVal == 'Lead') || ((data.accessVal eq 'Manager' || data.accessVal eq 'Onsite Manager') &amp;&amp; empMain.usersBean.accessVal == 'Manager')|| ((data.accessVal eq 'Onsite Manager') &amp;&amp; empMain.usersBean.accessVal == 'Onsite Manager') }"
 					rowKey="#{data.userId}">
 					<f:facet name="header">
 											            Resource Details
@@ -50,12 +50,12 @@
 			<div class="ui-g-6">
 
 				<h:commandButton value="Request fo new resource"
-					disabled="#{empMain.projectType eq 0}"
+					disabled="#{empMain.projectType eq 0 || empMain.usersBean.accessVal eq 'Client'}"
 					class="pull-left btn btn-xs btn-primary"></h:commandButton>
 			</div>
 			<div class="ui-g-6">
 				<h:commandButton value="Release Resource" process="resourceTable"
-					disabled="#{empMain.projectType eq 0}"
+					disabled="#{empMain.projectType eq 0 || empMain.usersBean.accessVal eq 'Client'}"
 					action="#{empMain.ReleaseResource}"
 					class="pull-right btn btn-xs btn-danger"></h:commandButton>
 			</div>

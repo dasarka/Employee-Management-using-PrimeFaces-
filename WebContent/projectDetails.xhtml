@@ -35,7 +35,7 @@
 										<ui:include src="WEB-CONTENT-PAGES/ProjectDetails/ViewTaskTab.xhtml"></ui:include>
 									</p:tab>
 									<p:tab title="Create New Task" id="newTask"
-										disabled="#{empMain.projectType eq 0 ||empMain.usersBean.accessVal eq 'Manager' || empMain.usersBean.accessVal eq 'Onsite Manager'}">
+										disabled="#{empMain.projectType eq 0 ||empMain.usersBean.accessVal eq 'Manager' || empMain.usersBean.accessVal eq 'Onsite Manager' || empMain.usersBean.accessVal eq 'Client'}">
 										<ui:include src="WEB-CONTENT-PAGES/ProjectDetails/CreateNewTaskTab.xhtml"></ui:include>
 									</p:tab>
 									<p:tab title="Resources" id="resources">

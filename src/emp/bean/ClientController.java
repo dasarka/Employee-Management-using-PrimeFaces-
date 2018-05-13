@@ -56,9 +56,14 @@ public class ClientController {
 		projViewBean.setStartDate(null);
 		projViewBean.setEndDate(null);
 		ClientService clientService=new ClientServiceImpl();
+		if(SessionData().getAccessVal().equals("HR")){
+			projViewBean.setProjectName("Internal Project");
+			projViewBean.setBudget(0.00);
+		}
+
 		try {
 			projListBean=clientService.LoadDataService(SessionData().getEmpName());
-			System.out.println("projListBean "+projListBean);
+						System.out.println("projListBean "+projListBean);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -91,11 +96,12 @@ public class ClientController {
 		ClientService clientService=new ClientServiceImpl();
 		boolean flag=false;
 		try {
-			flag=clientService.CreateProjectService(projViewBean,SessionData().getEmpName());
+			flag=clientService.CreateProjectService(projViewBean,SessionData());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return null;
 	}
 

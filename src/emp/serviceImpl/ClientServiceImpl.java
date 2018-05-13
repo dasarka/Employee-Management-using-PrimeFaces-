@@ -6,14 +6,15 @@ import emp.dao.ClientDao;
 import emp.daoImpl.ClientDaoImpl;
 import emp.model.ClientProjListBean;
 import emp.model.ClientProjViewBean;
+import emp.model.UsersBean;
 import emp.service.ClientService;
 
 public class ClientServiceImpl implements ClientService{
 
 	@Override
-	public boolean CreateProjectService(ClientProjViewBean projViewBean,String username) throws SQLException {
+	public boolean CreateProjectService(ClientProjViewBean projViewBean,UsersBean usersbean) throws SQLException {
 		ClientDao clientDao=new ClientDaoImpl();
-		return clientDao.CreateProjectDao(projViewBean,username);
+		return clientDao.CreateProjectDao(projViewBean,usersbean);
 	}
 
 	@Override

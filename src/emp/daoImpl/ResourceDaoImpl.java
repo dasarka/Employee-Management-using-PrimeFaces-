@@ -114,7 +114,10 @@ public class ResourceDaoImpl implements ResourceDao {
 		List<UsersBean> tester = new ArrayList<UsersBean>();
 
 		//Date currDate = new Date();
-		String projQuery = "SELECT * FROM emp_project " + "WHERE project_id NOT IN (SELECT distinct project_id from emp_project_allocation  ) AND flag <> 'O'";
+		String projQuery = "SELECT * FROM emp_project " + "WHERE project_id NOT IN "
+				+ "(SELECT distinct alloc.project_id  from emp_project_allocation alloc, "
+				+ "emp_authentication auth where alloc.user_id=auth.user_id and auth.emp_access <> 7)"
+				+ " AND flag <> 'O'";
 		String omQuery = "SELECT * FROM emp_authentication auth INNER JOIN emp_access acc "  
 				+"WHERE auth.emp_access=acc.accessId AND auth.emp_access = 10 "
 				+ " AND auth.emp_remainHours>0";
@@ -148,15 +151,18 @@ public class ResourceDaoImpl implements ResourceDao {
 		} else {
 			rs.absolute(1);
 			do {
+				String projName=(String) rs.getObject("project_name");
+				System.out.println("projName "+projName);
 				projectList.add(new ClientProjViewBean(Integer.valueOf(String
 						.valueOf(rs.getObject("project_id"))),
-						String.valueOf(rs.getObject("project_name")),
+						projName,
 						String.valueOf(rs.getObject("start_date")),
 						String.valueOf(rs.getObject("end_date")),
 						Integer.valueOf(String.valueOf(rs
 								.getObject("resources"))),
 						Double.valueOf(String.valueOf(rs.getObject("budget"))),
 						String.valueOf(rs.getObject("client_name"))));
+				System.out.println("projectList "+projectList);
 			} while (rs.next());
 		}
 		

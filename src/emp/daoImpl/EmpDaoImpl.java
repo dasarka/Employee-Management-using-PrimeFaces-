@@ -322,6 +322,95 @@ public class EmpDaoImpl implements EmpDao {
 		return new EmpProjListBean(tempProjList, tempProjList1, tempProjList2);
 
 	}
+	
+	@Override
+	public EmpProjListBean LoadInternalProjectDataDao(int userId) throws SQLException {
+		EmpProjViewBean projViewBean;
+		List<EmpProjViewBean> tempProjList = new ArrayList<EmpProjViewBean>();
+		List<EmpProjViewBean> tempProjList1 = new ArrayList<EmpProjViewBean>();
+		List<EmpProjViewBean> tempProjList2 = new ArrayList<EmpProjViewBean>();
+		Date currDate = new Date();
+
+		String currQuery = "SELECT proj.project_id,proj.project_name,proj.start_date,proj.end_date,proj.client_name,auth.emp_name "
+				+ " FROM empmanagement.emp_project proj INNER JOIN empmanagement.emp_authentication auth INNER JOIN emp_project_allocation alloc"
+				+ " WHERE  proj.project_id=alloc.project_id AND alloc.user_id=auth.user_id AND auth.user_id="
+				+userId
+				+ " AND flag = 'C'";
+		String upcQuery = "SELECT proj.project_id,proj.project_name,proj.start_date,proj.end_date,proj.client_name,auth.emp_name "
+				+ " FROM empmanagement.emp_project proj INNER JOIN empmanagement.emp_authentication auth INNER JOIN emp_project_allocation alloc"
+				+ " WHERE  proj.project_id=alloc.project_id AND alloc.user_id=auth.user_id AND auth.user_id="
+				+userId
+				+ " AND flag = 'U'";
+		String oldQuery = "SELECT proj.project_id,proj.project_name,proj.start_date,proj.end_date,proj.client_name,auth.emp_name "
+				+ " FROM empmanagement.emp_project proj INNER JOIN empmanagement.emp_authentication auth INNER JOIN emp_project_allocation alloc"
+				+ " WHERE  proj.project_id=alloc.project_id AND alloc.user_id=auth.user_id AND auth.user_id="
+				+userId
+				+ " AND flag = 'O'";
+
+		System.out.println("currQuery " + currQuery);
+		System.out.println("upcQuery " + upcQuery);
+		System.out.println("oldQuery " + oldQuery);
+		// set current project
+		rs = null;
+		rs = connection.getResultSet(currQuery);
+		if (rs.next() == false) {
+
+		} else {
+			rs.absolute(1);
+			do {
+
+				projViewBean = new EmpProjViewBean(
+						Integer.valueOf(String.valueOf(rs
+								.getObject("project_id"))),
+						String.valueOf(rs.getObject("project_name")),
+						String.valueOf(rs.getObject("start_date")),
+						String.valueOf(rs.getObject("end_date")),
+						"N.A.", "N.A.");
+
+				
+
+				tempProjList.add(projViewBean);
+			} while (rs.next());
+		}
+
+		// set upcoming project
+		rs = null;
+		rs = connection.getResultSet(upcQuery);
+		if (rs.next() == false) {
+
+		} else {
+			rs.absolute(1);
+			do {
+				projViewBean = new EmpProjViewBean(Integer.valueOf(String
+						.valueOf(rs.getObject("project_id"))),
+						String.valueOf(rs.getObject("project_name")),
+						String.valueOf(rs.getObject("start_date")),
+						String.valueOf(rs.getObject("end_date")),"N.A.", "N.A.");
+				tempProjList1.add(projViewBean);
+			} while (rs.next());
+		}
+
+		// set old project
+		rs = null;
+		rs = connection.getResultSet(oldQuery);
+		if (rs.next() == false) {
+
+		} else {
+			rs.absolute(1);
+			do {
+				projViewBean = new EmpProjViewBean(Integer.valueOf(String
+						.valueOf(rs.getObject("project_id"))),
+						String.valueOf(rs.getObject("project_name")),
+						String.valueOf(rs.getObject("start_date")),
+						String.valueOf(rs.getObject("end_date")),"N.A.", "N.A.");
+				tempProjList2.add(projViewBean);
+			} while (rs.next());
+		}
+
+		return new EmpProjListBean(tempProjList, tempProjList1, tempProjList2);
+
+	}
+
 
 	@Override
 	public List<UsersBean> LoadResourceDataDao(int projectId)
