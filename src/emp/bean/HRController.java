@@ -232,7 +232,7 @@ public class HRController {
 		return null;
 	}
 
-	public void FillNewTimeSheet(AjaxBehaviorEvent event) {
+	public String FillNewTimeSheet() {
 		System.out.println("FillNewTimeSheet ");
 		System.out.println("newTimecard " + newTimecard);
 		HRService hrService = new HRServiceImpl();
@@ -243,6 +243,7 @@ public class HRController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 	}
 	public void ViewTimeCard(AjaxBehaviorEvent event) {
 		System.out.println("ViewTimeCard ");

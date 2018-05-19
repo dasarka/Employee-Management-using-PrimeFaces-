@@ -26,27 +26,18 @@
 </h:head>
 <h:body>
 	<h:form id="timesheet">
+	<h:outputText value="#{emData.loadNewTimeCard}" />
 		<div class="card">
 			<div class="card-header">
-
-
-
 				<div class="row">
 					<div class="col-xl-8 col-lg-8 col-md-8 col-sm-6 col-xs-6">
 						<h:commandButton value="View Timesheet" type="button"
 							class="btn btn-xs btn-primary" onclick="PF('dlg3').show();" />
-
 					</div>
-
-
-
-
 				</div>
-
-
 			</div>
 			<div class="card-body">
-				<h:outputText value="#{emData.loadNewTimeCard}" />
+				
 				<p:dataTable value="#{emData.newTimecard}" var="field">
 					<p:column headerText="Week">
 						<h:outputText value="#{field.week_val}" />
@@ -132,12 +123,9 @@
 											process="@this" render="timesheet:ts_datatable"></f:ajax>
 									</p:selectOneMenu>
 								</div>
-
 							</div>
 						</div>
-
 						<div class="card-body">
-
 							<p:dataTable id="ts_datatable" value="#{emData.profileTimecard}"
 								var="viewData">
 								<p:column headerText="Week">
@@ -155,23 +143,17 @@
 								<p:column headerText="Comments">
 									<h:outputText value="#{viewData.comment}"></h:outputText>
 								</p:column>
-
 							</p:dataTable>
-
-
-
 						</div>
 						<div class="card-footer"></div>
 					</div>
-
 				</p:dialog>
 			</div>
 			<div class="card-footer">
-				<h:commandButton id="btnSubmit" value="Submit"
+				<h:commandButton id="btnSubmit" value="Submit" type="submit"
 					disabled="#{emData.timecardUI.disableTimeCard eq true}"
+					action="#{emData.FillNewTimeSheet}"
 					class="btn btn-success btn-xs">
-					<f:ajax listener="#{emData.FillNewTimeSheet}"
-						update="timesheet:btnSubmit" process="@form" event="click"></f:ajax>
 				</h:commandButton>
 			</div>
 		</div>
