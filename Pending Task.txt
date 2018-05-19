@@ -1,0 +1,31 @@
+Pending page
+
+
+1. Project Report
+2. Dashboard-complete
+3. TimeCard( Status- completed)[later handle rejected timecard]
+4. Appraisal
+5. Leave management system
+
+
+6. Create an internal project for all admin+hr, created by hr-- done
+7. HR workspace(one tabe to allocate all admin and hr into internal project,next view all employees timecard, view all appraisal and give final rating,)
+			--in progress
+8. Handle exception in all page
+
+** Client Side -- completed
+** admin/hr project--completed
+
+Deadline
+HR workspace---------20/5 in progress
+LMS-----30/5
+Timecard--------7/6--complete
+appraisal--------27/6
+project report------4/7
+dashboard---------20/7--complete
+exception handling-------30/7
+
+
+Bugs
+1. Requested Resource not working
+2. Release Resource not working

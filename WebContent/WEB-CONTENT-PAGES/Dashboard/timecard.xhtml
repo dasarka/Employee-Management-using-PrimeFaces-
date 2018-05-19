@@ -10,89 +10,171 @@
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
 <h:head>
+	<style>
+.ui-widget-header .ui-inputfield,.ui-widget-content .ui-inputfield {
+	width: 100px;
+}
+
+.ui-selectlistbox-listcontainer {
+	width: 300px !important;
+}
+
+.selectWidth {
+	width: 300px !important;
+}
+</style>
 </h:head>
 <h:body>
-	<div class="card">
-		<div class="card-header">
+	<h:form id="timesheet">
+		<div class="card">
+			<div class="card-header">
 
 
 
-			<div class="row">
-				<div class="col-xl-8 col-lg-8 col-md-8 col-sm-6 col-xs-6">
-					<h:commandButton value="Open New" type="button" class="btn btn-xs btn-primary"
-						onclick="PF('dlg3').show();" />
+				<div class="row">
+					<div class="col-xl-8 col-lg-8 col-md-8 col-sm-6 col-xs-6">
+						<h:commandButton value="View Timesheet" type="button"
+							class="btn btn-xs btn-primary" onclick="PF('dlg3').show();" />
 
-				</div>
+					</div>
 
 
-				<div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-xs-3">
-					<p:selectOneMenu class="pull-right">
-						<f:selectItem itemLabel="Select Month" itemValue="0"
-							itemDisabled="true"></f:selectItem>
-					</p:selectOneMenu>
-				</div>
-				<div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-xs-3 ">
-					<p:selectOneMenu class="pull-left">
-						<f:selectItem itemLabel="Select Year" itemValue="0"
-							itemDisabled="true"></f:selectItem>
-					</p:selectOneMenu>
+
+
 				</div>
 
 
 			</div>
+			<div class="card-body">
+				<h:outputText value="#{emData.loadNewTimeCard}" />
+				<p:dataTable value="#{emData.newTimecard}" var="field">
+					<p:column headerText="Week">
+						<h:outputText value="#{field.week_val}" />
+					</p:column>
+					<p:column headerText="Project Name" width="25%">
+						<p:selectManyMenu value="#{field.project_id}"
+							styleClass="selectWidth">
+							<f:selectItem itemLabel="Select Project" itemValue="0"
+								itemDisabled="true"></f:selectItem>
+							<f:selectItems value="#{field.projectList}" var="data"
+								itemLabel="#{data.projectName}" itemValue="#{data.projectId}"></f:selectItems>
+						</p:selectManyMenu>
+					</p:column>
+					<p:column headerText="Mon">
+						<p:inputNumber value="#{field.day_mon}" minValue="0" maxValue="8"
+							disabled="#{field.disable_mon eq true}"></p:inputNumber>
+					</p:column>
+					<p:column headerText="Tue">
+						<p:inputNumber value="#{field.day_tue}" minValue="0" maxValue="8"
+							disabled="#{field.disable_tue eq true}">
+						</p:inputNumber>
+					</p:column>
+					<p:column headerText="Wed">
+						<p:inputNumber value="#{field.day_wed}" minValue="0" maxValue="8"
+							disabled="#{field.disable_wed eq true}"></p:inputNumber>
+					</p:column>
+					<p:column headerText="Thu">
+						<p:inputNumber value="#{field.day_thu}" minValue="0" maxValue="8"
+							disabled="#{field.disable_thu eq true}"></p:inputNumber>
+					</p:column>
+					<p:column headerText="Fri">
+						<p:inputNumber value="#{field.day_fri}" minValue="0" maxValue="8"
+							disabled="#{field.disable_fri eq true}"></p:inputNumber>
+					</p:column>
+
+				</p:dataTable>
+				<p:dialog header="View Timesheet" widgetVar="dlg3"
+					showEffect="explode" hideEffect="bounce" height="400" width="1000">
 
 
-		</div>
-		<div class="card-body">
-			<p:dataTable>
-				<p:column headerText="TimeCard Id">
-					<p:selectOneMenu></p:selectOneMenu>
-				</p:column>
-				<p:column headerText="Submittion Date">
-					<p:inputNumber></p:inputNumber>
-				</p:column>
-				<p:column headerText="Status">
-					<p:inputNumber></p:inputNumber>
-				</p:column>
-				<p:column headerText="Comments">
-					<p:inputNumber></p:inputNumber>
-				</p:column>
+					<div class="card">
+						<div class="card-header">
+							<div class="row">
+								<div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-xs-3">
+									<p:selectOneMenu class="pull-right"
+										value="#{emData.timecardUI.selectedMonth}">
+										<f:selectItem itemLabel="Select Month" itemValue="0"
+											itemDisabled="true"></f:selectItem>
+										<f:selectItem itemLabel="Jan" itemValue="Jan"></f:selectItem>
+										<f:selectItem itemLabel="Feb" itemValue="Feb"></f:selectItem>
+										<f:selectItem itemLabel="Mar" itemValue="Mar"></f:selectItem>
+										<f:selectItem itemLabel="Apr" itemValue="Apr"></f:selectItem>
+										<f:selectItem itemLabel="May" itemValue="May"></f:selectItem>
+										<f:selectItem itemLabel="Jun" itemValue="Jun"></f:selectItem>
+										<f:selectItem itemLabel="Jul" itemValue="Jul"></f:selectItem>
+										<f:selectItem itemLabel="Aug" itemValue="Aug"></f:selectItem>
+										<f:selectItem itemLabel="Sep" itemValue="Sep"></f:selectItem>
+										<f:selectItem itemLabel="Oct" itemValue="Oct"></f:selectItem>
+										<f:selectItem itemLabel="Nov" itemValue="Nov"></f:selectItem>
+										<f:selectItem itemLabel="Dec" itemValue="Dec"></f:selectItem>
+										<f:ajax listener="#{emData.ViewTimeCard}" event="change"
+											process="@this" render="timesheet:ts_datatable"></f:ajax>
+									</p:selectOneMenu>
+								</div>
+								<div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-xs-3 ">
+									<p:selectOneMenu class="pull-left"
+										value="#{emData.timecardUI.selectedYear}">
+										<f:selectItem itemLabel="Select Year" itemValue="0"
+											itemDisabled="true"></f:selectItem>
+										<f:selectItem itemLabel="2008" itemValue="2008"></f:selectItem>
+										<f:selectItem itemLabel="2009" itemValue="2009"></f:selectItem>
+										<f:selectItem itemLabel="2010" itemValue="2010"></f:selectItem>
+										<f:selectItem itemLabel="2011" itemValue="2011"></f:selectItem>
+										<f:selectItem itemLabel="2012" itemValue="2012"></f:selectItem>
+										<f:selectItem itemLabel="2013" itemValue="2013"></f:selectItem>
+										<f:selectItem itemLabel="2014" itemValue="2014"></f:selectItem>
+										<f:selectItem itemLabel="2015" itemValue="2015"></f:selectItem>
+										<f:selectItem itemLabel="2016" itemValue="2016"></f:selectItem>
+										<f:selectItem itemLabel="2017" itemValue="2017"></f:selectItem>
+										<f:selectItem itemLabel="2018" itemValue="2018"></f:selectItem>
+										
+										<f:ajax listener="#{emData.ViewTimeCard}" event="change"
+											process="@this" render="timesheet:ts_datatable"></f:ajax>
+									</p:selectOneMenu>
+								</div>
 
-			</p:dataTable>
-			<p:dialog header="New Timecrad" widgetVar="dlg3" showEffect="explode"
-				hideEffect="bounce" height="400" width="1000">
-				<div class="card">
+							</div>
+						</div>
 
-					<div class="card-body">
-						<p:dataTable>
-							<p:column headerText="Project Name" width="50%">
-								<p:selectOneMenu></p:selectOneMenu>
-							</p:column>
-							<p:column headerText="Mon">
-								<p:inputNumber></p:inputNumber>
-							</p:column>
-							<p:column headerText="Tue">
-								<p:inputNumber></p:inputNumber>
-							</p:column>
-							<p:column headerText="Wed">
-								<p:inputNumber></p:inputNumber>
-							</p:column>
-							<p:column headerText="Thu">
-								<p:inputNumber></p:inputNumber>
-							</p:column>
-							<p:column headerText="Fri">
-								<p:inputNumber></p:inputNumber>
-							</p:column>
+						<div class="card-body">
 
-						</p:dataTable>
+							<p:dataTable id="ts_datatable" value="#{emData.profileTimecard}"
+								var="viewData">
+								<p:column headerText="Week">
+									<h:outputText value="#{viewData.week_val}"></h:outputText>
+								</p:column>
+								<p:column headerText="Project Names">
+									<h:outputText value="#{viewData.projectNames}"></h:outputText>
+								</p:column>
+								<p:column headerText="Submittion Date">
+									<h:outputText value="#{viewData.submittionDate}"></h:outputText>
+								</p:column>
+								<p:column headerText="Status">
+									<h:outputText value="#{viewData.status}"></h:outputText>
+								</p:column>
+								<p:column headerText="Comments">
+									<h:outputText value="#{viewData.comment}"></h:outputText>
+								</p:column>
+
+							</p:dataTable>
+
+
+
+						</div>
+						<div class="card-footer"></div>
 					</div>
-					<div class="card-footer">
-					<h:commandButton value="Submit" class="btn btn-success btn-xs"></h:commandButton> </div>
-				</div>
-			</p:dialog>
-		</div>
-		<div class="card-footer"></div>
-	</div>
 
+				</p:dialog>
+			</div>
+			<div class="card-footer">
+				<h:commandButton id="btnSubmit" value="Submit"
+					disabled="#{emData.timecardUI.disableTimeCard eq true}"
+					class="btn btn-success btn-xs">
+					<f:ajax listener="#{emData.FillNewTimeSheet}"
+						update="timesheet:btnSubmit" process="@form" event="click"></f:ajax>
+				</h:commandButton>
+			</div>
+		</div>
+	</h:form>
 </h:body>
 </html>

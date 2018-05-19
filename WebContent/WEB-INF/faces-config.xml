@@ -25,4 +25,9 @@
 		<managed-bean-class>emp.bean.ProjectReportController</managed-bean-class>
 		<managed-bean-scope>view</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>emData</managed-bean-name>
+		<managed-bean-class>emp.bean.HRController</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
 </faces-config>

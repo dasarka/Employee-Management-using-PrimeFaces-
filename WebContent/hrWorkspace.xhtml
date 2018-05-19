@@ -21,24 +21,91 @@
 			<p:menuitem value="HR Workspace" url="#" />
 		</p:breadCrumb>
 		<div class="page-body">
-    <p:tabView orientation="left">
-        
-        <p:tab title="View Timecard">
-            <h:panelGrid columns="2" cellpadding="10">
-                <p:graphicImage name="demo/images/godfather/godfather2.jpg" />
-                <h:outputText value="Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather, parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. 
-                In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, 
-                killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows." />
-            </h:panelGrid>
-        </p:tab>
-        <p:tab title="Appraisal(HR Callibration)">
-            <h:panelGrid columns="2" cellpadding="10">
-                <p:graphicImage name="demo/images/godfather/godfather3.jpg" />
-                <h:outputText value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. 
+			<h:form id="hrworkspace">
+				<p:tabView orientation="top">
+
+					<p:tab title="View Timecard">
+						<h:outputText value="#{emData.loadHRTimecards}" />
+						<div class="card">
+							<div class="card-header">
+								<div class="row">
+									<div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-xs-3">
+										<p:selectOneMenu value="#{emData.selectedUsers}">
+											<f:selectItem itemLabel="Select User" itemValue="0"
+												itemDisabled="true"></f:selectItem>
+											<f:selectItems value="#{emData.usersList}" var="users"
+												itemLabel="#{users.empName}" itemValue="#{users.userId}" />
+											<f:ajax listener="#{emData.VerifyTimeCard}" event="change"
+												process="@this" render="ts_datatable"></f:ajax>
+										</p:selectOneMenu>
+									</div>
+
+
+								</div>
+							</div>
+
+							<div class="card-body">
+
+								<p:dataTable id="ts_datatable" value="#{emData.hrTimecard}"
+									var="data">
+									<p:column headerText="Week" style="width:120px">
+										<h:outputText value="#{data.week_val}"></h:outputText>
+									</p:column>
+									<p:column headerText="Project Names">
+										<h:outputText value="#{data.projectNames}"></h:outputText>
+									</p:column>
+									<p:column headerText="Mon" style="width:50px">
+										<h:outputText value="#{data.day_mon}"></h:outputText>
+									</p:column>
+									<p:column headerText="Tue" style="width:50px">
+										<h:outputText value="#{data.day_tue}"></h:outputText>
+									</p:column>
+									<p:column headerText="Wed" style="width:50px">
+										<h:outputText value="#{data.day_wed}"></h:outputText>
+									</p:column>
+									<p:column headerText="Thu" style="width:50px">
+										<h:outputText value="#{data.day_thu}"></h:outputText>
+									</p:column>
+									<p:column headerText="Fri" style="width:50px">
+										<h:outputText value="#{data.day_fri}"></h:outputText>
+									</p:column>
+									<p:column headerText="Submittion Date" style="width:150px">
+										<h:outputText value="#{data.submittionDate}"></h:outputText>
+									</p:column>
+									<p:column headerText="Status" style="width:150px">
+										<p:selectOneMenu value="#{data.status}">
+											<f:selectItem itemValue="approved" itemLabel="Approved"></f:selectItem>
+											<f:selectItem itemValue="rejected" itemLabel="Rejected"></f:selectItem>
+										</p:selectOneMenu>
+									</p:column>
+									<p:column headerText="Comments">
+										<p:inputText value="#{data.comment}"></p:inputText>
+									</p:column>
+
+								</p:dataTable>
+
+
+
+							</div>
+							<div class="card-footer">
+								<h:commandButton id="btnSubmit" value="Update Now"
+									class="btn btn-success btn-xs"
+									action="#{emData.UpdateTimeCard}">
+
+								</h:commandButton>
+							</div>
+						</div>
+					</p:tab>
+					<p:tab title="Appraisal(HR Callibration)">
+						<h:panelGrid columns="2" cellpadding="10">
+							<p:graphicImage name="demo/images/godfather/godfather3.jpg" />
+							<h:outputText
+								value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. 
                     Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate." />
-            </h:panelGrid>
-        </p:tab>
-    </p:tabView>
+						</h:panelGrid>
+					</p:tab>
+				</p:tabView>
+			</h:form>
 		</div>
 	</div>
 </h:body>
