@@ -88,43 +88,26 @@ public class ProjectReportDaoImpl implements ProjectReportDao {
 		return resourcesMap;
 	}
 
+	
 	@Override
-	public HashMap<Integer, Map<String, Number>> GetTasksMap(int projectId)
+	public HashMap<String, Integer> GetTaskStatus(int projectId)
 			throws Exception {
-		HashMap<Integer, Map<String, Number>> taskMap = new HashMap<Integer,  Map<String, Number>>();
-		HashMap<String, Integer> accessMap = GetAccessList(projectId);
-		for (int index = 0; index < 11; index += 2) {
-			Map<String, Number> tempMap=new LinkedHashMap<String, Number>();
-			for (String keyVal : accessMap.keySet()) {
-				tempMap.put(keyVal, 0);
-			}
-			String query = "SELECT  count(task.task_status), acc.accessVal  from emp_task task "
-					+ "INNER JOIN emp_authentication auth "
-					+ "INNER JOIN emp_access acc "
-					+ "where task.user_id=auth.user_id "
-					+ "and auth.emp_access=acc.accessId "
-					+ "and task.project_id= "
-					+ projectId
-					+ " "
-					+ "and task.task_status="
-					+ index
-					+ " "
-					+ "group by acc.accessId";
+		HashMap<String, Integer> taskStatus = new HashMap<String,Integer>();
+
+			String query = "SELECT task_name,task_status FROM emp_task where project_id="+projectId;
+			System.out.println("query " + query);
 			rs = null;
 			rs = connection.getResultSet(query);
 			if (rs.next() == false) {
-
 			} else {
 				rs.absolute(1);
 				do{
-				tempMap.put(String.valueOf(rs.getObject(2)),
-						Integer.valueOf(String.valueOf(rs.getObject(1))));
+					taskStatus.put(String.valueOf(rs.getObject("task_name")),
+						Integer.valueOf(String.valueOf(rs.getObject("task_status"))));
 				}while(rs.next());
 			}
-			taskMap.put(index, tempMap);
-		}
 
-		return taskMap;
+		return taskStatus;
 
 	}
 }

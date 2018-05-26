@@ -36,176 +36,51 @@ public class ProjectReportServiceImpl implements ProjectReportService {
 
 	@Override
 	public ProjectReport CreateCharts(int projectId) throws Exception {
-		return new ProjectReport(createBarModel(), createHorizontalBarModel(),
-				createMultiAxisModel(), createDateModel(),
+		return new ProjectReport(createHorizontalBarModel(projectId),
 				createPieModel(projectId),
-				createBubbleModel(), createMeterGaugeModel(projectId));
+				 createMeterGaugeModel(projectId));
 
 	}
 
-	private BarChartModel createBarModel() {
-		BarChartModel barModel = initBarModel();
-
-		barModel.setTitle("Bar Chart");
-		barModel.setLegendPosition("ne");
-
-		Axis xAxis = barModel.getAxis(AxisType.X);
-		xAxis.setLabel("Gender");
-
-		Axis yAxis = barModel.getAxis(AxisType.Y);
-		yAxis.setLabel("Births");
-		yAxis.setMin(0);
-		yAxis.setMax(200);
-		return barModel;
-	}
-
-	// bar chart
-	private BarChartModel initBarModel() {
-		BarChartModel model = new BarChartModel();
-
-		ChartSeries boys = new ChartSeries();
-		boys.setLabel("Boys");
-		boys.set("2004", 120);
-		boys.set("2005", 100);
-		boys.set("2006", 44);
-		boys.set("2007", 150);
-		boys.set("2008", 25);
-
-		ChartSeries girls = new ChartSeries();
-		girls.setLabel("Girls");
-		girls.set("2004", 52);
-		girls.set("2005", 60);
-		girls.set("2006", 110);
-		girls.set("2007", 135);
-		girls.set("2008", 120);
-
-		model.addSeries(boys);
-		model.addSeries(girls);
-
-		return model;
-	}
-
-	// horizontal bar
-	private HorizontalBarChartModel createHorizontalBarModel() {
+		// horizontal bar
+	private HorizontalBarChartModel createHorizontalBarModel(int projectId) throws Exception {
+		ProjectReportDao projReportDao = new ProjectReportDaoImpl();
+		HashMap<String, Integer> taskStatus = projReportDao
+				.GetTaskStatus(projectId);
+		
 		HorizontalBarChartModel horizontalBarModel = new HorizontalBarChartModel();
 
-		ChartSeries boys = new ChartSeries();
-		boys.setLabel("Boys");
-		boys.set("2004", 50);
-		boys.set("2005", 96);
-		boys.set("2006", 44);
-		boys.set("2007", 55);
-		boys.set("2008", 25);
+		ChartSeries actualData = new ChartSeries();
+		ChartSeries predictedData = new ChartSeries();
+		actualData.setLabel("Actual");
+		predictedData.setLabel("Predicted");
+		for (String key : taskStatus.keySet()) {
+			actualData.set(key, (taskStatus.get(key)*10));
+			predictedData.set(key, 100);
+		}
 
-		ChartSeries girls = new ChartSeries();
-		girls.setLabel("Girls");
-		girls.set("2004", 52);
-		girls.set("2005", 60);
-		girls.set("2006", 82);
-		girls.set("2007", 35);
-		girls.set("2008", 120);
+		horizontalBarModel.addSeries(actualData);
+		horizontalBarModel.addSeries(predictedData);
 
-		horizontalBarModel.addSeries(boys);
-		horizontalBarModel.addSeries(girls);
-
-		horizontalBarModel.setTitle("Horizontal and Stacked");
+		horizontalBarModel.setTitle("Individual Task Progress");
+		horizontalBarModel.setSeriesColors("009432,fbc531");
 		horizontalBarModel.setLegendPosition("e");
 		horizontalBarModel.setStacked(true);
 
 		Axis xAxis = horizontalBarModel.getAxis(AxisType.X);
-		xAxis.setLabel("Births");
+		xAxis.setLabel("Status(in %)");
 		xAxis.setMin(0);
-		xAxis.setMax(200);
+		xAxis.setTickCount(6);
+		xAxis.setMax(100);
 
 		Axis yAxis = horizontalBarModel.getAxis(AxisType.Y);
-		yAxis.setLabel("Gender");
+		yAxis.setLabel("Task Name");
 		return horizontalBarModel;
 	}
 
-	// multiaxis chart
-	private LineChartModel createMultiAxisModel() {
-		LineChartModel multiAxisModel = new LineChartModel();
+	
 
-		BarChartSeries boys = new BarChartSeries();
-		boys.setLabel("Boys");
-
-		boys.set("2004", 120);
-		boys.set("2005", 100);
-		boys.set("2006", 44);
-		boys.set("2007", 150);
-		boys.set("2008", 25);
-
-		LineChartSeries girls = new LineChartSeries();
-		girls.setLabel("Girls");
-		girls.setXaxis(AxisType.X2);
-		girls.setYaxis(AxisType.Y2);
-
-		girls.set("A", 52);
-		girls.set("B", 60);
-		girls.set("C", 110);
-		girls.set("D", 135);
-		girls.set("E", 120);
-
-		multiAxisModel.addSeries(boys);
-		multiAxisModel.addSeries(girls);
-
-		multiAxisModel.setTitle("Multi Axis Chart");
-		multiAxisModel.setMouseoverHighlight(false);
-
-		multiAxisModel.getAxes().put(AxisType.X, new CategoryAxis("Years"));
-		multiAxisModel.getAxes().put(AxisType.X2, new CategoryAxis("Period"));
-
-		Axis yAxis = multiAxisModel.getAxis(AxisType.Y);
-		yAxis.setLabel("Birth");
-		yAxis.setMin(0);
-		yAxis.setMax(200);
-
-		Axis y2Axis = new LinearAxis("Number");
-		y2Axis.setMin(0);
-		y2Axis.setMax(200);
-
-		multiAxisModel.getAxes().put(AxisType.Y2, y2Axis);
-		return multiAxisModel;
-	}
-
-	// date chart
-	private LineChartModel createDateModel() {
-		LineChartModel dateModel = new LineChartModel();
-		LineChartSeries series1 = new LineChartSeries();
-		series1.setLabel("Series 1");
-
-		series1.set("2014-01-01", 51);
-		series1.set("2014-01-06", 22);
-		series1.set("2014-01-12", 65);
-		series1.set("2014-01-18", 74);
-		series1.set("2014-01-24", 24);
-		series1.set("2014-01-30", 51);
-
-		LineChartSeries series2 = new LineChartSeries();
-		series2.setLabel("Series 2");
-
-		series2.set("2014-01-01", 32);
-		series2.set("2014-01-06", 73);
-		series2.set("2014-01-12", 24);
-		series2.set("2014-01-18", 12);
-		series2.set("2014-01-24", 74);
-		series2.set("2014-01-30", 62);
-
-		dateModel.addSeries(series1);
-		dateModel.addSeries(series2);
-
-		dateModel.setTitle("Zoom for Details");
-		dateModel.setZoom(true);
-		dateModel.getAxis(AxisType.Y).setLabel("Values");
-		DateAxis axis = new DateAxis("Dates");
-		axis.setTickAngle(-50);
-		axis.setMax("2014-02-01");
-		axis.setTickFormat("%b %#d, %y");
-
-		dateModel.getAxes().put(AxisType.X, axis);
-		return dateModel;
-	}
-
+	
 	// pie chart
 	private PieChartModel createPieModel(int projectId) throws Exception {
 		PieChartModel pieModel = new PieChartModel();
@@ -220,42 +95,12 @@ public class ProjectReportServiceImpl implements ProjectReportService {
 		}
 
 		pieModel.setTitle("Resources List");
+		pieModel.setSeriesColors("1abc9c,F79F1F,EE5A24,006266,0652DD,2ecc71,6F1E51,D980FA,009432");
 		pieModel.setLegendPosition("e");
 		return pieModel;
 	}
 
 	
-
-	// bubble chart
-	private BubbleChartModel createBubbleModel() {
-		BubbleChartModel bubbleModel = initBubbleModel();
-		bubbleModel.setTitle("Task List");
-		bubbleModel.setShadow(false);
-		bubbleModel.setBubbleGradients(true);
-		bubbleModel.setBubbleAlpha(0.8);
-		bubbleModel.getAxis(AxisType.X).setTickAngle(-50);
-		Axis yAxis = bubbleModel.getAxis(AxisType.Y);
-		yAxis.setMin(0);
-		yAxis.setMax(250);
-		yAxis.setTickAngle(50);
-
-		return bubbleModel;
-	}
-
-	private BubbleChartModel initBubbleModel() {
-		BubbleChartModel model = new BubbleChartModel();
-
-		model.add(new BubbleChartSeries("Acura", 70, 183, 55));
-		model.add(new BubbleChartSeries("Alfa Romeo", 45, 92, 36));
-		model.add(new BubbleChartSeries("AM General", 24, 104, 40));
-		model.add(new BubbleChartSeries("Bugatti", 50, 123, 60));
-		model.add(new BubbleChartSeries("BMW", 15, 89, 25));
-		model.add(new BubbleChartSeries("Audi", 40, 180, 80));
-		model.add(new BubbleChartSeries("Aston Martin", 70, 70, 48));
-
-		return model;
-	}
-
 	// meter gauge
 	private MeterGaugeChartModel initMeterGaugeModel(int projectId)
 			throws Exception {
@@ -278,7 +123,7 @@ public class ProjectReportServiceImpl implements ProjectReportService {
 
 		MeterGaugeChartModel meterGaugeModel = initMeterGaugeModel(projectId);
 		meterGaugeModel.setTitle("Progress Status");
-		meterGaugeModel.setSeriesColors("cc6666,E7E658,93b75f,66cc66,");
+		meterGaugeModel.setSeriesColors("EA2027,FFC312,1289A7,009432");
 		meterGaugeModel.setGaugeLabelPosition("bottom");
 		meterGaugeModel.setShowTickLabels(false);
 		meterGaugeModel.setLabelHeightAdjust(110);
