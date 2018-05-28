@@ -52,11 +52,26 @@
 										<h:outputText value="#{cProj.endDate}" />
 									</p:column>
 									<p:column headerText="Onsite Manager">
-										<h:outputText value="#{cProj.onsiteManagerName}" />
+										<h:outputText value="#{cProj.onsiteManagerName}"
+										rendered="#{cProj.projectName ne 'Bench Project' 
+														and cProj.projectName ne 'LMS Project'
+														and cProj.projectName ne 'Internal Project'}"  />
+										<h:outputLabel value="N.A."
+														rendered="#{cProj.projectName eq 'Bench Project' 
+														|| cProj.projectName eq 'LMS Project'
+														|| cProj.projectName eq 'Internal Project'}" />
 									</p:column>
 									<p:column headerText="Client">
-										<h:outputText value="#{cProj.clientName}" />
+										<h:outputText value="#{cProj.clientName}"
+										rendered="#{cProj.projectName ne 'Bench Project' 
+														and cProj.projectName ne 'LMS Project'
+														and cProj.projectName ne 'Internal Project'}" />
+										<h:outputLabel value="N.A."
+														rendered="#{cProj.projectName eq 'Bench Project' 
+														|| cProj.projectName eq 'LMS Project'
+														|| cProj.projectName eq 'Internal Project'}" />
 									</p:column>
+									
 
 								</p:dataTable>
 							</p:tab>
@@ -76,10 +91,24 @@
 										<h:outputText value="#{uProj.endDate}" />
 									</p:column>
 									<p:column headerText="Onsite Manager">
-										<h:outputText value="#{uProj.onsiteManagerName}" />
+										<h:outputText value="#{uProj.onsiteManagerName}"
+										rendered="#{uProj.projectName ne 'Bench Project' 
+														and uProj.projectName ne 'LMS Project'
+														and uProj.projectName ne 'Internal Project'}"  />
+										<h:outputLabel value="N.A."
+														rendered="#{uProj.projectName eq 'Bench Project' 
+														|| uProj.projectName eq 'LMS Project'
+														|| uProj.projectName eq 'Internal Project'}" />
 									</p:column>
 									<p:column headerText="Client">
-										<h:outputText value="#{uProj.clientName}" />
+										<h:outputText value="#{uProj.clientName}"
+										rendered="#{uProj.projectName ne 'Bench Project' 
+														and uProj.projectName ne 'LMS Project'
+														and uProj.projectName ne 'Internal Project'}" />
+										<h:outputLabel value="N.A."
+														rendered="#{uProj.projectName eq 'Bench Project' 
+														|| uProj.projectName eq 'LMS Project'
+														|| uProj.projectName eq 'Internal Project'}" />
 									</p:column>
 								</p:dataTable>
 							</p:tab>
@@ -101,10 +130,24 @@
 										<h:outputText value="#{oProj.endDate}" />
 									</p:column>
 									<p:column headerText="Onsite Manager">
-										<h:outputText value="#{oProj.onsiteManagerName}" />
+										<h:outputText value="#{oProj.onsiteManagerName}"
+										rendered="#{oProj.projectName ne 'Bench Project' 
+														and oProj.projectName ne 'LMS Project'
+														and oProj.projectName ne 'Internal Project'}"  />
+										<h:outputLabel value="N.A."
+														rendered="#{oProj.projectName eq 'Bench Project' 
+														|| oProj.projectName eq 'LMS Project'
+														|| oProj.projectName eq 'Internal Project'}" />
 									</p:column>
 									<p:column headerText="Client">
-										<h:outputText value="#{oProj.clientName}" />
+										<h:outputText value="#{oProj.clientName}"
+										rendered="#{oProj.projectName ne 'Bench Project' 
+														and oProj.projectName ne 'LMS Project'
+														and oProj.projectName ne 'Internal Project'}" />
+										<h:outputLabel value="N.A."
+														rendered="#{oProj.projectName eq 'Bench Project' 
+														|| oProj.projectName eq 'LMS Project'
+														|| oProj.projectName eq 'Internal Project'}" />
 									</p:column>
 								</p:dataTable>
 							</p:tab>

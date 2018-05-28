@@ -47,12 +47,11 @@
 										Project Name:<span class="red">*</span>
 									</div>
 									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-										<c:if test="#{empMain.usersBean.accessVal eq 'Client'}">
 											<p:inputText id="projName"
+											rendered="#{empMain.usersBean.accessVal eq 'Client'}"
 												value="#{client.projViewBean.projectName}"></p:inputText>
-										</c:if>
-										<c:otherwise>
-											<p:selectOneMenu id="projName"
+											<p:selectOneMenu id="selectProjName"
+											rendered="#{empMain.usersBean.accessVal eq 'HR'}"
 												value="#{client.projViewBean.projectName}">
 												<f:selectItem itemValue="Internal Project"
 													itemLabel="Internal Project"></f:selectItem>
@@ -61,7 +60,6 @@
 												<f:selectItem itemValue="LMS Project"
 													itemLabel="LMS Project"></f:selectItem>
 											</p:selectOneMenu>
-										</c:otherwise>
 									</div>
 								</div>
 								<div class="row rowdiff">

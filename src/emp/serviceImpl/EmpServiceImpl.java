@@ -55,11 +55,7 @@ public class EmpServiceImpl implements EmpService{
 		EmpDao empDao=new EmpDaoImpl();
 		return empDao.LoadProjectDataDao(userId);
 	}
-	@Override
-	public EmpProjListBean LoadInternalProjectDataService(int userId) throws SQLException {
-		EmpDao empDao=new EmpDaoImpl();
-		return empDao.LoadInternalProjectDataDao(userId);
-	}
+	
 
 	@Override
 	public List<UsersBean> LoadResourceDataService(int projectId)

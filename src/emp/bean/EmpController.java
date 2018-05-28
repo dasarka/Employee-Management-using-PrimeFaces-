@@ -442,15 +442,10 @@ public class EmpController {
 		try {
 			System.out.println("usersBean.getAccessVal() "
 					+ usersBean.getAccessVal());
-			if (usersBean.getAccessVal().equals("Admin")
-					|| usersBean.getAccessVal().equals("HR")) {
-				empProjListBean = empService
-						.LoadInternalProjectDataService(usersBean.getUserId());
-			} else {
+			
 				empProjListBean = empService.LoadProjectDataService(usersBean
 						.getUserId());
 
-			}
 			System.out.println("projListBean " + empProjListBean);
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			HttpSession session = (HttpSession) facesContext

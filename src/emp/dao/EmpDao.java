@@ -33,8 +33,6 @@ public interface EmpDao {
 
 	boolean UpdateTaskDao(UpdateTaskBean updateTaskBean) throws SQLException;
 
-	EmpProjListBean LoadInternalProjectDataDao(int userId) throws SQLException;
-
 	void benchAllocation(int userId) throws SQLException;
 
 

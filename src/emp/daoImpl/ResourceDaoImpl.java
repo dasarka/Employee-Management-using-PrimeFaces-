@@ -120,24 +120,18 @@ public class ResourceDaoImpl implements ResourceDao {
 				+ "(SELECT distinct alloc.project_id  from emp_project_allocation alloc, "
 				+ "emp_authentication auth where alloc.user_id=auth.user_id and auth.emp_access <> 7)"
 				+ " AND flag <> 'O'";
-		String omQuery = "SELECT * FROM emp_authentication auth INNER JOIN emp_access acc "  
-				+"WHERE auth.emp_access=acc.accessId AND auth.emp_access = 10 "
-				+ " AND auth.emp_remainHours>0";
-		String mQuery = "SELECT * FROM emp_authentication auth INNER JOIN emp_access acc "  
-				+"WHERE auth.emp_access=acc.accessId AND auth.emp_access = 5 "
-				+ " AND auth.emp_remainHours>0";
-		String lQuery = "SELECT * FROM emp_authentication auth INNER JOIN emp_access acc "  
-				+"WHERE auth.emp_access=acc.accessId AND auth.emp_access = 4 "
-				+ " AND auth.emp_remainHours>0";
-		String dQuery = "SELECT * FROM emp_authentication auth INNER JOIN emp_access acc "  
-				+"WHERE auth.emp_access=acc.accessId AND auth.emp_access = 3 "
-				+ " AND auth.emp_remainHours>0";
-		String ptQuery = "SELECT * FROM emp_authentication auth INNER JOIN emp_access acc "  
-				+"WHERE auth.emp_access=acc.accessId AND auth.emp_access = 8 "
-				+ " AND auth.emp_remainHours>0";
-		String tQuery = "SELECT * FROM emp_authentication auth INNER JOIN emp_access acc "  
-				+"WHERE auth.emp_access=acc.accessId AND auth.emp_access = 9 "
-				+ " AND auth.emp_remainHours>0";
+		String omQuery = "SELECT * FROM emp_avail_resource "  
+				+"WHERE emp_access = 10 ";
+		String mQuery = "SELECT * FROM emp_avail_resource "  
+				+"WHERE emp_access = 5 ";
+		String lQuery = "SELECT * FROM emp_avail_resource "  
+				+"WHERE emp_access = 4 ";
+		String dQuery = "SELECT * FROM emp_avail_resource "  
+				+"WHERE emp_access = 3 ";
+		String ptQuery = "SELECT * FROM emp_avail_resource "  
+				+"WHERE emp_access = 8 ";
+		String tQuery = "SELECT * FROM emp_avail_resource "  
+				+"WHERE emp_access = 9 ";
 		System.out.println("projQuery "+projQuery);
 		System.out.println("omQuery "+omQuery);
 		System.out.println("mQuery "+mQuery);

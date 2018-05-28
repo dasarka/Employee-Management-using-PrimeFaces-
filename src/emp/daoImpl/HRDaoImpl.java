@@ -23,12 +23,8 @@ public class HRDaoImpl implements HRDao {
 	@Override
 	public List<ProjectBean> ProjectListDao(int userId) throws Exception {
 		List<ProjectBean> projectList=new ArrayList<ProjectBean>();
-		String query = "SELECT proj.project_id, proj.project_name FROM emp_project proj,"
-				+ " emp_project_allocation alloc, "
-				+ "emp_authentication auth "
-				+ "where proj.project_id=alloc.project_id "
-				+ "and alloc.user_id=auth.user_id "
-				+ "and proj.flag='C' and auth.user_id="+userId;
+		String query = "SELECT project_id, project_name FROM emp_proj_map "
+				+ "where flag='C' and user_id="+userId;
 		System.out.println("query " + query);
 		rs=null;
 		rs = connection.getResultSet(query);
