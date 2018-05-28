@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `empmanagement` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `empmanagement`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: empmanagement
@@ -40,4 +38,4 @@ CREATE TABLE `emp_access` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-23  0:08:58
+-- Dump completed on 2018-05-29  2:36:15
