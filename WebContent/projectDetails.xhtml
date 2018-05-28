@@ -13,39 +13,54 @@
 	<title>Employee Management</title>
 
 </h:head>
-<h:body class="bg-white content">
+<h:body class="bg-white content"
+onload="setTimeout(function() { $('#empProject\\:projDetailsMsg').html(''); }, 5000);">
 	<div class="content-wrapper">
 		<ui:include src="WEB-MASTER-PAGES/EmpMaster.xhtml"></ui:include>
-		<p:breadCrumb>
-			<p:menuitem value="Dashboard" url="dashboard.xhtml" />
-			<p:menuitem value="Project Timeline" url="projectTimeline.xhtml" />
-			<p:menuitem value="Project Details" url="#" />
-		</p:breadCrumb>
 		<div class="page-body">
 			<div class="row">
 				<div class="col-xl-12 col-lg-12 col-md-12 com-sm-12 col-xs-12">
 					<h:form id="empProject">
+
 						<h:outputText value="#{empMain.fetchProjectDetails}" />
 						<h:outputText value="#{projRep.fetchProjectDetails}" />
-						<div class="row" style="margin-top: -35px;">
+						<div class="row" >
 							<div class="col-xl-12 col-lg-12 col-md-12 com-sm-12 col-xs-12">
+								<p:breadCrumb>
+									<p:menuitem value="Dashboard" url="dashboard.xhtml" />
+									<p:menuitem value="Project Timeline"
+										url="projectTimeline.xhtml" />
+									<p:menuitem value="Project Details" url="#" />
+								</p:breadCrumb>
+								<div class="row row-diff">
+									<div class="col-xl-12 col-lg-12 col-md-12 com-sm-12 col-xs-12">
+										<p:messages id="projDetailsMsg" closable="true"
+											autoUpdate="true" showIcon="true">
+										</p:messages>
+									</div>
+								</div>
 								<p:tabView dynamic="true" cache="true" effect="fold"
-									orientation="left" id="projTab">
+									orientation="top" id="projTab">
 									<p:tab title="View/Update Task" id="viewTask">
-										<ui:include src="WEB-CONTENT-PAGES/ProjectDetails/ViewTaskTab.xhtml"></ui:include>
+										<ui:include
+											src="WEB-CONTENT-PAGES/ProjectDetails/ViewTaskTab.xhtml"></ui:include>
 									</p:tab>
 									<p:tab title="Create New Task" id="newTask"
 										disabled="#{empMain.projectType eq 0 ||empMain.usersBean.accessVal eq 'Manager' || empMain.usersBean.accessVal eq 'Onsite Manager' || empMain.usersBean.accessVal eq 'Client'}">
-										<ui:include src="WEB-CONTENT-PAGES/ProjectDetails/CreateNewTaskTab.xhtml"></ui:include>
+										<ui:include
+											src="WEB-CONTENT-PAGES/ProjectDetails/CreateNewTaskTab.xhtml"></ui:include>
 									</p:tab>
 									<p:tab title="Resources" id="resources">
-										<ui:include src="WEB-CONTENT-PAGES/ProjectDetails/ResourcesTab.xhtml"></ui:include>
+										<ui:include
+											src="WEB-CONTENT-PAGES/ProjectDetails/ResourcesTab.xhtml"></ui:include>
 									</p:tab>
 									<p:tab title="Pending Task" id="deliver">
-										<ui:include src="WEB-CONTENT-PAGES/ProjectDetails/PendingTaskTab.xhtml"></ui:include>
+										<ui:include
+											src="WEB-CONTENT-PAGES/ProjectDetails/PendingTaskTab.xhtml"></ui:include>
 									</p:tab>
 									<p:tab title="Project Report" id="report">
-										<ui:include src="WEB-CONTENT-PAGES/ProjectDetails/ProjectReportTab.xhtml"></ui:include>
+										<ui:include
+											src="WEB-CONTENT-PAGES/ProjectDetails/ProjectReportTab.xhtml"></ui:include>
 									</p:tab>
 								</p:tabView>
 							</div>

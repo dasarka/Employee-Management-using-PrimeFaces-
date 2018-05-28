@@ -29,9 +29,9 @@ public class ResourceDaoImpl implements ResourceDao {
 		List<ClientProjViewBean> tempProjList2 = new ArrayList<ClientProjViewBean>();
 		Date currDate = new Date();
 		String currQuery = "SELECT * FROM emp_project "
-				+ "WHERE flag='C'";
-		String upcQuery = "SELECT * FROM emp_project " + "WHERE flag='U'";
-		String oldQuery = "SELECT * FROM emp_project " + "WHERE flag='O'";
+				+ "WHERE flag='C' and project_name not in ('Internal Project', 'Bench Project', 'LMS Project');";
+		String upcQuery = "SELECT * FROM emp_project " + "WHERE flag='U' and project_name not in ('Internal Project', 'Bench Project', 'LMS Project');";
+		String oldQuery = "SELECT * FROM emp_project " + "WHERE flag='O' and project_name not in ('Internal Project', 'Bench Project', 'LMS Project');";
 
 		System.out.println("currQuery " + currQuery);
 		System.out.println("upcQuery " + upcQuery);
@@ -114,7 +114,9 @@ public class ResourceDaoImpl implements ResourceDao {
 		List<UsersBean> tester = new ArrayList<UsersBean>();
 
 		//Date currDate = new Date();
-		String projQuery = "SELECT * FROM emp_project " + "WHERE project_id NOT IN "
+		String projQuery = "SELECT * FROM emp_project " + "WHERE "
+				+ "project_name not in ('Internal Project', 'Bench Project', 'LMS Project')"
+				+ "AND project_id NOT IN "
 				+ "(SELECT distinct alloc.project_id  from emp_project_allocation alloc, "
 				+ "emp_authentication auth where alloc.user_id=auth.user_id and auth.emp_access <> 7)"
 				+ " AND flag <> 'O'";

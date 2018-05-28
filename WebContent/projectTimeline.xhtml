@@ -16,14 +16,26 @@
 <h:body class="bg-white content">
 	<div class="content-wrapper">
 		<ui:include src="WEB-MASTER-PAGES/EmpMaster.xhtml"></ui:include>
-		<p:breadCrumb>
-			<p:menuitem value="Dashboard" url="dashboard.xhtml" />
-			<p:menuitem value="Project Timeline" url="#" />
-		</p:breadCrumb>
+
 		<div class="page-body">
 
 			<h:form id="projTimeline">
 				<h:outputText value="#{empMain.loadProjectData}" />
+				<div class="row">
+					<div class="col-xl-12 col-lg-12 col-md-12 com-sm-12 col-xs-12">
+						<p:breadCrumb>
+							<p:menuitem value="Dashboard" url="dashboard.xhtml" />
+							<p:menuitem value="Project Timeline" url="#" />
+						</p:breadCrumb>
+					</div>
+				</div>
+				<div class="row row-diff">
+					<div class="col-xl-12 col-lg-12 col-md-12 com-sm-12 col-xs-12">
+						<p:messages id="projTimelineMsg" closable="true" autoUpdate="true"
+							showIcon="true">
+						</p:messages>
+					</div>
+				</div>
 				<div class="row">
 					<div class="col-xl-11 col-lg-11 col-md-11 com-sm-11 col-xs-11"
 						style="margin-left: 4%">
@@ -41,13 +53,17 @@
 									<p:tab title="Current Project" id="currProj">
 										<p:dataTable var="cProj"
 											value="#{empMain.empProjListBean.currentProj}">
-											<p:column headerText="Project Id">
+
+											<p:column headerText="Project Name"
+												rendered="#{cProj.projectName ne 'Bench Project' and cProj.projectName ne 'LMS Project'}">
 												<a
 													href="projectDetails.xhtml?pid=#{cProj.projectId}&amp;flag=1">
-													<h:outputText value="#{cProj.projectId}" />
+
+													<h:outputText value="#{cProj.projectName}" />
 												</a>
 											</p:column>
-											<p:column headerText="Project Name">
+											<p:column headerText="Project Name"
+												rendered="#{cProj.projectName eq 'Bench Project' || cProj.projectName eq 'LMS Project'}">
 												<h:outputText value="#{cProj.projectName}" />
 											</p:column>
 											<p:column headerText="Start Date">
@@ -57,17 +73,27 @@
 												<h:outputText value="#{cProj.endDate}" />
 											</p:column>
 											<p:column headerText="Onsite Manager">
-												<h:outputText value="#{cProj.onsiteManagerName}" />
+												<h:outputText value="#{cProj.onsiteManagerName}"
+													rendered="#{cProj.projectName ne 'Bench Project' and cProj.projectName ne 'LMS Project'}" />
+												<h:outputLabel value="N.A."
+													rendered="#{cProj.projectName eq 'Bench Project' || cProj.projectName eq 'LMS Project'}" />
 											</p:column>
 											<p:column headerText="Client">
-												<h:outputText value="#{cProj.clientName}" />
+												<h:outputText value="#{cProj.clientName}"
+													rendered="#{cProj.projectName ne 'Bench Project' and cProj.projectName ne 'LMS Project'}" />
+												<h:outputLabel value="N.A."
+													rendered="#{cProj.projectName eq 'Bench Project' || cProj.projectName eq 'LMS Project'}" />
 											</p:column>
 											<p:column headerText="Progress">
 												<div style="height: 20px">
 													<p:progressBar value="#{cProj.progress}"
-														labelTemplate="{value}%" displayOnly="true" />
+														labelTemplate="{value}%" displayOnly="true"
+														rendered="#{cProj.projectName ne 'Bench Project' and cProj.projectName ne 'LMS Project'}" />
+													<h:outputLabel value="N.A."
+														rendered="#{cProj.projectName eq 'Bench Project' || cProj.projectName eq 'LMS Project'}" />
 												</div>
 											</p:column>
+
 										</p:dataTable>
 									</p:tab>
 									<p:tab title="Upcoming Project" id="upcProj">

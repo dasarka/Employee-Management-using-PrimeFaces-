@@ -38,22 +38,22 @@
 </style>
 </h:head>
 <h:body>
-	<h:outputText value="Welcome #{empMain.sessionData}"></h:outputText>
+	<h:outputText value="#{empMain.sessionData}"></h:outputText>
 	<div class="modal-header">
 		<nav class=" navbar navbar-inverse navbar-fixed-top" role="navigation">
 		<div class="navbar-header">
 			<a href="dashboard.xhtml"><img src="Images/logoNew.jpg"
-				style="height: 35px; margin-top: 10px; margin-left: 10px;"></img></a>
+				style="height: 50px; margin-top: 10px; margin-left: 10px;"></img></a>
 
 		</div>
 		<div class="white">
 			<center>
 
-				<h:outputText value="Welcome #{empMain.usersBean.empName}"
-					style="font-size: 30px; margin-top: 5px;"></h:outputText>
-				<h:link id="btnLogout" outcome="index.xhtml"
-					value="Logout" class="pull-right btn btn-link"></h:link>
-
+				<h1>
+					<strong>Employee Management System</strong>
+					<h:link id="btnLogout" outcome="index.xhtml" value="Logout"
+						class="pull-right btn btn-link"></h:link>
+				</h1>
 			</center>
 
 		</div>
@@ -61,7 +61,8 @@
 		</nav>
 	</div>
 
-	<div class="modal-footer navbar-fixed-bottom navbar navbar-text" style="z-index:101;background-color:grey; color:#fff;margin:0px!important">
+	<div class="modal-footer navbar-fixed-bottom navbar navbar-text"
+		style="z-index: 101; background-color: grey; color: #fff; margin: 0px !important">
 		<center>CopyRight©2018,Created by ARKA DAS</center>
 	</div>
 

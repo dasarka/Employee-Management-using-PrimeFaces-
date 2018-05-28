@@ -16,12 +16,13 @@
 <h:body class="bg-white content">
 	<div class="content-wrapper">
 		<ui:include src="WEB-MASTER-PAGES/EmpMaster.xhtml"></ui:include>
-		<p:breadCrumb>
+		
+		<div class="page-body">
+			<h:form id="hrworkspace">
+			<p:breadCrumb>
 			<p:menuitem value="Dashboard" url="dashboard.xhtml" />
 			<p:menuitem value="HR Workspace" url="#" />
 		</p:breadCrumb>
-		<div class="page-body">
-			<h:form id="hrworkspace">
 				<p:tabView orientation="top">
 
 					<p:tab title="View Timecard">

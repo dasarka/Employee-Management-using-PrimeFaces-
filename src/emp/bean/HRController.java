@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpSession;
@@ -103,14 +104,39 @@ public class HRController {
 			profileTimecard=hrService.ViewTimeCardService(month, year, userData.getUserId());
 			if(profileTimecard.size()>0){
 				timecardUI.setDisableTimeCard(true);
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"empDashboard:dashTab:timesheet:timecardMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_INFO,
+								"you have already sumbitted your timesheet for current month",
+								null));
 			}else{
 				timecardUI.setDisableTimeCard(false);
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"empDashboard:dashTab:timesheet:timecardMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_INFO,
+								"Please fillup your timesheet as soon as possible",
+								null));
 			}
+			
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"empDashboard:dashTab:timesheet:timecardMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
 			e1.printStackTrace();
 		}
 		if (!timecardUI.isDisableTimeCard()) {
+			
 			Calendar now = Calendar.getInstance();
 			int totalDays = now.getActualMaximum(Calendar.DAY_OF_MONTH);
 			now.set(Calendar.DAY_OF_MONTH,
@@ -227,23 +253,46 @@ public class HRController {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"empDashboard:dashTab:timesheet:timecardMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_FATAL,
+								"We have faced some issue, please wait for some time or contact with support team",
+								null));
 			}
 		}
 		return null;
 	}
 
-	public String FillNewTimeSheet() {
+	public void FillNewTimeSheet(AjaxBehaviorEvent ev) {
 		System.out.println("FillNewTimeSheet ");
 		System.out.println("newTimecard " + newTimecard);
 		HRService hrService = new HRServiceImpl();
 		try {
 			hrService.NewTimeCardService(newTimecard);
 			timecardUI.setDisableTimeCard(true);
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"empDashboard:dashTab:timesheet:timecardMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_INFO,
+							"Your timesheet has successfully submitted and sent to HR for approval",
+							null));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"empDashboard:dashTab:timesheet:timecardMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
 		}
-		return null;
 	}
 	public void ViewTimeCard(AjaxBehaviorEvent event) {
 		System.out.println("ViewTimeCard ");
@@ -257,6 +306,14 @@ public class HRController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"empDashboard:dashTab:timesheet:timecardMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
 		}
 	}
 	

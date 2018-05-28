@@ -37,4 +37,6 @@ public interface EmpService {
 	EmpProjListBean LoadInternalProjectDataService(int userId)
 			throws SQLException;
 
+	void benchAllocation(int userId)throws SQLException;
+
 }

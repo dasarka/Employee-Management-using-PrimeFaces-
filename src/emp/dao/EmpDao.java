@@ -35,5 +35,7 @@ public interface EmpDao {
 
 	EmpProjListBean LoadInternalProjectDataDao(int userId) throws SQLException;
 
+	void benchAllocation(int userId) throws SQLException;
+
 
 }

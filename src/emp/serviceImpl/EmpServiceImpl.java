@@ -113,4 +113,11 @@ public class EmpServiceImpl implements EmpService{
 		return empDao.UpdateTaskDao(updateTaskBean);
 	}
 
+	@Override
+	public void benchAllocation(int userId) throws SQLException {
+		EmpDao empDao=new EmpDaoImpl();
+		empDao.benchAllocation(userId);
+		
+	}
+
 }

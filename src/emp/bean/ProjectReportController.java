@@ -5,7 +5,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import emp.model.ProjectReport;
 import emp.service.ProjectReportService;
@@ -62,12 +64,21 @@ public class ProjectReportController {
 
 
 	public String getInitCharts() {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		HttpSession session = (HttpSession) facesContext.getExternalContext()
+				.getSession(false);
     	ProjectReportService progService=new ProjectReportServiceImpl();
         try {
 			projReport=progService.CreateCharts(projectId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			session.setAttribute(
+					"projDetailsMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
 		}
         return null;
     }

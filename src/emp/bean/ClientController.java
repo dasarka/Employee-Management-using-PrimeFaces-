@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpSession;
@@ -67,6 +68,14 @@ public class ClientController {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"projDash:newProjMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
 		}
 		return null;
 	}
@@ -80,6 +89,15 @@ public class ClientController {
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"projDash:newProjMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
+
 		}
 		
 	}
@@ -96,10 +114,54 @@ public class ClientController {
 		ClientService clientService=new ClientServiceImpl();
 		boolean flag=false;
 		try {
+			if(SessionData().getAccessVal().equals("Client") && 
+					(projViewBean.getProjectName().equalsIgnoreCase("Internal Project")||
+							projViewBean.getProjectName().equalsIgnoreCase("Bench Project")||
+							projViewBean.getProjectName().equalsIgnoreCase("LMS Project"))){
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"projDash:newProjMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_ERROR,
+								"Please select different project name",
+								null));
+				return null;
+			}
 			flag=clientService.CreateProjectService(projViewBean,SessionData());
+			if(flag){
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"projDash:newProjMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_INFO,
+								"Project has created successfully",
+								null));
+
+			}else{
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"projDash:newProjMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_ERROR,
+								"Faied to create a new project, please contact with support team",
+								null));
+
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"projDash:newProjMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
+
 		}
 		
 		return null;

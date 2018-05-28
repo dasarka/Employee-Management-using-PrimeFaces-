@@ -209,15 +209,19 @@ public class EmpDaoImpl implements EmpDao {
 		String progressQuery = "SELECT  avg(task_status) AS progress_raw,count(distinct task_id) from emp_task where project_id= ";
 
 		String currQuery = "SELECT proj.project_id,proj.project_name,proj.start_date,proj.end_date,proj.client_name,auth.emp_name "
-				+ " FROM empmanagement.emp_project proj INNER JOIN empmanagement.emp_authentication auth INNER JOIN emp_project_allocation alloc"
+				+ " FROM emp_project proj INNER JOIN emp_authentication auth INNER JOIN emp_project_allocation alloc"
 				+ " WHERE  proj.project_id IN "
 				+ "(SELECT distinct project_id from emp_project_allocation where user_id="
 				+ userId
 				+ " )"
 				+ " AND proj.project_id=alloc.project_id AND alloc.user_id=auth.user_id AND auth.emp_access=10"
 				+ " AND flag = 'C'";
+		String internalCurrQuery = "SELECT proj.project_id,proj.project_name,proj.start_date,proj.end_date,proj.client_name,auth.emp_name "
+				+ " FROM emp_project proj INNER JOIN emp_authentication auth INNER JOIN emp_project_allocation alloc"
+				+ " WHERE  proj.project_id=alloc.project_id AND alloc.user_id=auth.user_id AND auth.user_id="
+				+ userId + " AND flag = 'C'";
 		String upcQuery = "SELECT proj.project_id,proj.project_name,proj.start_date,proj.end_date,proj.client_name,auth.emp_name "
-				+ " FROM empmanagement.emp_project proj INNER JOIN empmanagement.emp_authentication auth INNER JOIN emp_project_allocation alloc"
+				+ " FROM emp_project proj INNER JOIN emp_authentication auth INNER JOIN emp_project_allocation alloc"
 				+ " WHERE  proj.project_id IN "
 				+ "(SELECT distinct project_id from emp_project_allocation where user_id="
 				+ userId
@@ -225,7 +229,7 @@ public class EmpDaoImpl implements EmpDao {
 				+ " AND proj.project_id=alloc.project_id AND alloc.user_id=auth.user_id AND auth.emp_access=10"
 				+ " AND flag = 'U'";
 		String oldQuery = "SELECT proj.project_id,proj.project_name,proj.start_date,proj.end_date,proj.client_name,auth.emp_name "
-				+ " FROM empmanagement.emp_project proj INNER JOIN empmanagement.emp_authentication auth INNER JOIN emp_project_allocation alloc"
+				+ " FROM emp_project proj INNER JOIN emp_authentication auth INNER JOIN emp_project_allocation alloc"
 				+ " WHERE  proj.project_id IN "
 				+ "(SELECT distinct project_id from emp_project_allocation where user_id="
 				+ userId
@@ -234,28 +238,46 @@ public class EmpDaoImpl implements EmpDao {
 				+ " AND flag = 'O'";
 
 		System.out.println("currQuery " + currQuery);
+		System.out.println("internalCurrQuery " + internalCurrQuery);
 		System.out.println("upcQuery " + upcQuery);
 		System.out.println("oldQuery " + oldQuery);
 		// set current project
 		rs = null;
 		rs = connection.getResultSet(currQuery);
 		if (rs.next() == false) {
+			rsDuplicate = null;
+			rsDuplicate = connection.getResultSet(internalCurrQuery);
+			if (rsDuplicate.next() == false) {
 
+			} else {
+				rsDuplicate.absolute(1);
+				do {
+
+					projViewBean = new EmpProjViewBean(Integer.valueOf(String
+							.valueOf(rsDuplicate.getObject("project_id"))),
+							String.valueOf(rsDuplicate.getObject("project_name")),
+							String.valueOf(rsDuplicate.getObject("start_date")),
+							String.valueOf(rsDuplicate.getObject("end_date")),
+							"",
+							"");
+					projViewBean.setProgress(100.00);
+					tempProjList.add(projViewBean);
+				} while (rsDuplicate.next());
+			}
 		} else {
 			rs.absolute(1);
 			do {
 
-				projViewBean = new EmpProjViewBean(
-						Integer.valueOf(String.valueOf(rs
-								.getObject("project_id"))),
+				projViewBean = new EmpProjViewBean(Integer.valueOf(String
+						.valueOf(rs.getObject("project_id"))),
 						String.valueOf(rs.getObject("project_name")),
 						String.valueOf(rs.getObject("start_date")),
 						String.valueOf(rs.getObject("end_date")),
-						String.valueOf(rs.getObject("emp_name")), String
-								.valueOf(rs.getObject("client_name")));
+						String.valueOf(rs.getObject("emp_name")),
+						String.valueOf(rs.getObject("client_name")));
 
 				rsDuplicate = null;
-				System.out.println("progress query "+progressQuery
+				System.out.println("progress query " + progressQuery
 						+ projViewBean.getProjectId());
 				rsDuplicate = connection.getResultSet(progressQuery
 						+ projViewBean.getProjectId());
@@ -263,16 +285,17 @@ public class EmpDaoImpl implements EmpDao {
 
 				} else {
 					rsDuplicate.absolute(1);
-					try{
-					Double progress_raw=Double.valueOf(String.valueOf(rsDuplicate
-							.getObject("progress_raw")));
-					
-					Double progress=Math.ceil(progress_raw*10);
-					
-					System.out.println("progress "+progress);
-					projViewBean.setProgress(progress);
-					}catch(Exception e){
-						
+					try {
+						Double progress_raw = Double
+								.valueOf(String.valueOf(rsDuplicate
+										.getObject("progress_raw")));
+
+						Double progress = Math.ceil(progress_raw * 10);
+
+						System.out.println("progress " + progress);
+						projViewBean.setProgress(progress);
+					} catch (Exception e) {
+
 					}
 
 				}
@@ -322,9 +345,10 @@ public class EmpDaoImpl implements EmpDao {
 		return new EmpProjListBean(tempProjList, tempProjList1, tempProjList2);
 
 	}
-	
+
 	@Override
-	public EmpProjListBean LoadInternalProjectDataDao(int userId) throws SQLException {
+	public EmpProjListBean LoadInternalProjectDataDao(int userId)
+			throws SQLException {
 		EmpProjViewBean projViewBean;
 		List<EmpProjViewBean> tempProjList = new ArrayList<EmpProjViewBean>();
 		List<EmpProjViewBean> tempProjList1 = new ArrayList<EmpProjViewBean>();
@@ -332,20 +356,17 @@ public class EmpDaoImpl implements EmpDao {
 		Date currDate = new Date();
 
 		String currQuery = "SELECT proj.project_id,proj.project_name,proj.start_date,proj.end_date,proj.client_name,auth.emp_name "
-				+ " FROM empmanagement.emp_project proj INNER JOIN empmanagement.emp_authentication auth INNER JOIN emp_project_allocation alloc"
+				+ " FROM emp_project proj INNER JOIN emp_authentication auth INNER JOIN emp_project_allocation alloc"
 				+ " WHERE  proj.project_id=alloc.project_id AND alloc.user_id=auth.user_id AND auth.user_id="
-				+userId
-				+ " AND flag = 'C'";
+				+ userId + " AND flag = 'C'";
 		String upcQuery = "SELECT proj.project_id,proj.project_name,proj.start_date,proj.end_date,proj.client_name,auth.emp_name "
-				+ " FROM empmanagement.emp_project proj INNER JOIN empmanagement.emp_authentication auth INNER JOIN emp_project_allocation alloc"
+				+ " FROM emp_project proj INNER JOIN emp_authentication auth INNER JOIN emp_project_allocation alloc"
 				+ " WHERE  proj.project_id=alloc.project_id AND alloc.user_id=auth.user_id AND auth.user_id="
-				+userId
-				+ " AND flag = 'U'";
+				+ userId + " AND flag = 'U'";
 		String oldQuery = "SELECT proj.project_id,proj.project_name,proj.start_date,proj.end_date,proj.client_name,auth.emp_name "
-				+ " FROM empmanagement.emp_project proj INNER JOIN empmanagement.emp_authentication auth INNER JOIN emp_project_allocation alloc"
+				+ " FROM emp_project proj INNER JOIN emp_authentication auth INNER JOIN emp_project_allocation alloc"
 				+ " WHERE  proj.project_id=alloc.project_id AND alloc.user_id=auth.user_id AND auth.user_id="
-				+userId
-				+ " AND flag = 'O'";
+				+ userId + " AND flag = 'O'";
 
 		System.out.println("currQuery " + currQuery);
 		System.out.println("upcQuery " + upcQuery);
@@ -359,15 +380,12 @@ public class EmpDaoImpl implements EmpDao {
 			rs.absolute(1);
 			do {
 
-				projViewBean = new EmpProjViewBean(
-						Integer.valueOf(String.valueOf(rs
-								.getObject("project_id"))),
+				projViewBean = new EmpProjViewBean(Integer.valueOf(String
+						.valueOf(rs.getObject("project_id"))),
 						String.valueOf(rs.getObject("project_name")),
 						String.valueOf(rs.getObject("start_date")),
-						String.valueOf(rs.getObject("end_date")),
-						"N.A.", "N.A.");
-
-				
+						String.valueOf(rs.getObject("end_date")), "N.A.",
+						"N.A.");
 
 				tempProjList.add(projViewBean);
 			} while (rs.next());
@@ -385,7 +403,8 @@ public class EmpDaoImpl implements EmpDao {
 						.valueOf(rs.getObject("project_id"))),
 						String.valueOf(rs.getObject("project_name")),
 						String.valueOf(rs.getObject("start_date")),
-						String.valueOf(rs.getObject("end_date")),"N.A.", "N.A.");
+						String.valueOf(rs.getObject("end_date")), "N.A.",
+						"N.A.");
 				tempProjList1.add(projViewBean);
 			} while (rs.next());
 		}
@@ -402,7 +421,8 @@ public class EmpDaoImpl implements EmpDao {
 						.valueOf(rs.getObject("project_id"))),
 						String.valueOf(rs.getObject("project_name")),
 						String.valueOf(rs.getObject("start_date")),
-						String.valueOf(rs.getObject("end_date")),"N.A.", "N.A.");
+						String.valueOf(rs.getObject("end_date")), "N.A.",
+						"N.A.");
 				tempProjList2.add(projViewBean);
 			} while (rs.next());
 		}
@@ -410,7 +430,6 @@ public class EmpDaoImpl implements EmpDao {
 		return new EmpProjListBean(tempProjList, tempProjList1, tempProjList2);
 
 	}
-
 
 	@Override
 	public List<UsersBean> LoadResourceDataDao(int projectId)
@@ -440,8 +459,8 @@ public class EmpDaoImpl implements EmpDao {
 
 	@Override
 	public Object checkProjectValidityDao() throws SQLException {
-		String curr_oldSelectQuery = "SELECT project_id,start_date,end_date FROM empmanagement.emp_project where flag='C'";
-		String up_currSelectQuery = "SELECT project_id,start_date,end_date FROM empmanagement.emp_project where flag='U'";
+		String curr_oldSelectQuery = "SELECT project_id,start_date,end_date FROM emp_project where flag='C'";
+		String up_currSelectQuery = "SELECT project_id,start_date,end_date FROM emp_project where flag='U'";
 		String up_currUpdateQuery = "UPDATE emp_project SET flag='C' WHERE project_id = ";
 		String curr_oldUpdateQuery = "UPDATE emp_project SET flag='O' WHERE project_id = ";
 
@@ -572,18 +591,19 @@ public class EmpDaoImpl implements EmpDao {
 				+ newTaskBean.getEndDate() + "', " + "'"
 				+ newTaskBean.getDescription() + "', " + ""
 				+ newTaskBean.getTaskStatus() + ") ";
-		System.out.println("CreateNewTaskDao/insertQuery" + insertQuery);
-		String updateQuery = "UPDATE emp_project SET progress = "
+		System.out.println("CreateNewTaskDao/insertQuery " + insertQuery);
+		/*String updateQuery = "UPDATE emp_project SET progress = "
 				+ "(SELECT avg(task_status) FROM emp_task where project_id= "
-				+ newTaskBean.getProjcetId() + ")*100" + "WHERE project_id = "
-				+ newTaskBean.getProjcetId();
+				+ newTaskBean.getProjcetId() + ")*100" + " WHERE project_id = "
+				+ newTaskBean.getProjcetId();*/
 		if (connection.getICDM(insertQuery) > 0) {
 			flag = true;
+			/*System.out.println("updateQuery "+updateQuery);
 			if (connection.getICDM(updateQuery) > 0) {
 				flag = true;
 			} else {
 				flag = false;
-			}
+			}*/
 		} else {
 			flag = false;
 		}
@@ -657,7 +677,48 @@ public class EmpDaoImpl implements EmpDao {
 				flag = false;
 			}
 		}
-		
+
 		return flag;
+	}
+
+	@Override
+	public void benchAllocation(int userId) throws SQLException {
+		String findbenchProj = "SELECT project_id FROM emp_project where project_name='Bench Project'";
+		String benchConfirmation = " SELECT * FROM emp_project_allocation where user_id="
+				+ userId + " AND project_id=";
+		String remainHours = "SELECT emp_remainHours FROM emp_authentication where user_id="
+				+ userId;
+		String benchAllocation = "INSERT INTO emp_project_allocation(user_id,project_id)VALUES("
+				+ userId + ",";
+		System.out.println("findbenchProj " + findbenchProj);
+		rs = null;
+		rs = connection.getResultSet(findbenchProj);
+		if (rs.next() == false) {
+
+		} else {
+			rs.absolute(1);
+			int projectId = (int) rs.getObject("project_id");
+			benchConfirmation += projectId;
+			System.out.println("benchConfirmation " + benchConfirmation);
+			rs = null;
+			rs = connection.getResultSet(benchConfirmation);
+			if (rs.next() == false) {
+				System.out.println("remainHours " + remainHours);
+				rsDuplicate = null;
+				rsDuplicate = connection.getResultSet(remainHours);
+				if (rsDuplicate.next() == false) {
+
+				} else {
+					rsDuplicate.absolute(1);
+					if ((int) rsDuplicate.getObject("emp_remainHours") == 8) {
+						benchAllocation += projectId + ")";
+						System.out
+								.println("benchAllocation " + benchAllocation);
+						connection.getICDM(benchAllocation);
+					}
+				}
+			}
+		}
+
 	}
 }

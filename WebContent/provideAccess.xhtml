@@ -11,21 +11,31 @@
 	xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
 <h:head>
 	<title>Employee Management</title>
-	
+
 </h:head>
-<h:body class="bg-white content">
+<h:body class="bg-white content"
+onload="setTimeout(function() { $('#provideAccess\\:accessMsg').html(''); }, 5000);">
 	<div class="content-wrapper">
 		<ui:include src="WEB-MASTER-PAGES/EmpMaster.xhtml"></ui:include>
-		<p:breadCrumb>
-			<p:menuitem value="Dashboard" url="dashboard.xhtml" />
-			<p:menuitem value="Provide Access" url="#" />
-		</p:breadCrumb>
+
 		<div class="page-body">
 			<div class="row">
 
 				<h:form id="provideAccess">
-					<h:outputText value="#{empMain.userAccessList}" />
+
 					<div class="col-xl-12 col-lg-12 col-md-12 com-sm-12 col-xs-12">
+						<p:breadCrumb>
+							<p:menuitem value="Dashboard" url="dashboard.xhtml" />
+							<p:menuitem value="Provide Access" url="#" />
+						</p:breadCrumb>
+						<h:outputText value="#{empMain.userAccessList}" />
+						<div class="row row-diff">
+							<div class="col-xl-12 col-lg-12 col-md-12 com-sm-12 col-xs-12">
+								<p:messages id="accessMsg" closable="true" autoUpdate="true"
+									showIcon="true">
+								</p:messages>
+							</div>
+						</div>
 						<center>
 							<div class="modal-title">
 
@@ -52,9 +62,9 @@
 													<f:selectItems
 														value="#{empMain.userAccessListBean.usersList}" var="user"
 														itemValue="#{user.userId}" itemLabel="#{user.empName}"></f:selectItems>
-													<p:ajax event="change" 
-													listener="#{empMain.GetUsersAccessDetails}"
-													update="empDesg empCurrAcc accessVal"></p:ajax>
+													<p:ajax event="change"
+														listener="#{empMain.GetUsersAccessDetails}"
+														update="empDesg empCurrAcc accessVal"></p:ajax>
 												</p:selectOneMenu>
 											</div>
 
@@ -62,19 +72,19 @@
 										<div class="row row-diff">
 
 											<div class="col-xl-6 col-lg-6 col-md-6 com-sm-12 col-xs-12">
-												Employee Designation:
-											</div>
+												Employee Designation:</div>
 											<div class="col-xl-6 col-lg-6 col-md-6 com-sm-12 col-xs-12">
-												<h:outputText id="empDesg" value="#{empMain.userAccessListBean.empDesg}"></h:outputText>
+												<h:outputText id="empDesg"
+													value="#{empMain.userAccessListBean.empDesg}"></h:outputText>
 											</div>
 										</div>
 										<div class="row row-diff">
 
 											<div class="col-xl-6 col-lg-6 col-md-6 com-sm-12 col-xs-12">
-												Current Access:
-											</div>
+												Current Access:</div>
 											<div class="col-xl-6 col-lg-6 col-md-6 com-sm-12 col-xs-12">
-												<h:outputText id="empCurrAcc" value="#{empMain.userAccessListBean.currAccess}"></h:outputText>
+												<h:outputText id="empCurrAcc"
+													value="#{empMain.userAccessListBean.currAccess}"></h:outputText>
 											</div>
 										</div>
 										<div class="row row-diff">
@@ -98,7 +108,8 @@
 											<center>
 												<h:commandButton id="btnAccess" value="Provide Access"
 													styleClass="btn btn-success"
-													action="#{empMain.AccessProvide}"></h:commandButton>
+													action="#{empMain.AccessProvide}"
+													oncomplete="setTimeout(function() { $('#provideAccess\\:accessMsg').html(''); }, 5000);"></h:commandButton>
 											</center>
 
 										</div>

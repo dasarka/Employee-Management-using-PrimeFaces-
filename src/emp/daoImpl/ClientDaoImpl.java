@@ -90,7 +90,7 @@ public class ClientDaoImpl implements ClientDao {
 		String query2="INSERT INTO emp_project_allocation(user_id,project_id) VALUES ("
 				+"AD_EMP_ADMIN_HR_USERID"
 				+","+projectId+")";
-		String queryUserId="SELECT user_id FROM empmanagement.emp_authentication where emp_access= 2 or emp_access=6";
+		String queryUserId="SELECT user_id FROM emp_authentication where emp_access= 2 or emp_access=6";
 		if(usersbean.getAccessVal().equals("HR")){
 			rs = null;
 			rs = connection.getResultSet(queryUserId);

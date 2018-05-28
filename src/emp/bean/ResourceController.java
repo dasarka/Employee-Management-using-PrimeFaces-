@@ -8,6 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpSession;
@@ -73,6 +74,14 @@ public class ResourceController {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"resourceAlloc:allocationMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"we have faced some issue, please wait for some time or contact with support team",
+							null));
 		}
 		return null;
 	}
@@ -85,6 +94,14 @@ public class ResourceController {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"resourceAlloc:allocationMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"we have faced some issue, please wait for some time or contact with support team",
+							null));
 		}
 		return null;
 	}
@@ -109,6 +126,23 @@ public class ResourceController {
 			
 			resourceBean.setHours_d(2);
 			resourceBean.setSelectedDeveloperId(0);
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"resourceAlloc:allocationMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_INFO,
+							"One Developer is allocated",
+							null));
+		}else{
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"resourceAlloc:allocationMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_ERROR,
+							"Please provide valid input",
+							null));
 		}
 	}
 	public void UpdatePerfTester(AjaxBehaviorEvent e) {
@@ -128,6 +162,23 @@ public class ResourceController {
 			
 			resourceBean.setHours_pt(2);
 			resourceBean.setSelectedPerfTesterId(0);
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"resourceAlloc:allocationMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_INFO,
+							"One Performance Tester is allocated",
+							null));
+		}else{
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"resourceAlloc:allocationMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_ERROR,
+							"Please provide valid input",
+							null));
 		}
 	}
 	public void UpdateTester(AjaxBehaviorEvent e) {
@@ -147,6 +198,23 @@ public class ResourceController {
 			
 			resourceBean.setHours_t(2);
 			resourceBean.setSelectedTesterId(0);
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"resourceAlloc:allocationMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_INFO,
+							"One Tester is allocated",
+							null));
+		}else{
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"resourceAlloc:allocationMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_ERROR,
+							"Please provide valid input",
+							null));
 		}
 	}
 
@@ -156,6 +224,7 @@ public class ResourceController {
 		for (ClientProjViewBean projBean : resourceBean.getProjectList()) {
 			if(resourceBean.getSelectedProjectId()==projBean.getProjectId()){
 				resourceBean.setSelectedProjectName(projBean.getProjectName());
+				
 			}
 			
 		}
@@ -171,6 +240,14 @@ public class ResourceController {
 				resourceBean.setSelectedOnsiteManagerName(userBean.getEmpName());
 				resourceBean.setSelectedOnsiteManagerDesg(userBean.getEmpDesg());
 				maxValUI.setMax_hours_om(userBean.getRemainHours());
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"resourceAlloc:allocationMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_INFO,
+								"Onsite manager is allocated",
+								null));
 			}
 			
 		}
@@ -186,6 +263,14 @@ public class ResourceController {
 				resourceBean.setSelectedManagerName(userBean.getEmpName());
 				resourceBean.setSelectedManagerDesg(userBean.getEmpDesg());
 				maxValUI.setMax_hours_m(userBean.getRemainHours());
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"resourceAlloc:allocationMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_INFO,
+								"Manager is allocated",
+								null));
 			}
 			
 		}
@@ -201,6 +286,14 @@ public class ResourceController {
 				resourceBean.setSelectedLeadName(userBean.getEmpName());
 				resourceBean.setSelectedLeadDesg(userBean.getEmpDesg());
 				maxValUI.setMax_hours_l(userBean.getRemainHours());
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"resourceAlloc:allocationMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_INFO,
+								"Lead is allocated",
+								null));
 			}
 			
 		}
@@ -256,9 +349,36 @@ public class ResourceController {
 		try {
 			flag = resService.NewAllocationService(resourceBean);
 			System.out.println("flag " + flag);
+			if(flag){
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"resourceAlloc:allocationMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_INFO,
+								"Selected resources are successfully tagged with selected project",
+								null));
+			}else{
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"resourceAlloc:allocationMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_ERROR,
+								"Allocation has failed, please contact with support team",
+								null));
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"resourceAlloc:allocationMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"we have faced some issue, please wait for some time or contact with support team",
+							null));
 		}
 		return null;
 	}

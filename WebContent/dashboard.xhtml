@@ -13,7 +13,8 @@
 	<title>Employee Management</title>
 
 </h:head>
-<h:body class="bg-white content">
+<h:body class="bg-white content"
+	onload="setTimeout(function() { $('#empDashboard\\:dashMsg').html(''); }, 10000);">
 	<div class="content-wrapper">
 		<ui:include src="WEB-MASTER-PAGES/EmpMaster.xhtml"></ui:include>
 		<div class="page-body">
@@ -21,12 +22,16 @@
 				<div class="col-xl-12 col-lg-12 col-md-12 com-sm-12 col-xs-12">
 					<h:form id="empDashboard">
 						<h:outputText value="#{empMain.controlProjRes}" />
-						<div class="row" style="margin-top: -35px;">
+						<h:outputText value="#{empMain.benchAllocation}" />
+
+
+						<div class="row" style="margin-top: 0px;">
 							<div class="col-xl-12 col-lg-12 col-md-12 com-sm-12 col-xs-12">
 								<p:tabView dynamic="true" cache="true" effect="fold"
 									id="dashTab">
 
 									<p:tab title="Dashboard" id="dashboard">
+										
 										<ui:include src="WEB-CONTENT-PAGES/Dashboard/index.xhtml"></ui:include>
 									</p:tab>
 									<p:tab title="Allocated Projects" id="viewProject">
@@ -42,7 +47,7 @@
 										<ui:include src="WEB-CONTENT-PAGES/Dashboard/lms.xhtml"></ui:include>
 									</p:tab>
 									<p:tab title="Profile" id="profile">
-										 <ui:include src="WEB-CONTENT-PAGES/Dashboard/profile.xhtml"></ui:include>
+										<ui:include src="WEB-CONTENT-PAGES/Dashboard/profile.xhtml"></ui:include>
 									</p:tab>
 								</p:tabView>
 							</div>
