@@ -13,23 +13,21 @@ import emp.model.ProjectReport;
 import emp.service.ProjectReportService;
 import emp.serviceImpl.ProjectReportServiceImpl;
 
-
-
 public class ProjectReportController {
 	private int projectId;
 	private int projectType;
-	
-	private ProjectReport projReport=new ProjectReport();
-	
-	public Integer getFetchProjectDetails(){
+
+	private ProjectReport projReport = new ProjectReport();
+
+	public Integer getFetchProjectDetails() {
 		try {
 			Map<String, String> params = FacesContext.getCurrentInstance()
 					.getExternalContext().getRequestParameterMap();
-			
+
 			projectId = Integer.parseInt(String.valueOf(params.get("pid")));
-			projectType=Integer.parseInt(String.valueOf(params.get("flag")));
-			
-			System.out.println("projectId "+projectId);
+			projectType = Integer.parseInt(String.valueOf(params.get("flag")));
+
+			System.out.println("projectId " + projectId);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -37,39 +35,23 @@ public class ProjectReportController {
 		return null;
 	}
 
-	
-   
-    
-
-
-
 	public ProjectReport getProjReport() {
 		return projReport;
 	}
-
-
-
-
-
-
 
 	public void setProjReport(ProjectReport projReport) {
 		this.projReport = projReport;
 	}
 
-
-
-
-
-
-
 	public String getInitCharts() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		HttpSession session = (HttpSession) facesContext.getExternalContext()
 				.getSession(false);
-    	ProjectReportService progService=new ProjectReportServiceImpl();
-        try {
-			projReport=progService.CreateCharts(projectId);
+		ProjectReportService progService = new ProjectReportServiceImpl();
+		try {
+			projReport = progService.CreateCharts(projectId);
+			
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,15 +62,7 @@ public class ProjectReportController {
 							"We have faced some issue, please wait for some time or contact with support team",
 							null));
 		}
-        return null;
-    }
- 
-   
-    
-   
-    
-   
-     
-   
-	
+		return null;
+	}
+
 }

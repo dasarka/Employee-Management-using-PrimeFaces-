@@ -48,16 +48,28 @@
 		</div>
 		<div class="ui-g">
 			<div class="ui-g-6">
-
-				<h:commandButton value="Request fo new resource"
+				<p:selectOneMenu
 					disabled="#{empMain.projectType eq 0 || empMain.usersBean.accessVal eq 'Client'}"
-					class="pull-left btn btn-xs btn-primary"></h:commandButton>
+					class="pull-left">
+					<f:selectItem itemValue="" itemLabel="Select Resource type"></f:selectItem>
+					<f:selectItem itemValue="need developer" itemLabel="Developer"></f:selectItem>
+					<f:selectItem itemValue="need performance tester"
+						itemLabel="Performance Tester"></f:selectItem>
+					<f:selectItem itemValue="need tester" itemLabel="Tester"></f:selectItem>
+				</p:selectOneMenu>
+				&nbsp;&nbsp;
+				<h:commandButton value="Request Now"
+					disabled="#{empMain.projectType eq 0 || empMain.usersBean.accessVal eq 'Client'}"
+					class=" btn btn-sm btn-primary"></h:commandButton>
+
+
+
 			</div>
 			<div class="ui-g-6">
 				<h:commandButton value="Release Resource" process="resourceTable"
 					disabled="#{empMain.projectType eq 0 || empMain.usersBean.accessVal eq 'Client'}"
 					action="#{empMain.ReleaseResource}"
-					class="pull-right btn btn-xs btn-danger"></h:commandButton>
+					class="pull-right btn btn-sm btn-danger"></h:commandButton>
 			</div>
 		</div>
 	</div>

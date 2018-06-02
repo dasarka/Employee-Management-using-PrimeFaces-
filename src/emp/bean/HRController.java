@@ -12,6 +12,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpSession;
 import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
+import emp.model.ApprisalBean;
 import emp.model.ProjectBean;
 import emp.model.Timecard;
 import emp.model.UsersBean;
@@ -24,6 +25,43 @@ public class HRController {
 	List<Timecard> newTimecard = new ArrayList<Timecard>();
 	List<Timecard> hrTimecard = new ArrayList<Timecard>();
 	List<UsersBean> usersList = new ArrayList<UsersBean>();
+	
+	List<ApprisalBean> apprisalList=new ArrayList<ApprisalBean>();
+	ApprisalBean apprisalBean=new ApprisalBean();
+	private int overallRating=0;
+	private boolean apprisalContent;
+	
+	public boolean isApprisalContent() {
+		return apprisalContent;
+	}
+
+	public void setApprisalContent(boolean apprisalContent) {
+		this.apprisalContent = apprisalContent;
+	}
+
+	public int getOverallRating() {
+		return overallRating;
+	}
+
+	public void setOverallRating(int overallRating) {
+		this.overallRating = overallRating;
+	}
+	
+	public List<ApprisalBean> getApprisalList() {
+		return apprisalList;
+	}
+
+	public void setApprisalList(List<ApprisalBean> apprisalList) {
+		this.apprisalList = apprisalList;
+	}
+
+	public ApprisalBean getApprisalBean() {
+		return apprisalBean;
+	}
+
+	public void setApprisalBean(ApprisalBean apprisalBean) {
+		this.apprisalBean = apprisalBean;
+	}
 	private int selectedUsers;
 	
 	
@@ -317,7 +355,7 @@ public class HRController {
 		}
 	}
 	
-	public String getLoadHRTimecards(){
+	public String getLoadUsers(){
 		HRService hrService = new HRServiceImpl();
 		try {
 			usersList=hrService.FetchAllUsersService();
@@ -357,5 +395,167 @@ public class HRController {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	public void AddApprisalDataEmployee(AjaxBehaviorEvent ev){
+		System.out.println("AddApprisalDataEmployee ");
+		try{
+			apprisalBean.setUserId(SessionData().getUserId());
+			apprisalList.add(apprisalBean);
+			apprisalBean=new ApprisalBean();
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"empDashboard:dashTab:apprisalForm:apprisalMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_INFO,
+							"Data added successfully",
+							null));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"empDashboard:dashTab:apprisalForm:apprisalMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
+		}
+	}
+	public String getApprisalData(){
+		System.out.println("getApprisalData ");
+		try{
+			HRService hrService = new HRServiceImpl();
+			apprisalList=hrService.apprisalDataService(SessionData().getUserId());
+			System.out.println(apprisalList);
+			if(apprisalList.size()>0){
+				apprisalContent=true;
+				
+
+			}else{
+				apprisalContent=false;
+			}
+			int count=0;
+			overallRating=0;
+			for (ApprisalBean appBean : apprisalList) {
+				overallRating +=appBean.getRating();
+				count++;
+			}
+			if(count>0){
+				overallRating =overallRating/count;
+				if(overallRating>0){
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"empDashboard:dashTab:apprisalForm:apprisalMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_INFO,
+								"you rating is published",
+								null));
+				}else{
+					FacesContext
+					.getCurrentInstance()
+					.addMessage(
+							"empDashboard:dashTab:apprisalForm:apprisalMsg",
+							new FacesMessage(
+									FacesMessage.SEVERITY_INFO,
+									"you already submitted your appraisal for current year, please wait for rating",
+									null));
+				}
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"empDashboard:dashTab:apprisalForm:apprisalMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
+		}
+
+		 return null;
+	}
+	
+	public void SubmitApprisalDataEmployee(AjaxBehaviorEvent ev){
+		System.out.println("SubmitApprisalDataEmployee ");
+		try{
+			HRService hrService = new HRServiceImpl();
+			boolean flag=hrService.SubmitApprisalEmployeeService(apprisalList);
+			System.out.println(flag);
+			if(flag){
+			
+			int count=0;
+			overallRating=0;
+			for (ApprisalBean appBean : apprisalList) {
+				overallRating +=appBean.getRating();
+				count++;
+			}
+			if(count>0)
+				overallRating =overallRating/count;
+			
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"empDashboard:dashTab:apprisalForm:apprisalMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_INFO,
+							"Your appraisal has submitted successfully",
+							null));
+			
+			}else{
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"empDashboard:dashTab:apprisalForm:apprisalMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_ERROR,
+								"Failed to submit your appraisal, please contact with support team",
+								null));
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"empDashboard:dashTab:apprisalForm:apprisalMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
+		}
+	}
+	public String UpdateAppraisal() {
+		System.out.println("UpdateAppraisal ");
+		System.out.println("apprisalList "+apprisalList);
+		try{
+			HRService hrService = new HRServiceImpl();
+			boolean flag=hrService.UpdateAppraisalService(apprisalList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public void OpenApprisal(AjaxBehaviorEvent event) {
+		System.out.println("OpenApprisal ");
+		try{
+			HRService hrService = new HRServiceImpl();
+			apprisalList=hrService.apprisalDataService(selectedUsers);
+			System.out.println(apprisalList);
+			
+				
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
+		
 	}
 }

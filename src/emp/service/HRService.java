@@ -2,6 +2,7 @@ package emp.service;
 
 import java.util.List;
 
+import emp.model.ApprisalBean;
 import emp.model.ProjectBean;
 import emp.model.Timecard;
 import emp.model.UsersBean;
@@ -11,4 +12,7 @@ public interface HRService {
 	public List<Timecard> ViewTimeCardService(String month,String year,int userId) throws Exception;
 	public List<UsersBean> FetchAllUsersService()throws Exception;
 	public boolean UpdateTimecardService(List<Timecard> hrTimecard)throws Exception;
+	public boolean SubmitApprisalEmployeeService(List<ApprisalBean> apprisalList)throws Exception;
+	public List<ApprisalBean> apprisalDataService(int userId)throws Exception;
+	public boolean UpdateAppraisalService(List<ApprisalBean> apprisalList)throws Exception;
 }

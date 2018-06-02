@@ -24,6 +24,7 @@ onload="setTimeout(function() { $('#empProject\\:projDetailsMsg').html(''); }, 5
 
 						<h:outputText value="#{empMain.fetchProjectDetails}" />
 						<h:outputText value="#{projRep.fetchProjectDetails}" />
+						<h:outputText value="#{empMain.loadTaskDetails}" />
 						<div class="row" >
 							<div class="col-xl-12 col-lg-12 col-md-12 com-sm-12 col-xs-12">
 								<p:breadCrumb>
@@ -58,7 +59,8 @@ onload="setTimeout(function() { $('#empProject\\:projDetailsMsg').html(''); }, 5
 										<ui:include
 											src="WEB-CONTENT-PAGES/ProjectDetails/PendingTaskTab.xhtml"></ui:include>
 									</p:tab>
-									<p:tab title="Project Report" id="report">
+									<p:tab title="Project Report" id="report"
+									 disabled="#{empty empMain.updateTaskBean.tasksList}">
 										<ui:include
 											src="WEB-CONTENT-PAGES/ProjectDetails/ProjectReportTab.xhtml"></ui:include>
 									</p:tab>
