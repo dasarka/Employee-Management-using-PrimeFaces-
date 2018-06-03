@@ -10,6 +10,7 @@ import java.util.List;
 import emp.connection.SQLConnection;
 import emp.dao.HRDao;
 import emp.model.ApprisalBean;
+import emp.model.LMSBean;
 import emp.model.ProjectBean;
 import emp.model.Timecard;
 import emp.model.UsersBean;
@@ -214,7 +215,7 @@ public class HRDaoImpl implements HRDao {
 			rs.absolute(1);
 			do {
 				apprisalList.add(new ApprisalBean((Integer) rs
-						.getObject("user_id"),(Integer) rs
+						.getObject("user_id"), (Integer) rs
 						.getObject("appraisal_id"), (String) rs
 						.getObject("objective"), (String) rs
 						.getObject("employee_comment"), (String) rs
@@ -228,7 +229,7 @@ public class HRDaoImpl implements HRDao {
 	@Override
 	public boolean UpdateAppraisalDao(List<ApprisalBean> apprisalList)
 			throws Exception {
-		boolean flag=false;
+		boolean flag = false;
 		String updateQuery = "UPDATE emp_apprisal SET ";
 		String data = "hr_comment = 'emp_hr_comment',rating = emp_rating,status = 'complete' ";
 		String clause = "WHERE appraisal_id =";
@@ -238,11 +239,11 @@ public class HRDaoImpl implements HRDao {
 			completeQuery = updateQuery
 					+ data.replace("emp_hr_comment",
 							apprisalBean.getHrComment()).replace("emp_rating",
-							String.valueOf(apprisalBean.getRating()))
-					+ clause+apprisalBean.getAppraisalId();
-			
-			System.out.println("completeQuery "+completeQuery);
-			
+							String.valueOf(apprisalBean.getRating())) + clause
+					+ apprisalBean.getAppraisalId();
+
+			System.out.println("completeQuery " + completeQuery);
+
 			if (connection.getICDM(completeQuery) > 0) {
 				flag = true;
 			} else {
@@ -251,6 +252,209 @@ public class HRDaoImpl implements HRDao {
 			}
 		}
 
+		return flag;
+	}
+
+	@Override
+	public boolean ProvideLeaveDao() throws Exception {
+		System.out.println("ProvideLeaveDao");
+		boolean flag = false;
+		String query = "SELECT * FROM emp_authentication;";
+		String updateQuery = "UPDATE emp_authentication SET leave_balance = ";
+		String updateClause = " WHERE user_id = ";
+		int userId = 0;
+		int leaveBal = 0;
+		String completeQuery = "";
+		rs = null;
+		rs = connection.getResultSet(query);
+		if (rs.next() == false) {
+
+		} else {
+			rs.absolute(1);
+			do {
+				userId = (int) rs.getObject("user_id");
+				leaveBal = (int) rs.getObject("leave_balance") + 2;
+				completeQuery = updateQuery + leaveBal + updateClause + userId;
+				System.out.println("completeQuery " + completeQuery);
+				if (connection.getICDM(completeQuery) > 0) {
+					flag = true;
+				} else {
+					flag = false;
+					break;
+				}
+			} while (rs.next());
+		}
+		return flag;
+
+	}
+
+	@Override
+	public int GetLeaveBalanceDao(int userId) throws Exception {
+		String query = "SELECT leave_balance FROM emp_authentication WHERE user_id="
+				+ userId;
+		System.out.println("GetLeaveBalanceDao " + query);
+		int leaveBalance = 0;
+		rs = null;
+		rs = connection.getResultSet(query);
+		if (rs.next() == false) {
+
+		} else {
+			rs.absolute(1);
+			leaveBalance = (int) rs.getObject("leave_balance");
+		}
+		return leaveBalance;
+	}
+
+	@Override
+	public List<LMSBean> GetAppliedLeaveDao(int userId) throws Exception {
+		List<LMSBean> lmsList = new ArrayList<LMSBean>();
+		String query = "SELECT * FROM ems_lms_data WHERE user_id=" + userId;
+		System.out.println("GetAppliedLeaveDao " + query);
+		rs = null;
+		rs = connection.getResultSet(query);
+		if (rs.next() == false) {
+
+		} else {
+			rs.absolute(1);
+			do {
+				lmsList.add(new LMSBean((String) rs
+						.getObject("leave_start_date"), (String) rs
+						.getObject("leave_end_date"), (String) rs
+						.getObject("leave_comments"), (int) rs
+						.getObject("leave_taken"), (String) rs
+						.getObject("leave_status")));
+			} while (rs.next());
+		}
+		return lmsList;
+	}
+
+	@Override
+	public boolean ApplyLeaveDao(int userId, LMSBean lmsBean, int leaveBalance)
+			throws Exception {
+		boolean flag = false;
+		String query = "INSERT INTO ems_lms_data "
+				+ "(user_id,leave_start_date,leave_end_date,leave_taken,leave_status,leave_comments) "
+				+ "VALUES (" + "" + userId + "," + "'" + lmsBean.getStartDate()
+				+ "'," + "'" + lmsBean.getEndDate() + "'," + ""
+				+ lmsBean.getLeaveCount() + "," + "'Submitted'," + "'"
+				+ lmsBean.getComments() + "')";
+		String updateQuery = "UPDATE emp_authentication SET "
+				+ "leave_balance = " + (leaveBalance - lmsBean.getLeaveCount())
+				+ " WHERE user_id =" + userId;
+		System.out.println("ApplyLeaveDao " + query);
+		System.out.println("updateQuery " + updateQuery);
+		if (connection.getICDM(query) > 0) {
+			flag = true;
+			if (connection.getICDM(updateQuery) > 0) {
+				flag = true;
+			} else {
+				flag = false;
+			}
+		} else {
+			flag = false;
+		}
+		return flag;
+	}
+
+	@Override
+	public List<LMSBean> LoadLMSDataDao() throws Exception {
+		List<LMSBean> lmsList = new ArrayList<LMSBean>();
+		String query = "SELECT "
+				+ "auth.emp_name,auth.user_id,lms.leave_id,lms.leave_start_date,lms.leave_end_date,"
+				+ "lms.leave_comments, lms.leave_taken "
+				+ "FROM ems_lms_data lms INNER JOIN emp_authentication auth "
+				+ "where lms.user_id=auth.user_id and lms.leave_status='Submitted'";
+		System.out.println("GetAppliedLeaveDao " + query);
+		rs = null;
+		rs = connection.getResultSet(query);
+		if (rs.next() == false) {
+
+		} else {
+			rs.absolute(1);
+			do {
+				lmsList.add(new LMSBean((String) rs
+						.getObject("leave_start_date"), (String) rs
+						.getObject("leave_end_date"), (String) rs
+						.getObject("leave_comments"), (int) rs
+						.getObject("leave_taken"), (String) rs
+						.getObject("emp_name"), (int) rs.getObject("user_id"),
+						(int) rs.getObject("leave_id")));
+			} while (rs.next());
+		}
+		return lmsList;
+	}
+
+	@Override
+	public boolean UpdateLMSDao(List<LMSBean> lmsList) throws Exception {
+		boolean flag = false;
+		System.out.println("UpdateLMSDao");
+		String updateLMS = "UPDATE ems_lms_data SET leave_status=";
+		String lmsClause = " WHERE leave_id = ";
+		String getLeaveBal = "SELECT leave_balance FROM emp_authentication where user_id=";
+		String resetLeave = "UPDATE emp_authentication SET leave_balance = ";
+		String resetLeaveClause = " WHERE user_id =";
+		String getLMSId="SELECT project_id FROM emp_project where project_name ='LMS Project'";
+		String insertAllocation = "INSERT INTO emp_project_allocation "
+				+ "(user_id,project_id,lms_start_date,lms_end_date) VALUES (";
+		String completeLMS = "";
+		String completeResetLeave = "";
+		String completeQuery="";
+		int lmsProjId=0;
+		rs = null;
+		rs = connection.getResultSet(getLMSId);
+		if (rs.next() == false) {
+			flag=false;
+		} else {
+			rs.absolute(1);
+			lmsProjId=(int) rs.getObject("project_id");
+			for (LMSBean lmsBean : lmsList) {
+				completeLMS = updateLMS + "'" + lmsBean.getStatus() + "'"
+						+ lmsClause + lmsBean.getLeaveId();
+				System.out.println("completeLMS " + completeLMS);
+				if (connection.getICDM(completeLMS) > 0) {
+					flag = true;
+					if (lmsBean.getStatus().equalsIgnoreCase("Rejected")) {
+						rs = null;
+						rs = connection.getResultSet(getLeaveBal
+								+ lmsBean.getUserId());
+						if (rs.next() == false) {
+
+						} else {
+							rs.absolute(1);
+							completeResetLeave = resetLeave
+									+ ((int) rs.getObject("leave_balance") + lmsBean
+											.getLeaveCount()) + resetLeaveClause
+									+ lmsBean.getUserId();
+							System.out.println("completeResetLeave "
+									+ completeResetLeave);
+							if (connection.getICDM(completeResetLeave) > 0) {
+								flag = true;
+							} else {
+								flag = false;
+								break;
+							}
+						}
+					} else {
+						completeQuery=insertAllocation
+								+""+lmsBean.getUserId()+","
+								+""+lmsProjId+","
+								+"'"+lmsBean.getStartDate()+"',"
+								+"'"+lmsBean.getEndDate()+"')";
+						System.out.println("completeQuery "
+								+ completeQuery);
+						if (connection.getICDM(completeQuery) > 0) {
+							flag = true;
+						} else {
+							flag = false;
+							break;
+						}
+					}
+				} else {
+					flag = false;
+				}
+			}
+		}
+		
 		return flag;
 	}
 

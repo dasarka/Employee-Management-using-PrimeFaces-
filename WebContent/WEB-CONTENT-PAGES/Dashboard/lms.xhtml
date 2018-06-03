@@ -12,6 +12,120 @@
 <h:head>
 </h:head>
 <h:body>
-Coming soon...
+	<h:form id="lmsForm">
+		<h:outputText id="loadLms" value="#{emData.LMSData}" />
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="row row-diff">
+					<div class="col-xl-12 col-lg-12 col-md-12 com-sm-12 col-xs-12">
+						<p:messages id="lmsMsg" closable="true" autoUpdate="true"
+							showIcon="true">
+						</p:messages>
+					</div>
+				</div>
+
+				<div class="card">
+					<div class="card-block" style="margin: 5px">
+						<div class="row">
+							<div
+								class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-right">
+								<div class="card"
+									style="background-color: dodgerblue; color: white;">
+									<div class="card-block" style="margin: 10px">
+
+										<div class="card-body" style="height: 100px">
+											<h2>
+
+												<strong>Leave Balance</strong>
+												<h:outputText id="lmsBal" class="pull-right"
+													value="#{emData.leaveBalance}" />
+											</h2>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- ************** -->
+						<br /> <br />
+						<h4>
+							<strong>Apply New Leave</strong>
+						</h4>
+						<hr />
+						<div class="row">
+							<div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-xs-6">
+								Leave Start Date:
+								<p:calendar id="startDate"
+									value="#{emData.lmsBean.startDateUtil}"
+									mindate="#{client.minStartDate}">
+									<p:ajax event="dateSelect" partialSubmit="true"
+										process="lmsForm" update="lmsForm:totalLeave"
+										listener="#{emData.CountLeaves}"></p:ajax>
+								</p:calendar>
+							</div>
+							<div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-xs-6">
+								Leave End Date:
+								<p:calendar id="endDate" value="#{emData.lmsBean.endDateUtil}"
+									mindate="#{client.minStartDate}">
+									<p:ajax event="dateSelect" partialSubmit="true"
+										process="lmsForm" update="lmsForm:totalLeave"
+										listener="#{emData.CountLeaves}"></p:ajax>
+								</p:calendar>
+							</div>
+							<div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-xs-6">
+
+								<p:inputTextarea id="comments" style="width:100%"
+									value="#{emData.lmsBean.comments}"
+									a:placeholder="I AM Comments"></p:inputTextarea>
+							</div>
+							<div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-xs-6">
+								Total Leave Taken:
+								<h:outputText id="totalLeave"
+									value="#{emData.lmsBean.leaveCount}"></h:outputText>
+								<h:commandButton id="btnApply"
+									class=" pull-right btn btn-xs btn-success" value="Apply Now">
+									<p:ajax event="click" partialSubmit="true" process="lmsForm"
+										update="lmsForm:loadLms
+										lmsForm:lmsMsg
+										lmsForm:lmsRecord
+										lmsForm:lmsBal"
+										listener="#{emData.ApplyLeave}"></p:ajax>
+								</h:commandButton>
+							</div>
+						</div>
+
+
+						<!-- ******************** -->
+						<br />
+						<h4>
+							<strong>Applied Leaves Data</strong>
+						</h4>
+						<div class="row">
+							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<p:dataTable id="lmsRecord" value="#{emData.lmsList}" var="data">
+									<p:column headerText="Leave Start Date">
+										<h:outputText value="#{data.startDate}" />
+									</p:column>
+									<p:column headerText="Leave End Date">
+										<h:outputText value="#{data.endDate}" />
+									</p:column>
+									<p:column headerText="No. Of Leave Taken">
+										<h:outputText value="#{data.leaveCount}" />
+									</p:column>
+									<p:column headerText="Comments">
+										<h:outputText value="#{data.comments}" />
+									</p:column>
+									<p:column headerText="Status">
+										<h:outputText value="#{data.status}" />
+									</p:column>
+								</p:dataTable>
+							</div>
+						</div>
+						<hr />
+					</div>
+				</div>
+			</div>
+		</div>
+	</h:form>
 </h:body>
 </html>

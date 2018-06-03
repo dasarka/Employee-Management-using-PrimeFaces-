@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+<ui:composition>
+<h:form id="hrTimecard">
+	<h:outputText value="#{emData.loadUsers}" />
+	<div class="card">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-xs-3">
+					<p:selectOneMenu value="#{emData.selectedUsers}">
+						<f:selectItem itemLabel="Select User" itemValue="0"
+							itemDisabled="true"></f:selectItem>
+						<f:selectItems value="#{emData.usersList}" var="users"
+							itemLabel="#{users.empName}" itemValue="#{users.userId}" />
+						<f:ajax listener="#{emData.VerifyTimeCard}" event="change"
+							process="@this" render="ts_datatable"></f:ajax>
+					</p:selectOneMenu>
+				</div>
+
+
+			</div>
+		</div>
+
+		<div class="card-body">
+
+			<p:dataTable id="ts_datatable" value="#{emData.hrTimecard}"
+				var="data">
+				<p:column headerText="Week" style="width:120px">
+					<h:outputText value="#{data.week_val}"></h:outputText>
+				</p:column>
+				<p:column headerText="Project Names">
+					<h:outputText value="#{data.projectNames}"></h:outputText>
+				</p:column>
+				<p:column headerText="Mon" style="width:50px">
+					<h:outputText value="#{data.day_mon}"></h:outputText>
+				</p:column>
+				<p:column headerText="Tue" style="width:50px">
+					<h:outputText value="#{data.day_tue}"></h:outputText>
+				</p:column>
+				<p:column headerText="Wed" style="width:50px">
+					<h:outputText value="#{data.day_wed}"></h:outputText>
+				</p:column>
+				<p:column headerText="Thu" style="width:50px">
+					<h:outputText value="#{data.day_thu}"></h:outputText>
+				</p:column>
+				<p:column headerText="Fri" style="width:50px">
+					<h:outputText value="#{data.day_fri}"></h:outputText>
+				</p:column>
+				<p:column headerText="Submittion Date" style="width:150px">
+					<h:outputText value="#{data.submittionDate}"></h:outputText>
+				</p:column>
+				<p:column headerText="Status" style="width:150px">
+					<p:selectOneMenu value="#{data.status}">
+						<f:selectItem itemValue="approved" itemLabel="Approved"></f:selectItem>
+						<f:selectItem itemValue="rejected" itemLabel="Rejected"></f:selectItem>
+					</p:selectOneMenu>
+				</p:column>
+				<p:column headerText="Comments">
+					<p:inputText value="#{data.comment}"></p:inputText>
+				</p:column>
+
+			</p:dataTable>
+
+
+
+		</div>
+		<div class="card-footer">
+			<h:commandButton id="btnSubmit" value="Update Now"
+				class="btn btn-success btn-xs">
+				<p:ajax event="click" partialSubmit="true"
+				process="hrTimecard"
+				update="hrTimecard"
+				listener="#{emData.UpdateTimeCard}"></p:ajax>
+			</h:commandButton>
+		</div>
+	</div>
+	</h:form>
+</ui:composition>
+</html>

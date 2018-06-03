@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+<ui:composition>
+<h:form id="hrOthers">
+	<div class="row">
+		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div class="card">
+				<div class="card-body">
+					<p1> HR can provide leave to all employee at any time. 2
+					leaves will added once click on the right hand side button. </p1>
+					<h:commandButton class="btn btn-xs btn-info pull-right"
+						value="Provide Leave">
+						<p:ajax event="click" process="hrOthers" update="hrOthers"
+							partialSubmit="true"
+							listener="#{emData.ProvideLeave}"></p:ajax>
+					</h:commandButton>
+				</div>
+			</div>
+		</div>
+	</div>
+</h:form>
+</ui:composition>
+</html>

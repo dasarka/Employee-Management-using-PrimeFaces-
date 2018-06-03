@@ -5,6 +5,7 @@ import java.util.List;
 import emp.dao.HRDao;
 import emp.daoImpl.HRDaoImpl;
 import emp.model.ApprisalBean;
+import emp.model.LMSBean;
 import emp.model.ProjectBean;
 import emp.model.Timecard;
 import emp.model.UsersBean;
@@ -62,6 +63,44 @@ public class HRServiceImpl implements HRService{
 			throws Exception {
 		HRDao hrDao=new HRDaoImpl();
 		return hrDao.UpdateAppraisalDao(apprisalList);
+	}
+
+	@Override
+	public boolean ProvideLeaveService() throws Exception {
+		HRDao hrDao=new HRDaoImpl();
+		return hrDao. ProvideLeaveDao();
+		
+	}
+
+	@Override
+	public int GetLeaveBalanceService(int userId) throws Exception {
+		HRDao hrDao=new HRDaoImpl();
+		return hrDao. GetLeaveBalanceDao(userId);
+	}
+
+	@Override
+	public List<LMSBean> GetAppliedLeaveService(int userId) throws Exception {
+		HRDao hrDao=new HRDaoImpl();
+		return hrDao. GetAppliedLeaveDao(userId);
+	}
+
+	@Override
+	public boolean ApplyLeaveService(int userId, LMSBean lmsBean,int leaveBalance)
+			throws Exception {
+		HRDao hrDao=new HRDaoImpl();
+		return hrDao. ApplyLeaveDao(userId,lmsBean,leaveBalance);
+	}
+
+	@Override
+	public List<LMSBean> LoadLMSDataService() throws Exception {
+		HRDao hrDao=new HRDaoImpl();
+		return hrDao.LoadLMSDataDao();
+	}
+
+	@Override
+	public boolean UpdateLMSService(List<LMSBean> lmsList) throws Exception {
+		HRDao hrDao=new HRDaoImpl();
+		return hrDao.UpdateLMSDao(lmsList);
 	}
 
 	

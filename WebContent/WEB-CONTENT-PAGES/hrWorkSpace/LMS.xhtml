@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+	<h:form id="hrLMS">
+		<h:outputText value="#{emData.loadLMSData}" />
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<p:dataTable value="#{emData.lmsList}" var="data">
+							<p:column headerText="Employee Name">
+								<h:outputText value="#{data.empName}" />
+							</p:column>
+							<p:column headerText="Leave Start Date">
+								<h:outputText value="#{data.startDate}" />
+							</p:column>
+							<p:column headerText="Leave End Date">
+								<h:outputText value="#{data.endDate}" />
+							</p:column>
+							<p:column headerText="Leave Taken">
+								<h:outputText value="#{data.leaveCount}" />
+							</p:column>
+							<p:column headerText="Reasons">
+								<h:outputText value="#{data.comments}" />
+							</p:column>
+							<p:column headerText="Approval">
+								<p:selectOneMenu value="#{data.status}">
+									<f:selectItem itemValue="Approved" itemLabel="Approved"></f:selectItem>
+									<f:selectItem itemValue="Rejected" itemLabel="Rejected"></f:selectItem>
+								</p:selectOneMenu>
+							</p:column>
+						</p:dataTable>
+					</div>
+				</div>
+			</div>
+			<div class="card-footer">
+				<center>
+					<h:commandButton value="Update Now" class="btn btn-xs btn-success">
+					<p:ajax event="click" partialSubmit="true" process="hrLMS"
+					update="hrLMS" listener="#{emData.UpdateLMS}"></p:ajax>
+					</h:commandButton>
+				</center>
+			</div>
+		</div>
+	</h:form>
+</ui:composition>
+</html>

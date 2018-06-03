@@ -227,15 +227,24 @@ public class EmpDaoImpl implements EmpDao {
 		} else {
 			rs.absolute(1);
 			do {
-
+				String projectName=String.valueOf(rs.getObject("project_name"));
+				if(projectName.equals("LMS Project")){
+					projViewBean = new EmpProjViewBean(Integer.valueOf(String
+							.valueOf(rs.getObject("project_id"))),
+							projectName,
+							String.valueOf(rs.getObject("lms_start_date")),
+							String.valueOf(rs.getObject("lms_end_date")),
+							String.valueOf(rs.getObject("onsite_manager")),
+							String.valueOf(rs.getObject("client_name")));
+				}else{
 				projViewBean = new EmpProjViewBean(Integer.valueOf(String
 						.valueOf(rs.getObject("project_id"))),
-						String.valueOf(rs.getObject("project_name")),
+						projectName,
 						String.valueOf(rs.getObject("start_date")),
 						String.valueOf(rs.getObject("end_date")),
 						String.valueOf(rs.getObject("onsite_manager")),
 						String.valueOf(rs.getObject("client_name")));
-
+				}
 				rsDuplicate = null;
 				System.out.println("progress query " + progressQuery
 						+ projViewBean.getProjectId());

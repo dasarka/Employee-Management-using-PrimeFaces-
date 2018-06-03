@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+<ui:composition>
+<h:form id="hrAppraisal">
+	<h:outputText value="#{emData.loadUsers}" />
+	<div class="card">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-xs-3">
+					<p:selectOneMenu value="#{emData.selectedUsers}">
+						<f:selectItem itemLabel="Select User" itemValue="0"
+							itemDisabled="true"></f:selectItem>
+						<f:selectItems value="#{emData.usersList}" var="users"
+							itemLabel="#{users.empName}" itemValue="#{users.userId}" />
+						<f:ajax listener="#{emData.OpenApprisal}" event="change"
+							process="@this" render="ts_datatable1"></f:ajax>
+					</p:selectOneMenu>
+				</div>
+
+
+			</div>
+		</div>
+
+		<div class="card-body">
+
+			<p:dataTable id="ts_datatable1" value="#{emData.apprisalList}"
+				var="data">
+				<p:column headerText="Objective" style="width:400px">
+					<h:outputText value="#{data.objective}"></h:outputText>
+				</p:column>
+				<p:column headerText="Employee Comments" style="width:400px">
+					<h:outputText value="#{data.empComment}"></h:outputText>
+				</p:column>
+				<p:column headerText="Reviewer Comments" style="width:400px">
+					<p:inputTextarea value="#{data.hrComment}" style="width:100%"></p:inputTextarea>
+				</p:column>
+				<p:column headerText="Rating">
+					<p:selectOneMenu value="#{data.rating}">
+						<f:selectItem itemValue="1" itemLabel="1"></f:selectItem>
+						<f:selectItem itemValue="2" itemLabel="2"></f:selectItem>
+						<f:selectItem itemValue="3" itemLabel="3"></f:selectItem>
+						<f:selectItem itemValue="4" itemLabel="4"></f:selectItem>
+						<f:selectItem itemValue="5" itemLabel="5"></f:selectItem>
+					</p:selectOneMenu>
+				</p:column>
+
+
+			</p:dataTable>
+
+
+
+		</div>
+		<div class="card-footer">
+			<h:commandButton id="btnSubmit1" value="Update Now"
+				class="btn btn-success btn-xs">
+				<p:ajax event="click" partialSubmit="true" process="hrAppraisal"
+					update="hrAppraisal" listener="#{emData.UpdateAppraisal}"></p:ajax>
+			</h:commandButton>
+		</div>
+	</div>
+	</h:form>
+</ui:composition>
+</html>

@@ -26,136 +26,19 @@
 				<p:tabView orientation="top">
 
 					<p:tab title="View Timecard">
-						<h:outputText value="#{emData.loadUsers}" />
-						<div class="card">
-							<div class="card-header">
-								<div class="row">
-									<div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-xs-3">
-										<p:selectOneMenu value="#{emData.selectedUsers}">
-											<f:selectItem itemLabel="Select User" itemValue="0"
-												itemDisabled="true"></f:selectItem>
-											<f:selectItems value="#{emData.usersList}" var="users"
-												itemLabel="#{users.empName}" itemValue="#{users.userId}" />
-											<f:ajax listener="#{emData.VerifyTimeCard}" event="change"
-												process="@this" render="ts_datatable"></f:ajax>
-										</p:selectOneMenu>
-									</div>
-
-
-								</div>
-							</div>
-
-							<div class="card-body">
-
-								<p:dataTable id="ts_datatable" value="#{emData.hrTimecard}"
-									var="data">
-									<p:column headerText="Week" style="width:120px">
-										<h:outputText value="#{data.week_val}"></h:outputText>
-									</p:column>
-									<p:column headerText="Project Names">
-										<h:outputText value="#{data.projectNames}"></h:outputText>
-									</p:column>
-									<p:column headerText="Mon" style="width:50px">
-										<h:outputText value="#{data.day_mon}"></h:outputText>
-									</p:column>
-									<p:column headerText="Tue" style="width:50px">
-										<h:outputText value="#{data.day_tue}"></h:outputText>
-									</p:column>
-									<p:column headerText="Wed" style="width:50px">
-										<h:outputText value="#{data.day_wed}"></h:outputText>
-									</p:column>
-									<p:column headerText="Thu" style="width:50px">
-										<h:outputText value="#{data.day_thu}"></h:outputText>
-									</p:column>
-									<p:column headerText="Fri" style="width:50px">
-										<h:outputText value="#{data.day_fri}"></h:outputText>
-									</p:column>
-									<p:column headerText="Submittion Date" style="width:150px">
-										<h:outputText value="#{data.submittionDate}"></h:outputText>
-									</p:column>
-									<p:column headerText="Status" style="width:150px">
-										<p:selectOneMenu value="#{data.status}">
-											<f:selectItem itemValue="approved" itemLabel="Approved"></f:selectItem>
-											<f:selectItem itemValue="rejected" itemLabel="Rejected"></f:selectItem>
-										</p:selectOneMenu>
-									</p:column>
-									<p:column headerText="Comments">
-										<p:inputText value="#{data.comment}"></p:inputText>
-									</p:column>
-
-								</p:dataTable>
-
-
-
-							</div>
-							<div class="card-footer">
-								<h:commandButton id="btnSubmit" value="Update Now"
-									class="btn btn-success btn-xs"
-									action="#{emData.UpdateTimeCard}">
-
-								</h:commandButton>
-							</div>
-						</div>
+					<ui:include src="WEB-CONTENT-PAGES/hrWorkSpace/timecard.xhtml"></ui:include>
 					</p:tab>
 					<p:tab title="Appraisal(HR Callibration)">
-					<h:outputText value="#{emData.loadUsers}" />
-						<div class="card">
-							<div class="card-header">
-								<div class="row">
-									<div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-xs-3">
-										<p:selectOneMenu value="#{emData.selectedUsers}">
-											<f:selectItem itemLabel="Select User" itemValue="0"
-												itemDisabled="true"></f:selectItem>
-											<f:selectItems value="#{emData.usersList}" var="users"
-												itemLabel="#{users.empName}" itemValue="#{users.userId}" />
-											<f:ajax listener="#{emData.OpenApprisal}" event="change"
-												process="@this" render="ts_datatable1"></f:ajax>
-										</p:selectOneMenu>
-									</div>
-
-
-								</div>
-							</div>
-
-							<div class="card-body">
-
-								<p:dataTable id="ts_datatable1" value="#{emData.apprisalList}"
-									var="data">
-									<p:column headerText="Objective" style="width:400px">
-										<h:outputText value="#{data.objective}"></h:outputText>
-									</p:column>
-									<p:column headerText="Employee Comments" style="width:400px">
-										<h:outputText value="#{data.empComment}"></h:outputText>
-									</p:column>
-									<p:column headerText="Reviewer Comments" style="width:400px">
-										<p:inputTextarea value="#{data.hrComment}" style="width:100%"></p:inputTextarea>
-									</p:column>
-									<p:column headerText="Rating" >
-										<p:selectOneMenu value="#{data.rating}">
-										<f:selectItem itemValue="1" itemLabel="1"></f:selectItem>
-										<f:selectItem itemValue="2" itemLabel="2"></f:selectItem>
-										<f:selectItem itemValue="3" itemLabel="3"></f:selectItem>
-										<f:selectItem itemValue="4" itemLabel="4"></f:selectItem>
-										<f:selectItem itemValue="5" itemLabel="5"></f:selectItem>
-										</p:selectOneMenu>
-									</p:column>
-									
-
-								</p:dataTable>
-
-
-
-							</div>
-							<div class="card-footer">
-								<h:commandButton id="btnSubmit1" value="Update Now"
-									class="btn btn-success btn-xs"
-									action="#{emData.UpdateAppraisal}">
-
-								</h:commandButton>
-							</div>
-						</div>
+					<ui:include src="WEB-CONTENT-PAGES/hrWorkSpace/apprisal.xhtml"></ui:include>
+					</p:tab>
+					<p:tab title="Leave Approval">
+					<ui:include src="WEB-CONTENT-PAGES/hrWorkSpace/LMS.xhtml"></ui:include>
+					</p:tab>
+					<p:tab title="Others">
+					<ui:include src="WEB-CONTENT-PAGES/hrWorkSpace/others.xhtml"></ui:include>
 					</p:tab>
 				</p:tabView>
+				
 			</h:form>
 		</div>
 	</div>
