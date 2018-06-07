@@ -26,6 +26,26 @@ public class EmpController {
 	private NewTasksBean newTaskBean = new NewTasksBean();
 	private UpdateTaskBean updateTaskBean = new UpdateTaskBean();
 
+	private String resourceType;
+	private int resourceNo=0;
+	
+	
+
+	public int getResourceNo() {
+		return resourceNo;
+	}
+
+	public void setResourceNo(int resourceNo) {
+		this.resourceNo = resourceNo;
+	}
+
+	public String getResourceType() {
+		return resourceType;
+	}
+
+	public void setResourceType(String resourceType) {
+		this.resourceType = resourceType;
+	}
 	private int projectId;
 	private int projectType;
 
@@ -510,7 +530,7 @@ public class EmpController {
 					.LoadProjectDetailsService(projectId);
 			System.out.println("minDateSet " + minDateSet);
 
-			minStartDate = minDateSet.get(0);
+			minStartDate = new Date();
 			minEndDate = minDateSet.get(1);
 
 		} catch (SQLException e) {
@@ -571,6 +591,7 @@ public class EmpController {
 		} else {
 			inValid = false;
 		}
+		
 		if (inValid) {
 			session.setAttribute("projDetailsMsg", new FacesMessage(
 					FacesMessage.SEVERITY_ERROR, "All fields are required",
@@ -675,7 +696,87 @@ public class EmpController {
 				.getSession(false);
 		List<UsersBean> selectedUsers = (List<UsersBean>) session
 				.getAttribute("SelectedResourceEMP");
+		
 		System.out.println("Release Resource " + selectedUsers);
+		System.out.println("ProjectId: "+projectId);
+		
+		EmpService empService = new EmpServiceImpl();
+		try {
+			boolean flag = empService.ReleaseResourceService(selectedUsers,projectId);
+			if (flag) {
+				session.setAttribute("projDetailsMsg", new FacesMessage(
+						FacesMessage.SEVERITY_INFO,
+						"Selected resources released successfully", null));
+
+			} else {
+				session.setAttribute(
+						"projDetailsMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_ERROR,
+								"Failed to release selected resources, please contact with support team",
+								null));
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			session.setAttribute(
+					"projDetailsMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
+
+		}
+
+		return "projectDetails.xhtml?pid=" + projectId + "&flag=" + projectType
+				+ "&faces-redirect=true";
+	}
+	public String RequestResource(){
+		System.out.println("Inside RequestResource");
+		
+		System.out.println("RequestResource " + resourceType);
+		System.out.println("ProjectId: "+projectId);
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		HttpSession session = (HttpSession) facesContext.getExternalContext()
+				.getSession(false);
+		EmpService empService = new EmpServiceImpl();
+		try {
+			if(resourceType!="" && resourceNo>0){
+			boolean flag = empService.RequestResourceService(resourceType,resourceNo,projectId);
+			if (flag) {
+				session.setAttribute("projDetailsMsg", new FacesMessage(
+						FacesMessage.SEVERITY_INFO,
+						"Request has successfully sent to HR", null));
+
+			} else {
+				session.setAttribute(
+						"projDetailsMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_ERROR,
+								"Failed to sent your request, please contact with support team",
+								null));
+
+			}
+			}else{
+				session.setAttribute(
+						"projDetailsMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_ERROR,
+								"Please select valid data",
+								null));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			session.setAttribute(
+					"projDetailsMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
+
+		}
 
 		return "projectDetails.xhtml?pid=" + projectId + "&flag=" + projectType
 				+ "&faces-redirect=true";

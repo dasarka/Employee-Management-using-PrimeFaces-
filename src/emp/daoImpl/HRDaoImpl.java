@@ -12,6 +12,7 @@ import emp.dao.HRDao;
 import emp.model.ApprisalBean;
 import emp.model.LMSBean;
 import emp.model.ProjectBean;
+import emp.model.RequestResources;
 import emp.model.Timecard;
 import emp.model.UsersBean;
 
@@ -456,6 +457,84 @@ public class HRDaoImpl implements HRDao {
 		}
 		
 		return flag;
+	}
+
+	@Override
+	public List<RequestResources> LoadRequestDao() throws Exception {
+		List<RequestResources> reqResBean=new ArrayList<RequestResources>();
+		RequestResources reqResources;
+		String selectQuery1="SELECT * FROM emp_request req inner join emp_project proj where req.project_id=proj.project_id;";
+		String selectQuery2="SELECT * FROM emp_authentication where emp_access=3 and emp_remainHours>0";
+		String selectQuery3="SELECT * FROM emp_authentication where emp_access=8 and emp_remainHours>0";
+		String selectQuery4="SELECT * FROM emp_authentication where emp_access=9 and emp_remainHours>0";
+		rs=null;
+		rs=connection.getResultSet(selectQuery1);
+		if (rs.next() == false) {
+		} else {
+			rs.absolute(1);
+			do{
+				
+				String reqType=(String) rs.getObject("request_type");
+				reqResources=new RequestResources((int) rs.getObject("project_id"),
+						(String) rs.getObject("project_name"),
+						reqType,
+						(int) rs.getObject("request_no"));
+				if(reqType.equalsIgnoreCase("Need Developer")){
+					List<UsersBean> userList=new ArrayList<UsersBean>();
+					UsersBean user;
+					rsDuplicate=null;
+					rsDuplicate=connection.getResultSet(selectQuery2);
+					if (rsDuplicate.next() == false) {
+					} else {
+						rsDuplicate.absolute(1);
+						do{
+							user=new UsersBean();
+							user.setUserId((int)rsDuplicate.getObject("user_id"));
+							user.setEmpName((String)rsDuplicate.getObject("emp_name"));
+							user.setRemainHours((int)rsDuplicate.getObject("emp_remainHours"));
+							userList.add(user);
+						}while(rsDuplicate.next());
+					}
+					reqResources.setUserList(userList);
+				}else if(reqType.equalsIgnoreCase("Need Performance Tester")){
+					List<UsersBean> userList=new ArrayList<UsersBean>();
+					UsersBean user;
+					rsDuplicate=null;
+					rsDuplicate=connection.getResultSet(selectQuery3);
+					if (rsDuplicate.next() == false) {
+					} else {
+						rsDuplicate.absolute(1);
+						do{
+							user=new UsersBean();
+							user.setUserId((int)rsDuplicate.getObject("user_id"));
+							user.setEmpName((String)rsDuplicate.getObject("emp_name"));
+							user.setRemainHours((int)rsDuplicate.getObject("emp_remainHours"));
+							userList.add(user);
+						}while(rsDuplicate.next());
+					}
+					reqResources.setUserList(userList);
+				}else if(reqType.equalsIgnoreCase("Need Tester")){
+					List<UsersBean> userList=new ArrayList<UsersBean>();
+					UsersBean user;
+					rsDuplicate=null;
+					rsDuplicate=connection.getResultSet(selectQuery4);
+					if (rsDuplicate.next() == false) {
+					} else {
+						rsDuplicate.absolute(1);
+						do{
+							user=new UsersBean();
+							user.setUserId((int)rsDuplicate.getObject("user_id"));
+							user.setEmpName((String)rsDuplicate.getObject("emp_name"));
+							user.setRemainHours((int)rsDuplicate.getObject("emp_remainHours"));
+							userList.add(user);
+						}while(rsDuplicate.next());
+					}
+					reqResources.setUserList(userList);
+				}
+				reqResBean.add(reqResources);
+			}while(rs.next());
+		}
+		return reqResBean;
 	}
 
 }

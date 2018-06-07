@@ -7,6 +7,7 @@ import emp.daoImpl.HRDaoImpl;
 import emp.model.ApprisalBean;
 import emp.model.LMSBean;
 import emp.model.ProjectBean;
+import emp.model.RequestResources;
 import emp.model.Timecard;
 import emp.model.UsersBean;
 import emp.service.HRService;
@@ -101,6 +102,12 @@ public class HRServiceImpl implements HRService{
 	public boolean UpdateLMSService(List<LMSBean> lmsList) throws Exception {
 		HRDao hrDao=new HRDaoImpl();
 		return hrDao.UpdateLMSDao(lmsList);
+	}
+
+	@Override
+	public List<RequestResources> LoadRequestService() throws Exception {
+		HRDao hrDao=new HRDaoImpl();
+		return hrDao.LoadRequestDao();
 	}
 
 	

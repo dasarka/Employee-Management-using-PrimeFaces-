@@ -13,8 +13,24 @@ public class LMSBean {
 	private String empName;
 	private int userId;
 	private int leaveId;
+	private Date minStartDate=new Date();
+	private Date minEndDate=new Date();
 	 
 	
+	
+	public Date getMinStartDate() {
+		return minStartDate;
+	}
+	public void setMinStartDate(Date minStartDate) {
+		this.minStartDate = minStartDate;
+	}
+	
+	public Date getMinEndDate() {
+		return minEndDate;
+	}
+	public void setMinEndDate(Date minEndDate) {
+		this.minEndDate = minEndDate;
+	}
 	public int getLeaveId() {
 		return leaveId;
 	}

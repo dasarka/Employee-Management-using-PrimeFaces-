@@ -37,4 +37,8 @@ public interface EmpService {
 
 	void benchAllocation(int userId)throws SQLException;
 
+	boolean ReleaseResourceService(List<UsersBean> selectedUsers, int projectId)throws SQLException;
+
+	boolean RequestResourceService(String resourceType,int resourceNo, int projectId)throws SQLException;
+
 }

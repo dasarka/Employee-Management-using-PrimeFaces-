@@ -227,23 +227,22 @@ public class EmpDaoImpl implements EmpDao {
 		} else {
 			rs.absolute(1);
 			do {
-				String projectName=String.valueOf(rs.getObject("project_name"));
-				if(projectName.equals("LMS Project")){
+				String projectName = String.valueOf(rs
+						.getObject("project_name"));
+				if (projectName.equals("LMS Project")) {
 					projViewBean = new EmpProjViewBean(Integer.valueOf(String
-							.valueOf(rs.getObject("project_id"))),
-							projectName,
+							.valueOf(rs.getObject("project_id"))), projectName,
 							String.valueOf(rs.getObject("lms_start_date")),
 							String.valueOf(rs.getObject("lms_end_date")),
 							String.valueOf(rs.getObject("onsite_manager")),
 							String.valueOf(rs.getObject("client_name")));
-				}else{
-				projViewBean = new EmpProjViewBean(Integer.valueOf(String
-						.valueOf(rs.getObject("project_id"))),
-						projectName,
-						String.valueOf(rs.getObject("start_date")),
-						String.valueOf(rs.getObject("end_date")),
-						String.valueOf(rs.getObject("onsite_manager")),
-						String.valueOf(rs.getObject("client_name")));
+				} else {
+					projViewBean = new EmpProjViewBean(Integer.valueOf(String
+							.valueOf(rs.getObject("project_id"))), projectName,
+							String.valueOf(rs.getObject("start_date")),
+							String.valueOf(rs.getObject("end_date")),
+							String.valueOf(rs.getObject("onsite_manager")),
+							String.valueOf(rs.getObject("client_name")));
 				}
 				rsDuplicate = null;
 				System.out.println("progress query " + progressQuery
@@ -558,6 +557,10 @@ public class EmpDaoImpl implements EmpDao {
 
 	@Override
 	public void benchAllocation(int userId) throws SQLException {
+		String checkReleaseBench= "SELECT * FROM emp_proj_map WHERE user_id="+userId+" and flag='C' and project_name not in ('Bench Project','Internal Project','LMS Project')";
+		String releaseBenchQuery = "DELETE FROM emp_project_allocation WHERE allocation_id =";
+		String findBecnhAllocId="SELECT * FROM emp_project_allocation where user_id="+userId+" AND project_id=";
+		
 		String findbenchProj = "SELECT project_id FROM emp_project where project_name='Bench Project'";
 		String benchConfirmation = "SELECT * FROM emp_avail_resource where emp_access not in (2,6,7) "
 				+ "and user_id="
@@ -578,13 +581,110 @@ public class EmpDaoImpl implements EmpDao {
 			rs = null;
 			rs = connection.getResultSet(benchConfirmation);
 			if (rs.next() == false) {
-
+				
 			} else {
 				benchAllocation += projectId + ")";
 				System.out.println("benchAllocation " + benchAllocation);
 				connection.getICDM(benchAllocation);
 			}
+			
+			System.out.println("checkReleaseBench " +checkReleaseBench);
+			rs = null;
+			rs = connection.getResultSet(checkReleaseBench);
+			if (rs.next() == false) {
+
+			} else {
+				rs.absolute(1);
+				rsDuplicate=null;
+				System.out.println("findBecnhAllocId "+findBecnhAllocId+projectId);
+				rsDuplicate = connection.getResultSet(findBecnhAllocId+projectId);
+				if (rsDuplicate.next() == false) {
+
+				} else {
+					rsDuplicate.absolute(1);
+					int allocId=(int) rsDuplicate.getObject("allocation_id");
+					System.out.println("Query "+releaseBenchQuery+allocId);
+					connection.getICDM(releaseBenchQuery+allocId);
+				}
+			}
 		}
 
+	}
+
+	@Override
+	public boolean ReleaseResourceDao(List<UsersBean> selectedUsers,
+			int projectId) throws SQLException {
+		boolean flag = false;
+		String selectQuery = "SELECT allocation_id,working_hours FROM emp_project_allocation where project_id="
+				+ projectId + " and user_id=";
+		String updateQuery = "DELETE FROM emp_project_allocation WHERE allocation_id =";
+		String selectQuery1 = "SELECT emp_remainHours FROM emp_authentication where user_id=";
+		String updateQuery1 = "UPDATE emp_authentication SET emp_remainHours = ";
+		String updateQuery1Clause = " WHERE user_id =";
+		int workingHours = 0;
+		int remainHours = 0;
+		int allocId = -1;
+		for (UsersBean usersBean : selectedUsers) {
+			workingHours = 0;
+			remainHours = 0;
+			allocId = -1;
+			System.out.println("query1 " + selectQuery + usersBean.getUserId());
+			rs = null;
+			rs = connection.getResultSet(selectQuery + usersBean.getUserId());
+			if (rs.next() == false) {
+
+			} else {
+				rs.absolute(1);
+				workingHours = (int) rs.getObject("working_hours");
+				allocId = (int) rs.getObject("allocation_id");
+			}
+			System.out
+					.println("query2 " + selectQuery1 + usersBean.getUserId());
+			rs = null;
+			rs = connection.getResultSet(selectQuery1 + usersBean.getUserId());
+			if (rs.next() == false) {
+
+			} else {
+				rs.absolute(1);
+				remainHours = (int) rs.getObject("emp_remainHours");
+			}
+			System.out.println("query3 " + updateQuery + allocId);
+			if (connection.getICDM(updateQuery + allocId) > 0) {
+				flag = true;
+				System.out.println("query4 " + updateQuery1
+						+ (remainHours + workingHours) + updateQuery1Clause
+						+ usersBean.getUserId());
+				if (connection.getICDM(updateQuery1
+						+ (remainHours + workingHours) + updateQuery1Clause
+						+ usersBean.getUserId()) > 0) {
+					flag = true;
+				} else {
+					flag = false;
+					break;
+				}
+			} else {
+				flag = false;
+				break;
+			}
+		}
+		return flag;
+	}
+
+	@Override
+	public boolean RequestResourceDao(String resourceType, int resourceNo,int projectId)
+			throws SQLException {
+		String query="INSERT INTO emp_request (request_type, request_no,project_id) VALUES ("
+				+"'"+resourceType+"',"
+				+""+resourceNo+","
+				+""+projectId+""
+				+ ");";
+		System.out.println("query "+query);
+		boolean flag=false;
+		if(connection.getICDM(query)>0){
+			flag=true;
+		}else{
+			flag=false;
+		}
+		return flag;
 	}
 }

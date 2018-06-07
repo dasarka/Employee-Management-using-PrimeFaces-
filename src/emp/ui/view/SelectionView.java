@@ -33,6 +33,11 @@ public class SelectionView implements Serializable {
 
 	public void setSelectedUsers(List<UsersBean> selectedUsers) {
 		this.selectedUsers = selectedUsers;
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		HttpSession session = (HttpSession) facesContext.getExternalContext()
+				.getSession(false);
+		session.setAttribute("SelectedResourceEMP", selectedUsers);
+		System.out.println(session.getAttribute("SelectedResourceEMP"));
 	}
 
 	public void onRowSelect(SelectEvent event) {
@@ -51,11 +56,5 @@ public class SelectionView implements Serializable {
 		System.out.println(session.getAttribute("SelectedResourceEMP"));
     }
     
-    public void selectedResources(AjaxBehaviorEvent e) {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		HttpSession session = (HttpSession) facesContext.getExternalContext()
-				.getSession(false);
-		session.setAttribute("SelectedResourceEMP", selectedUsers);
-		System.out.println(session.getAttribute("SelectedResourceEMP"));
-    }
+    
 }

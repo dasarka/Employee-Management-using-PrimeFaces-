@@ -116,4 +116,18 @@ public class EmpServiceImpl implements EmpService{
 		
 	}
 
+	@Override
+	public boolean ReleaseResourceService(List<UsersBean> selectedUsers,
+			int projectId) throws SQLException {
+		EmpDao empDao=new EmpDaoImpl();
+		return empDao.ReleaseResourceDao(selectedUsers,projectId);
+	}
+
+	@Override
+	public boolean RequestResourceService(String resourceType,int resourceNo, int projectId)
+			throws SQLException {
+		EmpDao empDao=new EmpDaoImpl();
+		return empDao.RequestResourceDao(resourceType,resourceNo,projectId);
+	}
+
 }

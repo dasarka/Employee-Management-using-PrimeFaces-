@@ -35,5 +35,9 @@ public interface EmpDao {
 
 	void benchAllocation(int userId) throws SQLException;
 
+	boolean ReleaseResourceDao(List<UsersBean> selectedUsers, int projectId)throws SQLException;
+
+	boolean RequestResourceDao(String resourceType, int resourceNo,int projectId)throws SQLException;
+
 
 }

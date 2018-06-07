@@ -5,6 +5,7 @@ import java.util.List;
 import emp.model.ApprisalBean;
 import emp.model.LMSBean;
 import emp.model.ProjectBean;
+import emp.model.RequestResources;
 import emp.model.Timecard;
 import emp.model.UsersBean;
 public interface HRService {
@@ -22,4 +23,5 @@ public interface HRService {
 	public boolean ApplyLeaveService(int userId, LMSBean lmsBean, int leaveBalance)throws Exception;
 	public List<LMSBean> LoadLMSDataService()throws Exception;
 	public boolean UpdateLMSService(List<LMSBean> lmsList)throws Exception;
+	public List<RequestResources> LoadRequestService()throws Exception;
 }

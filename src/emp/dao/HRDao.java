@@ -5,6 +5,7 @@ import java.util.List;
 import emp.model.ApprisalBean;
 import emp.model.LMSBean;
 import emp.model.ProjectBean;
+import emp.model.RequestResources;
 import emp.model.Timecard;
 import emp.model.UsersBean;
 
@@ -23,4 +24,5 @@ public interface HRDao {
 	public boolean ApplyLeaveDao(int userId, LMSBean lmsBean, int leaveBalance)throws Exception;
 	public List<LMSBean> LoadLMSDataDao()throws Exception;
 	public boolean UpdateLMSDao(List<LMSBean> lmsList)throws Exception;
+	public List<RequestResources> LoadRequestDao()throws Exception;
 }

@@ -15,6 +15,7 @@ import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 import emp.model.ApprisalBean;
 import emp.model.LMSBean;
 import emp.model.ProjectBean;
+import emp.model.RequestResources;
 import emp.model.Timecard;
 import emp.model.UsersBean;
 import emp.service.HRService;
@@ -26,6 +27,8 @@ public class HRController {
 	List<Timecard> newTimecard = new ArrayList<Timecard>();
 	List<Timecard> hrTimecard = new ArrayList<Timecard>();
 	List<UsersBean> usersList = new ArrayList<UsersBean>();
+	
+	List<RequestResources> reqResBean=new ArrayList<RequestResources>();
 
 	List<ApprisalBean> apprisalList = new ArrayList<ApprisalBean>();
 	ApprisalBean apprisalBean = new ApprisalBean();
@@ -34,6 +37,15 @@ public class HRController {
 	private int leaveBalance;
 	LMSBean lmsBean = new LMSBean();
 	List<LMSBean> lmsList = new ArrayList<LMSBean>();
+
+	
+	public List<RequestResources> getReqResBean() {
+		return reqResBean;
+	}
+
+	public void setReqResBean(List<RequestResources> reqResBean) {
+		this.reqResBean = reqResBean;
+	}
 
 	public LMSBean getLmsBean() {
 		return lmsBean;
@@ -622,6 +634,7 @@ public class HRController {
 	public void CountLeaves(AjaxBehaviorEvent ev) {
 		try {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			lmsBean.setMinEndDate(lmsBean.getStartDateUtil());
 			String startDate = dateFormat.format(lmsBean.getStartDateUtil());
 			String endDate = dateFormat.format(lmsBean.getEndDateUtil());
 			lmsBean.setStartDate(startDate);
@@ -881,5 +894,16 @@ public class HRController {
 			e.printStackTrace();
 			
 		}
+	}
+	public String getLoadRequest(){
+		try {
+			HRService hrService = new HRServiceImpl();
+			reqResBean = hrService.LoadRequestService();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
+		return null;
 	}
 }

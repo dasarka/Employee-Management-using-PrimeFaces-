@@ -57,16 +57,16 @@
 								Leave Start Date:
 								<p:calendar id="startDate"
 									value="#{emData.lmsBean.startDateUtil}"
-									mindate="#{client.minStartDate}">
+									mindate="#{emData.lmsBean.minStartDate}">
 									<p:ajax event="dateSelect" partialSubmit="true"
-										process="lmsForm" update="lmsForm:totalLeave"
+										process="lmsForm" update="lmsForm:totalLeave lmsForm:endDate"
 										listener="#{emData.CountLeaves}"></p:ajax>
 								</p:calendar>
 							</div>
 							<div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-xs-6">
 								Leave End Date:
 								<p:calendar id="endDate" value="#{emData.lmsBean.endDateUtil}"
-									mindate="#{client.minStartDate}">
+									mindate="#{emData.lmsBean.minEndDate}">
 									<p:ajax event="dateSelect" partialSubmit="true"
 										process="lmsForm" update="lmsForm:totalLeave"
 										listener="#{emData.CountLeaves}"></p:ajax>

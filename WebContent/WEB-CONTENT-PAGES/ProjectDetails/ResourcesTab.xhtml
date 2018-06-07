@@ -12,6 +12,7 @@
 <h:head>
 </h:head>
 <h:body>
+	
 	<h:outputText value="#{empMain.loadResourceData}" />
 	<div class="card-body" style="overflow-y: scroll; max-height: 400px">
 		<div class="ui-g">
@@ -19,14 +20,13 @@
 				<p:dataTable var="data" id="resourceTable"
 					value="#{empMain.empResourceBean.resourceDetails}"
 					selection="#{dtSelectionView.selectedUsers}"
+					
 					disabledSelection="#{empMain.usersBean.accessVal eq 'Client' || empMain.projectType eq 0 ||((data.accessVal eq 'Manager' || data.accessVal eq 'Onsite Manager' || data.accessVal eq 'Lead') &amp;&amp; empMain.usersBean.accessVal == 'Lead') || ((data.accessVal eq 'Manager' || data.accessVal eq 'Onsite Manager') &amp;&amp; empMain.usersBean.accessVal == 'Manager')|| ((data.accessVal eq 'Onsite Manager') &amp;&amp; empMain.usersBean.accessVal == 'Onsite Manager') }"
 					rowKey="#{data.userId}">
 					<f:facet name="header">
 											            Resource Details
 											        </f:facet>
-					<p:ajax event="rowSelect"
-						listener="#{dtSelectionView.selectedResources}"
-						update="resourceTable" process="resourceTable" />
+					
 					<p:column selectionMode="multiple"
 						style="width:50px;text-align:center">
 
@@ -47,8 +47,9 @@
 			</div>
 		</div>
 		<div class="ui-g">
-			<div class="ui-g-6">
+			<div class="ui-g-8">
 				<p:selectOneMenu
+					value="#{empMain.resourceType}"
 					disabled="#{empMain.projectType eq 0 || empMain.usersBean.accessVal eq 'Client'}"
 					class="pull-left">
 					<f:selectItem itemValue="" itemLabel="Select Resource type"></f:selectItem>
@@ -58,14 +59,18 @@
 					<f:selectItem itemValue="need tester" itemLabel="Tester"></f:selectItem>
 				</p:selectOneMenu>
 				&nbsp;&nbsp;
+				Total Resources:&nbsp;<p:spinner id="resource"
+											value="#{empMain.resourceNo}"></p:spinner>
+						&nbsp;&nbsp;			
 				<h:commandButton value="Request Now"
+				action="#{empMain.RequestResource}"
 					disabled="#{empMain.projectType eq 0 || empMain.usersBean.accessVal eq 'Client'}"
 					class=" btn btn-sm btn-primary"></h:commandButton>
 
 
 
 			</div>
-			<div class="ui-g-6">
+			<div class="ui-g-4">
 				<h:commandButton value="Release Resource" process="resourceTable"
 					disabled="#{empMain.projectType eq 0 || empMain.usersBean.accessVal eq 'Client'}"
 					action="#{empMain.ReleaseResource}"
