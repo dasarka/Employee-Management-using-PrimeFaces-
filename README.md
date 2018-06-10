@@ -29,15 +29,15 @@ Only LEAD/MANAGER/ONSITE MANAGER can view and edit project timeline. But LEAD ca
 
 
 ***********TECHNOLOGY***********
-Frontend           :  JSF,Primefaces,Ajax
-Backend            :  Core Java
-Project Structure  :  MVC
-DataBase           :  MY SQL
-DB Structure       :  INNO DB
-Bootstrap          :  YES
-Use of JS/JQUERY   :  NO
-PAGE-PATTERN       :  *.xhtml       
-Seesion Handling   :  Faces Servlet
+1. Frontend           :  JSF,Primefaces,Ajax
+2. Backend            :  Core Java
+3. Project Structure  :  MVC
+4. DataBase           :  MY SQL
+5. DB Structure       :  INNO DB
+6. Use of Bootstrap   :  YES
+7. Use of JS/JQUERY   :  NO
+8. PAGE-PATTERN       :  *.xhtml       
+9. Seesion Handling   :  Faces Servlet
 
 NOTE:- DB code(with both structure and test data) provide within DB folder.
 
