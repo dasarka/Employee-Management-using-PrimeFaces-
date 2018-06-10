@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
+import emp.model.RequestResources;
 import emp.model.UsersBean;
  
 @ManagedBean(name="dtSelectionView")
@@ -23,11 +24,7 @@ public class SelectionView implements Serializable {
      
     private List<UsersBean> selectedUsers;
     
-     
- 
-   
-     
-    public List<UsersBean> getSelectedUsers() {
+    	public List<UsersBean> getSelectedUsers() {
 		return selectedUsers;
 	}
 

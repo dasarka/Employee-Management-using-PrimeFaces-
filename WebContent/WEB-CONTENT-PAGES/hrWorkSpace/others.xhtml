@@ -10,9 +10,17 @@
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 <ui:composition>
 	<h:form id="hrOthers">
-		<h:outputText value="#{emData.loadRequest}" />
+		<h:outputText id="loadData" value="#{emData.loadRequest}" />
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 com-sm-12 col-xs-12">
+				<p:growl id="hrOthersMsg" closable="true" autoUpdate="true"
+					showIcon="true">
+				</p:growl>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
 				<div class="card">
 					<div class="card-body">
 						<p1> HR can provide leave to all employee at any time. 2
@@ -30,53 +38,79 @@
 						<h4>All Requested Resources (Project Wise)</h4>
 					</div>
 					<div class="card-body">
+						<div class="row rowdiff">
+							<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+								Project List:</div>
+							<div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<div class="row">
+									<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+										<p:selectOneMenu class="width-75" id="select_0"
+											value="#{emData.selectedReqResBean.allocationId}">
+											<f:selectItem itemValue='0' itemLabel="--Select--" />
+											<f:selectItems value="#{emData.reqResBean}" var="data"
+												itemValue="#{data.allocationId}"
+												itemLabel="#{data.projectName}"></f:selectItems>
+											<p:ajax event="change" process="hrOthers" update="hrOthers"
+												partialSubmit="true"
+												listener="#{emData.FetchExistingAllocationDetails}"></p:ajax>
+										</p:selectOneMenu>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+										Message: &nbsp;
+										<h:outputText id="resMsg"
+											value="#{emData.selectedReqResBean.requestType}" />
 
-						<p:dataTable value="#{emData.reqResBean}" var="data">
-							<p:column headerText="Project Name">
-								<h:outputText value="#{data.projectName}" />
-							</p:column>
-							<p:column headerText="Resource Type">
-								<h:outputText value="#{data.requestType}" />
-							</p:column>
-							<p:column headerText="No. of Resources"  style="width:100px">
-							<center>
-								<h:outputText value="#{data.resourceCount}" />
-								</center>
-							</p:column>
-							<p:column headerText="Give Resource">
-							<center>
-								<p:selectOneMenu class="width-75"
-									value="#{data.selectedUserId}">
-									<f:selectItem itemValue="0" itemLabel="--Select--"
-										itemDisabled="true" />
-									<f:selectItems value="#{data.userList}" var="user"
-										itemValue="#{user.userId}" itemLabel="#{user.empName}"></f:selectItems>
-								</p:selectOneMenu>
-								</center>
-							</p:column>
-							<p:column headerText="Working hours">
-							<center>
-							<p:spinner
-													 min="2"  max="8"
-													value="#{data.selectedUserWH}">
-												</p:spinner>
-												</center>
-							</p:column>
-							<p:column headerText="Action" style="width:75px">
-							<center>
-								<h:commandButton class="btn btn-xs btn-link pull-right"
-									value="Save">
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+										Total Resource:&nbsp;
+										<h:outputText id="resCount"
+											value="#{emData.selectedReqResBean.resourceCount}" />
 
-								</h:commandButton>
-								</center>
-							</p:column>
-						</p:dataTable>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<hr />
+
+						<div class="row rowdiff">
+							<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+								User List:</div>
+							<div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<div class="row">
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+										<p:selectOneMenu class="width-75" id="select_1"
+											value="#{emData.selectedReqResBean.selectedUserId}">
+											<f:selectItem itemValue='0' itemLabel="--Select--" />
+											<f:selectItems value="#{emData.selectedReqResBean.userList}"
+												var="d" itemValue="#{d.userId}" itemLabel="#{d.empName}"></f:selectItems>
+											<p:ajax event="change" process="hrOthers" update="wh_1"
+												partialSubmit="true"
+												listener="#{emData.UpdateRemainHoursEA}"
+												oncomplete="setTimeout(function() { $('#hrworkspace\\:tabOthers\\:hrOthers\\:hrOthersMsg').html(''); }, 2000);"></p:ajax>
+										</p:selectOneMenu>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+										Working Hours:<span class="red">*</span>&nbsp;
+										<p:spinner max="#{emData.selectedReqResBean.maxHours}" min="2"
+											id="wh_1" value="#{emData.selectedReqResBean.selectedUserWH}">
+
+										</p:spinner>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
 
 					</div>
 					<div class="card-footer" style="height: 50px">
 						<h:commandButton class="btn btn-xs btn-info pull-right"
 							value="Allocate Now">
-
+							<p:ajax event="click" process="hrOthers"
+								update="hrOthers hrOthers:loadData hrOthers:select_0 hrOthers:resCount hrOthers:resMsg"
+								partialSubmit="true"
+								listener="#{emData.UpdateExistingAllocation}"></p:ajax>
 						</h:commandButton>
 					</div>
 				</div>

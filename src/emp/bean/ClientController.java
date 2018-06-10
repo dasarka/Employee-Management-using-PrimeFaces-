@@ -156,7 +156,7 @@ public class ClientController {
 					FacesContext.getCurrentInstance().addMessage(
 							"projDash:newProjMsg",
 							new FacesMessage(FacesMessage.SEVERITY_ERROR,
-									"Project can't start before today", null));
+									"Project can't start before or from today", null));
 				} else if (endDate.before(startDate)) {
 					FacesContext.getCurrentInstance().addMessage(
 							"projDash:newProjMsg",

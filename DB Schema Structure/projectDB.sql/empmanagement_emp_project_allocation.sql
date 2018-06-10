@@ -27,12 +27,14 @@ CREATE TABLE `emp_project_allocation` (
   `user_id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
   `working_hours` int(11) NOT NULL DEFAULT '0',
+  `lms_start_date` varchar(100) DEFAULT 'NA',
+  `lms_end_date` varchar(100) DEFAULT 'NA',
   PRIMARY KEY (`allocation_id`),
   KEY `user_id_1_idx` (`user_id`),
   KEY `project_id_1_idx` (`project_id`),
   CONSTRAINT `project_id_1` FOREIGN KEY (`project_id`) REFERENCES `emp_project` (`project_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `user_id_1` FOREIGN KEY (`user_id`) REFERENCES `emp_authentication` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -44,4 +46,4 @@ CREATE TABLE `emp_project_allocation` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-29  2:36:16
+-- Dump completed on 2018-06-10 20:52:47

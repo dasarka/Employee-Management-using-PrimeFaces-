@@ -11,6 +11,13 @@
 <ui:composition>
 <h:form id="hrAppraisal">
 	<h:outputText value="#{emData.loadUsers}" />
+	<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 com-sm-12 col-xs-12">
+				<p:growl id="hrAppraisalMsg" closable="true" autoUpdate="true"
+					showIcon="true">
+				</p:growl>
+			</div>
+		</div>
 	<div class="card">
 		<div class="card-header">
 			<div class="row">

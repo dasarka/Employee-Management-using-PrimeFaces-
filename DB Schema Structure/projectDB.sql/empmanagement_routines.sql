@@ -52,6 +52,8 @@ SET character_set_client = utf8;
  1 AS `emp_name`,
  1 AS `flag`,
  1 AS `working_hours`,
+ 1 AS `lms_start_date`,
+ 1 AS `lms_end_date`,
  1 AS `onsite_manager`*/;
 SET character_set_client = @saved_cs_client;
 
@@ -86,7 +88,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`localUser`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `emp_proj_map` AS select `proj`.`project_id` AS `project_id`,`proj`.`project_name` AS `project_name`,`proj`.`start_date` AS `start_date`,`proj`.`end_date` AS `end_date`,`proj`.`client_name` AS `client_name`,`auth`.`user_id` AS `user_id`,`auth`.`emp_name` AS `emp_name`,`proj`.`flag` AS `flag`,`alloc`.`working_hours` AS `working_hours`,(select `auth`.`emp_name` from (`emp_project_allocation` `alloc` join `emp_authentication` `auth`) where ((`auth`.`user_id` = `alloc`.`user_id`) and (`auth`.`emp_access` = 10) and (`alloc`.`project_id` = `proj`.`project_id`))) AS `onsite_manager` from ((`emp_project` `proj` join `emp_authentication` `auth`) join `emp_project_allocation` `alloc`) where ((`proj`.`project_id` = `alloc`.`project_id`) and (`alloc`.`user_id` = `auth`.`user_id`)) */;
+/*!50001 VIEW `emp_proj_map` AS select `proj`.`project_id` AS `project_id`,`proj`.`project_name` AS `project_name`,`proj`.`start_date` AS `start_date`,`proj`.`end_date` AS `end_date`,`proj`.`client_name` AS `client_name`,`auth`.`user_id` AS `user_id`,`auth`.`emp_name` AS `emp_name`,`proj`.`flag` AS `flag`,`alloc`.`working_hours` AS `working_hours`,`alloc`.`lms_start_date` AS `lms_start_date`,`alloc`.`lms_end_date` AS `lms_end_date`,(select `auth`.`emp_name` from (`emp_project_allocation` `alloc` join `emp_authentication` `auth`) where ((`auth`.`user_id` = `alloc`.`user_id`) and (`auth`.`emp_access` = 10) and (`alloc`.`project_id` = `proj`.`project_id`))) AS `onsite_manager` from ((`emp_project` `proj` join `emp_authentication` `auth`) join `emp_project_allocation` `alloc`) where ((`proj`.`project_id` = `alloc`.`project_id`) and (`alloc`.`user_id` = `auth`.`user_id`)) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -100,4 +102,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-29  2:36:17
+-- Dump completed on 2018-06-10 20:52:48

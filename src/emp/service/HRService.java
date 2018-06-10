@@ -24,4 +24,6 @@ public interface HRService {
 	public List<LMSBean> LoadLMSDataService()throws Exception;
 	public boolean UpdateLMSService(List<LMSBean> lmsList)throws Exception;
 	public List<RequestResources> LoadRequestService()throws Exception;
+	public boolean UpdateExistingAllocationService(
+			RequestResources selectedReqResBean)throws Exception;
 }

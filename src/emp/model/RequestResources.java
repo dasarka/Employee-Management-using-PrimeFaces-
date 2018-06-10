@@ -3,20 +3,33 @@ package emp.model;
 import java.util.List;
 
 public class RequestResources {
-	private int projectId;
+	private int allocationId;
 	private String projectName;
-	private String requestType;
-	private int resourceCount;
+	private String requestType="I AM MESSAGE";
+	private int resourceCount=0;
 	private List<UsersBean> userList;
-	private List<UsersBean> selectedUsers;
-	private List<Integer> selectedUsersWHs;
-	private int selectedUserId;
-	private int selectedUserWH;
+	private int projectId;
+	private int maxHours;
+	
+	
+	
+	public int getMaxHours() {
+		return maxHours;
+	}
+	public void setMaxHours(int maxHours) {
+		this.maxHours = maxHours;
+	}
 	public int getProjectId() {
 		return projectId;
 	}
 	public void setProjectId(int projectId) {
 		this.projectId = projectId;
+	}
+	public int getAllocationId() {
+		return allocationId;
+	}
+	public void setAllocationId(int allocationId) {
+		this.allocationId = allocationId;
 	}
 	public String getProjectName() {
 		return projectName;
@@ -43,6 +56,30 @@ public class RequestResources {
 	public void setUserList(List<UsersBean> userList) {
 		this.userList = userList;
 	}
+	
+	
+	public RequestResources(int allocationId, String projectName,
+			String requestType, int resourceCount,
+			int projectId) {
+		super();
+		this.allocationId = allocationId;
+		this.projectName = projectName;
+		this.requestType = requestType;
+		this.resourceCount = resourceCount;
+		this.projectId = projectId;
+	}
+	public RequestResources() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	/*******************************************/
+	private List<UsersBean> selectedUsers;
+	private List<Integer> selectedUsersWHs;
+	private int selectedUserId;
+	private int selectedUserWH;
+
+
 	public List<UsersBean> getSelectedUsers() {
 		return selectedUsers;
 	}
@@ -67,18 +104,7 @@ public class RequestResources {
 	public void setSelectedUserWH(int selectedUserWH) {
 		this.selectedUserWH = selectedUserWH;
 	}
-	public RequestResources(int projectId, String projectName,
-			String requestType, int resourceCount) {
-		super();
-		this.projectId = projectId;
-		this.projectName = projectName;
-		this.requestType = requestType;
-		this.resourceCount = resourceCount;
-	}
-	public RequestResources() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	
 	
 	
 	

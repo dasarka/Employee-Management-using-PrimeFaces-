@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpSession;
@@ -27,8 +29,8 @@ public class HRController {
 	List<Timecard> newTimecard = new ArrayList<Timecard>();
 	List<Timecard> hrTimecard = new ArrayList<Timecard>();
 	List<UsersBean> usersList = new ArrayList<UsersBean>();
-	
-	List<RequestResources> reqResBean=new ArrayList<RequestResources>();
+
+	List<RequestResources> reqResBean = new ArrayList<RequestResources>();
 
 	List<ApprisalBean> apprisalList = new ArrayList<ApprisalBean>();
 	ApprisalBean apprisalBean = new ApprisalBean();
@@ -38,7 +40,16 @@ public class HRController {
 	LMSBean lmsBean = new LMSBean();
 	List<LMSBean> lmsList = new ArrayList<LMSBean>();
 
-	
+	RequestResources selectedReqResBean = new RequestResources();
+
+	public RequestResources getSelectedReqResBean() {
+		return selectedReqResBean;
+	}
+
+	public void setSelectedReqResBean(RequestResources selectedReqResBean) {
+		this.selectedReqResBean = selectedReqResBean;
+	}
+
 	public List<RequestResources> getReqResBean() {
 		return reqResBean;
 	}
@@ -404,6 +415,7 @@ public class HRController {
 			usersList = hrService.FetchAllUsersService();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return null;
@@ -434,10 +446,37 @@ public class HRController {
 		System.out.println("hrTimecard " + hrTimecard);
 		try {
 			HRService hrService = new HRServiceImpl();
-			hrService.UpdateTimecardService(hrTimecard);
+			boolean flag=hrService.UpdateTimecardService(hrTimecard);
+			if(flag){
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"hrTimecard:hrTimecardMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_INFO,
+								"Timecard has approved/rejected for selected user successfully",
+								null));
+			}else{
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"hrTimecard:hrTimecardMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_ERROR,
+								"Failed to approve/reject timecard for selected user, please contact with support team",
+								null));
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"hrTimecard:hrTimecardMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
 		}
 	}
 
@@ -573,8 +612,35 @@ public class HRController {
 		try {
 			HRService hrService = new HRServiceImpl();
 			boolean flag = hrService.UpdateAppraisalService(apprisalList);
+			if(flag){
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"hrAppraisal:hrAppraisalMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_INFO,
+								"Appraisal has approved sucessfully for selected user",
+								null));
+			}else{
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"hrAppraisal:hrAppraisalMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_ERROR,
+								"Failed to approve appraisal, please contact with support team",
+								null));
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"hrAppraisal:hrAppraisalMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
 			e.printStackTrace();
 		}
 	}
@@ -599,8 +665,35 @@ public class HRController {
 		try {
 			HRService hrService = new HRServiceImpl();
 			boolean flag = hrService.ProvideLeaveService();
+			if(flag){
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"hrOthers:hrOthersMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_INFO,
+								"2 leaves added successfully with all employees ",
+								null));
+			}else{
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"hrOthers:hrOthersMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_FATAL,
+								"Failed to provide leave, please contact with support team",
+								null));
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"hrOthers:hrOthersMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
 			e.printStackTrace();
 
 		}
@@ -615,7 +708,7 @@ public class HRController {
 					.getUserId());
 			lmsList = hrService.GetAppliedLeaveService(SessionData()
 					.getUserId());
-			System.out.println("lmsList "+lmsList);
+			System.out.println("lmsList " + lmsList);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -697,7 +790,8 @@ public class HRController {
 						if (Integer.valueOf(breakEndDate[1])
 								- Integer.valueOf(breakStartDate[1]) == 1) {
 							int startDayDiff = 0;
-							System.out.println("breakStartDate[1] "+breakStartDate[1]);
+							System.out.println("breakStartDate[1] "
+									+ breakStartDate[1]);
 							switch (breakStartDate[1]) {
 							case "01": {
 								startDayDiff = 31 - Integer
@@ -870,40 +964,197 @@ public class HRController {
 							"Sorry!!! you exceed your leave balance", null));
 		}
 	}
-	
+
 	public String getLoadLMSData() {
 		System.out.println("getLMSData ");
 		try {
 			HRService hrService = new HRServiceImpl();
 			lmsList = hrService.LoadLMSDataService();
-			System.out.println("lmsList "+lmsList);
+			System.out.println("lmsList " + lmsList);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"hrLMS:hrLMSMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
 			e.printStackTrace();
-			
+
 		}
 		return null;
 	}
-	public void UpdateLMS(AjaxBehaviorEvent ev){
+
+	public void UpdateLMS(AjaxBehaviorEvent ev) {
 		System.out.println("UpdateLMS ");
 		try {
 			HRService hrService = new HRServiceImpl();
 			boolean flag = hrService.UpdateLMSService(lmsList);
+			if(flag){
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"hrLMS:hrLMSMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_INFO,
+								"Your request has processed successfully",
+								null));
+			}else{
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"hrLMS:hrLMSMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_ERROR,
+								"Failed to process your request, pleasecontact with support team",
+								null));
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"hrLMS:hrLMSMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
 			e.printStackTrace();
-			
+
 		}
 	}
-	public String getLoadRequest(){
+
+	public String getLoadRequest() {
 		try {
 			HRService hrService = new HRServiceImpl();
 			reqResBean = hrService.LoadRequestService();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"hrOthers:hrOthersMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
 			e.printStackTrace();
-			
+
 		}
 		return null;
+	}
+
+	public void UpdateExistingAllocation(AjaxBehaviorEvent ev) {
+		System.out.println("UpdateExistingAllocation ");
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		System.out.println("Data");
+		System.out.println(selectedReqResBean.getAllocationId());
+		System.out.println(selectedReqResBean.getProjectId());
+		System.out.println(selectedReqResBean.getSelectedUserId());
+		System.out.println(selectedReqResBean.getSelectedUserWH());
+		try {
+			HRService hrService = new HRServiceImpl();
+			boolean flag = hrService
+					.UpdateExistingAllocationService(selectedReqResBean);
+			System.out.println("flag "+flag);
+			if(flag){
+				selectedReqResBean.setAllocationId(0);
+				selectedReqResBean.setRequestType("I AM MESSAGE");
+				selectedReqResBean.setResourceCount(0);
+				selectedReqResBean.setSelectedUserId(0);
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"hrOthers:hrOthersMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_INFO,
+								"Resource has successfully allocated",
+								null));
+			}else{
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"hrOthers:hrOthersMsg",
+						new FacesMessage(
+								FacesMessage.SEVERITY_ERROR,
+								"failed to allocate resource, please contact with support team",
+								null));
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"hrOthers:hrOthersMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
+
+		}
+
+	}
+
+	public void FetchExistingAllocationDetails(AjaxBehaviorEvent ev) {
+		try{
+		System.out.println("FetchExistingAllocationDetails ");
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		System.out.println("Id " + selectedReqResBean.getAllocationId());
+		for (RequestResources reqRes : reqResBean) {
+			if (reqRes.getAllocationId() == selectedReqResBean
+					.getAllocationId()) {
+				selectedReqResBean.setProjectId(reqRes.getProjectId());
+				selectedReqResBean.setRequestType(reqRes.getRequestType());
+				selectedReqResBean.setResourceCount(reqRes.getResourceCount());
+				selectedReqResBean.setUserList(reqRes.getUserList());
+				selectedReqResBean.setMaxHours(reqRes.getMaxHours());
+			}
+		}
+		}catch(Exception e){
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"hrOthers:hrOthersMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
+			e.printStackTrace();
+		}
+	}
+
+	public void UpdateRemainHoursEA(AjaxBehaviorEvent ev) {
+		try{
+		System.out.println("FetchExistingAllocationDetails ");
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		System.out.println("Id " + selectedReqResBean.getSelectedUserId());
+		for (RequestResources reqRes : reqResBean) {
+			if (reqRes.getAllocationId() == selectedReqResBean
+					.getAllocationId()) {
+				for (UsersBean user : reqRes.getUserList()) {
+					if (user.getUserId() == selectedReqResBean
+							.getSelectedUserId()) {
+						System.out.println("user.getRemainHours() "+user.getRemainHours());
+						selectedReqResBean.setMaxHours(user.getRemainHours());
+						selectedReqResBean.setSelectedUserWH(0);
+						System.out.println("selectedReqResBean.getMaxHours() "+selectedReqResBean.getMaxHours());
+					}
+				}
+			}
+		}
+		}catch(Exception e){
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"hrOthers:hrOthersMsg",
+					new FacesMessage(
+							FacesMessage.SEVERITY_FATAL,
+							"We have faced some issue, please wait for some time or contact with support team",
+							null));
+			e.printStackTrace();
+		}
 	}
 }

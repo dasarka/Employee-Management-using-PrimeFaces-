@@ -110,5 +110,12 @@ public class HRServiceImpl implements HRService{
 		return hrDao.LoadRequestDao();
 	}
 
+	@Override
+	public boolean UpdateExistingAllocationService(
+			RequestResources selectedReqResBean) throws Exception {
+		HRDao hrDao=new HRDaoImpl();
+		return hrDao.UpdateExistingAllocationDao(selectedReqResBean);
+	}
+
 	
 }

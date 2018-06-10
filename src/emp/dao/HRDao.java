@@ -25,4 +25,6 @@ public interface HRDao {
 	public List<LMSBean> LoadLMSDataDao()throws Exception;
 	public boolean UpdateLMSDao(List<LMSBean> lmsList)throws Exception;
 	public List<RequestResources> LoadRequestDao()throws Exception;
+	public boolean UpdateExistingAllocationDao(
+			RequestResources selectedReqResBean)throws Exception;
 }

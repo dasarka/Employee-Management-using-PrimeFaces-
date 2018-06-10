@@ -16,23 +16,24 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `emp_project`
+-- Table structure for table `ems_lms_data`
 --
 
-DROP TABLE IF EXISTS `emp_project`;
+DROP TABLE IF EXISTS `ems_lms_data`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `emp_project` (
-  `project_id` int(11) NOT NULL AUTO_INCREMENT,
-  `project_name` varchar(100) NOT NULL,
-  `start_date` varchar(100) NOT NULL,
-  `end_date` varchar(100) NOT NULL,
-  `resources` int(11) NOT NULL,
-  `budget` double NOT NULL,
-  `client_name` varchar(100) NOT NULL,
-  `flag` char(1) DEFAULT NULL,
-  PRIMARY KEY (`project_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+CREATE TABLE `ems_lms_data` (
+  `leave_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `leave_start_date` varchar(100) DEFAULT NULL,
+  `leave_end_date` varchar(100) DEFAULT NULL,
+  `leave_taken` int(11) DEFAULT '0',
+  `leave_status` varchar(100) DEFAULT NULL,
+  `leave_comments` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`leave_id`),
+  KEY `user_id_idx` (`user_id`),
+  CONSTRAINT `lms_user_id` FOREIGN KEY (`user_id`) REFERENCES `emp_authentication` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -44,4 +45,4 @@ CREATE TABLE `emp_project` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-10 20:52:44
+-- Dump completed on 2018-06-10 20:52:46

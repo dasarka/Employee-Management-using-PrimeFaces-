@@ -30,6 +30,7 @@ CREATE TABLE `emp_authentication` (
   `emp_desg` varchar(100) NOT NULL,
   `emp_access` int(11) DEFAULT '1',
   `emp_remainHours` int(11) DEFAULT '8',
+  `leave_balance` int(11) DEFAULT '0',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_name_UNIQUE` (`user_name`),
   KEY `emp_access_1_idx` (`emp_access`),
@@ -46,4 +47,4 @@ CREATE TABLE `emp_authentication` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-29  2:36:16
+-- Dump completed on 2018-06-10 20:52:47

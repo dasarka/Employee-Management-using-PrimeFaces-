@@ -173,7 +173,7 @@ public class HRDaoImpl implements HRDao {
 				break;
 			}
 		}
-		return false;
+		return flag;
 	}
 
 	@Override
@@ -394,20 +394,20 @@ public class HRDaoImpl implements HRDao {
 		String getLeaveBal = "SELECT leave_balance FROM emp_authentication where user_id=";
 		String resetLeave = "UPDATE emp_authentication SET leave_balance = ";
 		String resetLeaveClause = " WHERE user_id =";
-		String getLMSId="SELECT project_id FROM emp_project where project_name ='LMS Project'";
+		String getLMSId = "SELECT project_id FROM emp_project where project_name ='LMS Project'";
 		String insertAllocation = "INSERT INTO emp_project_allocation "
 				+ "(user_id,project_id,lms_start_date,lms_end_date) VALUES (";
 		String completeLMS = "";
 		String completeResetLeave = "";
-		String completeQuery="";
-		int lmsProjId=0;
+		String completeQuery = "";
+		int lmsProjId = 0;
 		rs = null;
 		rs = connection.getResultSet(getLMSId);
 		if (rs.next() == false) {
-			flag=false;
+			flag = false;
 		} else {
 			rs.absolute(1);
-			lmsProjId=(int) rs.getObject("project_id");
+			lmsProjId = (int) rs.getObject("project_id");
 			for (LMSBean lmsBean : lmsList) {
 				completeLMS = updateLMS + "'" + lmsBean.getStatus() + "'"
 						+ lmsClause + lmsBean.getLeaveId();
@@ -424,8 +424,8 @@ public class HRDaoImpl implements HRDao {
 							rs.absolute(1);
 							completeResetLeave = resetLeave
 									+ ((int) rs.getObject("leave_balance") + lmsBean
-											.getLeaveCount()) + resetLeaveClause
-									+ lmsBean.getUserId();
+											.getLeaveCount())
+									+ resetLeaveClause + lmsBean.getUserId();
 							System.out.println("completeResetLeave "
 									+ completeResetLeave);
 							if (connection.getICDM(completeResetLeave) > 0) {
@@ -436,13 +436,11 @@ public class HRDaoImpl implements HRDao {
 							}
 						}
 					} else {
-						completeQuery=insertAllocation
-								+""+lmsBean.getUserId()+","
-								+""+lmsProjId+","
-								+"'"+lmsBean.getStartDate()+"',"
-								+"'"+lmsBean.getEndDate()+"')";
-						System.out.println("completeQuery "
-								+ completeQuery);
+						completeQuery = insertAllocation + ""
+								+ lmsBean.getUserId() + "," + "" + lmsProjId
+								+ "," + "'" + lmsBean.getStartDate() + "',"
+								+ "'" + lmsBean.getEndDate() + "')";
+						System.out.println("completeQuery " + completeQuery);
 						if (connection.getICDM(completeQuery) > 0) {
 							flag = true;
 						} else {
@@ -455,86 +453,146 @@ public class HRDaoImpl implements HRDao {
 				}
 			}
 		}
-		
+
 		return flag;
 	}
 
 	@Override
 	public List<RequestResources> LoadRequestDao() throws Exception {
-		List<RequestResources> reqResBean=new ArrayList<RequestResources>();
+		List<RequestResources> reqResBean = new ArrayList<RequestResources>();
 		RequestResources reqResources;
-		String selectQuery1="SELECT * FROM emp_request req inner join emp_project proj where req.project_id=proj.project_id;";
-		String selectQuery2="SELECT * FROM emp_authentication where emp_access=3 and emp_remainHours>0";
-		String selectQuery3="SELECT * FROM emp_authentication where emp_access=8 and emp_remainHours>0";
-		String selectQuery4="SELECT * FROM emp_authentication where emp_access=9 and emp_remainHours>0";
-		rs=null;
-		rs=connection.getResultSet(selectQuery1);
+		String selectQuery1 = "SELECT * FROM emp_request req inner join emp_project proj where req.project_id=proj.project_id;";
+		String selectQuery2 = "SELECT * FROM emp_authentication where emp_access=3 and emp_remainHours>0";
+		String selectQuery3 = "SELECT * FROM emp_authentication where emp_access=8 and emp_remainHours>0";
+		String selectQuery4 = "SELECT * FROM emp_authentication where emp_access=9 and emp_remainHours>0";
+		rs = null;
+		rs = connection.getResultSet(selectQuery1);
 		if (rs.next() == false) {
 		} else {
 			rs.absolute(1);
-			do{
-				
-				String reqType=(String) rs.getObject("request_type");
-				reqResources=new RequestResources((int) rs.getObject("project_id"),
-						(String) rs.getObject("project_name"),
-						reqType,
-						(int) rs.getObject("request_no"));
-				if(reqType.equalsIgnoreCase("Need Developer")){
-					List<UsersBean> userList=new ArrayList<UsersBean>();
+			do {
+
+				String reqType = (String) rs.getObject("request_type");
+				reqResources = new RequestResources(
+						(int) rs.getObject("request_id"),
+						(String) rs.getObject("project_name"), reqType,
+						(int) rs.getObject("request_no"),
+						(int) rs.getObject("project_id"));
+				if (reqType.equalsIgnoreCase("Need Developer")) {
+					List<UsersBean> userList = new ArrayList<UsersBean>();
 					UsersBean user;
-					rsDuplicate=null;
-					rsDuplicate=connection.getResultSet(selectQuery2);
+					rsDuplicate = null;
+					rsDuplicate = connection.getResultSet(selectQuery2);
 					if (rsDuplicate.next() == false) {
 					} else {
 						rsDuplicate.absolute(1);
-						do{
-							user=new UsersBean();
-							user.setUserId((int)rsDuplicate.getObject("user_id"));
-							user.setEmpName((String)rsDuplicate.getObject("emp_name"));
-							user.setRemainHours((int)rsDuplicate.getObject("emp_remainHours"));
+						do {
+							user = new UsersBean();
+							user.setUserId((int) rsDuplicate
+									.getObject("user_id"));
+							user.setEmpName((String) rsDuplicate
+									.getObject("emp_name"));
+							user.setRemainHours((int) rsDuplicate
+									.getObject("emp_remainHours"));
 							userList.add(user);
-						}while(rsDuplicate.next());
+						} while (rsDuplicate.next());
 					}
 					reqResources.setUserList(userList);
-				}else if(reqType.equalsIgnoreCase("Need Performance Tester")){
-					List<UsersBean> userList=new ArrayList<UsersBean>();
+				} else if (reqType.equalsIgnoreCase("Need Performance Tester")) {
+					List<UsersBean> userList = new ArrayList<UsersBean>();
 					UsersBean user;
-					rsDuplicate=null;
-					rsDuplicate=connection.getResultSet(selectQuery3);
+					rsDuplicate = null;
+					rsDuplicate = connection.getResultSet(selectQuery3);
 					if (rsDuplicate.next() == false) {
 					} else {
 						rsDuplicate.absolute(1);
-						do{
-							user=new UsersBean();
-							user.setUserId((int)rsDuplicate.getObject("user_id"));
-							user.setEmpName((String)rsDuplicate.getObject("emp_name"));
-							user.setRemainHours((int)rsDuplicate.getObject("emp_remainHours"));
+						do {
+							user = new UsersBean();
+							user.setUserId((int) rsDuplicate
+									.getObject("user_id"));
+							user.setEmpName((String) rsDuplicate
+									.getObject("emp_name"));
+							user.setRemainHours((int) rsDuplicate
+									.getObject("emp_remainHours"));
 							userList.add(user);
-						}while(rsDuplicate.next());
+						} while (rsDuplicate.next());
 					}
 					reqResources.setUserList(userList);
-				}else if(reqType.equalsIgnoreCase("Need Tester")){
-					List<UsersBean> userList=new ArrayList<UsersBean>();
+				} else if (reqType.equalsIgnoreCase("Need Tester")) {
+					List<UsersBean> userList = new ArrayList<UsersBean>();
 					UsersBean user;
-					rsDuplicate=null;
-					rsDuplicate=connection.getResultSet(selectQuery4);
+					rsDuplicate = null;
+					rsDuplicate = connection.getResultSet(selectQuery4);
 					if (rsDuplicate.next() == false) {
 					} else {
 						rsDuplicate.absolute(1);
-						do{
-							user=new UsersBean();
-							user.setUserId((int)rsDuplicate.getObject("user_id"));
-							user.setEmpName((String)rsDuplicate.getObject("emp_name"));
-							user.setRemainHours((int)rsDuplicate.getObject("emp_remainHours"));
+						do {
+							user = new UsersBean();
+							user.setUserId((int) rsDuplicate
+									.getObject("user_id"));
+							user.setEmpName((String) rsDuplicate
+									.getObject("emp_name"));
+							user.setRemainHours((int) rsDuplicate
+									.getObject("emp_remainHours"));
 							userList.add(user);
-						}while(rsDuplicate.next());
+						} while (rsDuplicate.next());
 					}
 					reqResources.setUserList(userList);
 				}
 				reqResBean.add(reqResources);
-			}while(rs.next());
+			} while (rs.next());
 		}
 		return reqResBean;
+	}
+
+	@Override
+	public boolean UpdateExistingAllocationDao(
+			RequestResources selectedReqResBean) throws Exception {
+		int remainAlloc = selectedReqResBean.getResourceCount() - 1;
+boolean flag=false;
+		String update_emp_resource = "UPDATE emp_request SET request_no = "
+				+ remainAlloc + " WHERE request_id = "+selectedReqResBean.getAllocationId();
+		String delete_emp_resource = "DELETE FROM emp_request"
+				+ " WHERE request_id = "+selectedReqResBean.getAllocationId();
+		String update_emp_auth = "UPDATE emp_authentication SET emp_remainHours = "
+				+ (selectedReqResBean.getMaxHours() - selectedReqResBean
+						.getSelectedUserWH())
+				+ " WHERE user_id = "
+				+ selectedReqResBean.getSelectedUserId();
+		String insert_proj_alloc = "INSERT INTO emp_project_allocation (user_id,project_id,working_hours) "
+				+ "VALUES "
+				+ "("
+				+ selectedReqResBean.getSelectedUserId()
+				+ ","
+				+ selectedReqResBean.getProjectId()
+				+ ","
+				+ selectedReqResBean.getSelectedUserWH() + ");";
+		System.out.println("update_emp_resource "+update_emp_resource);
+		System.out.println("delete_emp_resource "+delete_emp_resource);
+		System.out.println("update_emp_auth "+update_emp_auth);
+		System.out.println("insert_proj_alloc "+insert_proj_alloc);
+		if(connection.getICDM(insert_proj_alloc)>0){
+			if(connection.getICDM(update_emp_auth)>0){
+				if(remainAlloc==0){
+					if(connection.getICDM(delete_emp_resource)>0){
+						flag=true;
+					}else{
+						flag=false;
+					}
+				}else{
+					if(connection.getICDM(update_emp_resource)>0){
+						flag=true;
+					}else{
+						flag=false;
+					}
+				}
+			}else{
+				flag=false;
+			}
+		}else{
+			flag=false;
+		}
+		return flag;
 	}
 
 }

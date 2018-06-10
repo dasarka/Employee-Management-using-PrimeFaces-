@@ -16,23 +16,23 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `emp_project`
+-- Table structure for table `emp_apprisal`
 --
 
-DROP TABLE IF EXISTS `emp_project`;
+DROP TABLE IF EXISTS `emp_apprisal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `emp_project` (
-  `project_id` int(11) NOT NULL AUTO_INCREMENT,
-  `project_name` varchar(100) NOT NULL,
-  `start_date` varchar(100) NOT NULL,
-  `end_date` varchar(100) NOT NULL,
-  `resources` int(11) NOT NULL,
-  `budget` double NOT NULL,
-  `client_name` varchar(100) NOT NULL,
-  `flag` char(1) DEFAULT NULL,
-  PRIMARY KEY (`project_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+CREATE TABLE `emp_apprisal` (
+  `user_id` int(11) NOT NULL,
+  `objective` varchar(500) DEFAULT NULL,
+  `employee_comment` varchar(500) DEFAULT NULL,
+  `hr_comment` varchar(500) DEFAULT NULL,
+  `rating` int(11) DEFAULT '0',
+  `status` varchar(100) DEFAULT NULL,
+  `year` int(11) NOT NULL,
+  `appraisal_id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`appraisal_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -44,4 +44,4 @@ CREATE TABLE `emp_project` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-10 20:52:44
+-- Dump completed on 2018-06-10 20:52:45
