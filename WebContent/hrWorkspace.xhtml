@@ -23,18 +23,18 @@
 			<p:menuitem value="Dashboard" url="dashboard.xhtml" />
 			<p:menuitem value="HR Workspace" url="#" />
 		</p:breadCrumb>
-				<p:tabView orientation="top">
+				<p:tabView id="hrTab" orientation="top">
 
-					<p:tab id="tabTimesheet" title="View Timecard">
+					<p:tab title="View Timecard">
 					<ui:include src="WEB-CONTENT-PAGES/hrWorkSpace/timecard.xhtml"></ui:include>
 					</p:tab>
-					<p:tab  id="tabAppraisal" title="Appraisal(HR Callibration)">
+					<p:tab title="Appraisal(HR Callibration)">
 					<ui:include src="WEB-CONTENT-PAGES/hrWorkSpace/apprisal.xhtml"></ui:include>
 					</p:tab>
-					<p:tab id="tabLeaves" title="Leave Approval">
+					<p:tab title="Leave Approval">
 					<ui:include src="WEB-CONTENT-PAGES/hrWorkSpace/LMS.xhtml"></ui:include>
 					</p:tab>
-					<p:tab id="tabOthers" title="Others">
+					<p:tab title="Others">
 					<ui:include src="WEB-CONTENT-PAGES/hrWorkSpace/others.xhtml"></ui:include>
 					</p:tab>
 				</p:tabView>

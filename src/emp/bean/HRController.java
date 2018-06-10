@@ -441,7 +441,7 @@ public class HRController {
 		}
 	}
 
-	public void UpdateTimeCard(AjaxBehaviorEvent ev) {
+	public String UpdateTimeCard() {
 		System.out.println("UpdateTimeCard ");
 		System.out.println("hrTimecard " + hrTimecard);
 		try {
@@ -478,6 +478,7 @@ public class HRController {
 							"We have faced some issue, please wait for some time or contact with support team",
 							null));
 		}
+		return null;
 	}
 
 	public void AddApprisalDataEmployee(AjaxBehaviorEvent ev) {

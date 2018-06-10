@@ -30,6 +30,16 @@ CREATE TABLE `emp_access` (
   PRIMARY KEY (`accessId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `emp_access`
+--
+
+LOCK TABLES `emp_access` WRITE;
+/*!40000 ALTER TABLE `emp_access` DISABLE KEYS */;
+INSERT INTO `emp_access` VALUES (1,'No Access'),(2,'Admin'),(3,'Developer'),(4,'Lead'),(5,'Manager'),(6,'HR'),(7,'Client'),(8,'Performane Tester'),(9,'Tester'),(10,'Onsite Manager');
+/*!40000 ALTER TABLE `emp_access` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -40,4 +50,4 @@ CREATE TABLE `emp_access` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-11  1:15:47
+-- Dump completed on 2018-06-11  1:15:08

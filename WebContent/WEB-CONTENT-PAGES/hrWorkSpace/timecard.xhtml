@@ -81,11 +81,9 @@
 		</div>
 		<div class="card-footer">
 			<h:commandButton id="btnSubmit" value="Update Now"
-				class="btn btn-success btn-xs">
-				<p:ajax event="click" partialSubmit="true"
-				process="hrTimecard"
-				update="hrTimecard"
-				listener="#{emData.UpdateTimeCard}"></p:ajax>
+				class="btn btn-success btn-xs"
+				
+				action="#{emData.UpdateTimeCard}">
 			</h:commandButton>
 		</div>
 	</div>

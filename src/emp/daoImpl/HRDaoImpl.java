@@ -164,7 +164,7 @@ public class HRDaoImpl implements HRDao {
 		for (Timecard timecard : hrTimecard) {
 			String query = "UPDATE emp_timecard SET " + "status = '"
 					+ timecard.getStatus() + "'," + "comment = '"
-					+ timecard.getComment() + "'" + "WHERE `id` = "
+					+ timecard.getComment() + "'" + "WHERE id = "
 					+ timecard.getTimecardId() + ";";
 			if (connection.getICDM(query) > 0) {
 				flag = true;

@@ -44,6 +44,16 @@ CREATE TABLE `emp_timecard` (
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `emp_authentication` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `emp_timecard`
+--
+
+LOCK TABLES `emp_timecard` WRITE;
+/*!40000 ALTER TABLE `emp_timecard` DISABLE KEYS */;
+INSERT INTO `emp_timecard` VALUES (1,'33,',50,'Jun','2018',0,0,0,0,8,'Week1','10-Jun-2018','approved','approved'),(2,'33,',50,'Jun','2018',8,8,8,8,8,'Week2','10-Jun-2018','approved','approved'),(3,'33,',50,'Jun','2018',8,8,8,8,8,'Week3','10-Jun-2018','approved','approved'),(4,'33,',50,'Jun','2018',8,8,8,8,8,'Week4','10-Jun-2018','approved','approved'),(5,'33,',50,'Jun','2018',8,8,8,8,8,'Week5','10-Jun-2018','approved','approved'),(6,'33,',48,'Jun','2018',0,0,0,0,8,'Week1','11-Jun-2018','approved','approved'),(7,'33,',48,'Jun','2018',8,8,8,8,8,'Week2','11-Jun-2018','approved','approved'),(8,'33,',48,'Jun','2018',8,8,8,8,8,'Week3','11-Jun-2018','approved','approved'),(9,'33,',48,'Jun','2018',8,8,8,8,8,'Week4','11-Jun-2018','approved','approved'),(10,'33,',48,'Jun','2018',8,8,8,8,8,'Week5','11-Jun-2018','approved','approved');
+/*!40000 ALTER TABLE `emp_timecard` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -54,4 +64,4 @@ CREATE TABLE `emp_timecard` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-11  1:15:45
+-- Dump completed on 2018-06-11  1:15:06
