@@ -42,5 +42,5 @@ Only LEAD/MANAGER/ONSITE MANAGER can view and edit project timeline. But LEAD ca
 NOTE:- DB code(with both structure and test data) provide within DB folder.
 
 *************************************************************************************************************************************
-                                        CopyWrite@2018 : EmployeeManagement|ARKA DAS
+CopyWrite@2018 : EmployeeManagement|ARKA DAS
                                         
