@@ -1,4 +1,4 @@
-###### EmployeeManagement-UsingPrimefaces######
+###### EmployeeManagement-UsingPrimefaces
 It's a simple self-designed application. 
 
 ***********ACCESS DEFINATION***********
